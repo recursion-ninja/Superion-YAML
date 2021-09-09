@@ -76,7 +76,8 @@
 
 \usepackage[protrusion=true, expansion=true]{microtype} % Better typography
 
-\linespread{1.05} % Increase line spacing slightly; Palatino benefits from a slight increase by default
+\linespread{1.3} % Increase line spacing slightly; Palatino benefits from a slight increase by default
+
 
 %----------------------------------------------------------------------------------------
 %	TITLE
@@ -84,17 +85,17 @@
 
 \makeatletter
 \renewcommand{\maketitle}{ % Customise the title (do not edit title and author name here)
-	\vspace*{30pt} % Vertical whitespace before the title
+	\vspace*{1pt} % Vertical whitespace before the title
 	\begin{flushright} % Right align
 		{\LARGE\@title}\\ % Increase the font size of the title
-		\vspace{10pt}
-		\@date % Date		
-		\vspace{30pt} % Vertical whitespace between the title and author name
+		\vspace{15pt}
+		{\large \@date} % Date		
+		\vspace{15pt} % Vertical whitespace between the title and author name
 		
 		{\large\@author}\\ % Author name
 
 		
-		\vspace{40pt} % Vertical whitespace between the author block and abstract
+		\vspace{10pt} % Vertical whitespace between the author block and abstract
 	\end{flushright}
 }
 \makeatother

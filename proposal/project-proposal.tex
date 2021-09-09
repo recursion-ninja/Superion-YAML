@@ -26,9 +26,13 @@
 %	TITLE SECTION
 %----------------------------------------------------------------------------------------
 
-\title{\texttt{\huge{CSCI-795 Project Proposal} \\\vspace*{3mm} {\normalsize Fuzzing NetHack for Fun and Prestige}}} % Title and subtitle
+\title{\texttt{\huge{Fuzzing NetHack for Fun and Prestige} \\ {\large A CSCI-795 Project Proposal}}} % Title and subtitle
 
-\author{\texttt{{\Huge Team:}\\ Sabina Bhuiyan \\ Kyoungwoo Lee \\ Chuanyao Lin \\ Alex Washburn}} % Author and institution
+\author{\texttt{{\Huge Team:}\\\vspace*{-0.5em} 
+		Sabina Bhuiyan \\\vspace*{-0.5em} 
+		Kyoungwoo Lee \\\vspace*{-0.5em}
+		Chuanyao Lin \\\vspace*{-0.25em}
+		Alex Washburn}} % Author and institution
 
 \date{\texttt{\today}} % Date, use \date{} for no date
 
@@ -41,13 +45,44 @@
 
 \section*{Project Proposal}
 
+The goal of this project is to try to produce unexpected behavior in the single-player game NetHack by using fuzzing software tools, such as BFF, AFL, or Peach.
+By doing so, we would like to see if we can prevent players from crashing the game and performing actions not allowed in the game even if the game is not crashed (like going through the wall etc).
+
+
 \section*{Motivation}
+
+As gamers, we might have experiences of committing some actions that were not allowed in the game.
+For example, gamers use some commands to break into the locked door in the game.
+In fact, we are often surprised how these bugs are found, and end up guessing whether these bugs are revealed from the game design team.
+After taking the cybersecurity course and knowing about the fuzzing software, we hope to see whether these tools might be one of the methods to find out those bugs.
+
 
 \section*{Approach}
 
+\begin{enumerate}
+  \item Use AFL to generate aberrant inputs to NetHack, simulating textual user gameplay inputs.
+  \item Author a series of seed inputs for AFL to mutate.
+  \item Record and case in which the game crashes
+  \item Record any cases in which the game hangs
+  \item Record any cases in which the game enters an “unplayable state”
+  \item “Unplayable” will be tested by attempting to perform basic, automated, deterministic user inputs *after* an AFL fuzzing sequence has ended.
+  \item Anticipated resources are the student’s commodity laptops, as both AFL and NetHack are time and memory efficient programs.
+  \item However, the students have access to the 256 Intel core, 4TB RAM, discrete arithmetic computing cluster at AMNH, which could be used to massively parallelize work once AFL fuzzing has been fully operationalized.
+\end{enumerate}
+
+
 \section*{Expected Outcomes/Deliverables}
 
+\begin{enumerate}
+  \item Desired outcome is one or more detected user input vulnerabilities.
+  \item Stack smashing, buffer overflows, infinite loops, etc.
+  \item Author a patch to fix the user input vulnerabilities.
+  \item Submit a pull request to the open source project of NetHack.
+\end{enumerate}
+
+
 \section*{Division of Labor}
+
 
 \section*{Timeline}
 
@@ -69,5 +104,6 @@
   	\item \texttt{2021-12-05:} \textbf{Final project presentations due}
   	\item \texttt{2021-12-12:} \textbf{Final project reports due 5:35 pm}
   \end{enumerate}
+
 
 \end{document}
