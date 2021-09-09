@@ -85,17 +85,15 @@
 
 \makeatletter
 \renewcommand{\maketitle}{ % Customise the title (do not edit title and author name here)
-	\vspace*{1pt} % Vertical whitespace before the title
 	\begin{flushright} % Right align
 		{\LARGE\@title}\\ % Increase the font size of the title
-		\vspace{15pt}
 		{\large \@date} % Date		
-		\vspace{15pt} % Vertical whitespace between the title and author name
+
+		\vspace{20pt} % Vertical whitespace between the title and author name
 		
 		{\large\@author}\\ % Author name
-
 		
-		\vspace{10pt} % Vertical whitespace between the author block and abstract
+		\vspace{5pt} % Vertical whitespace between the author block and abstract
 	\end{flushright}
 }
 \makeatother
