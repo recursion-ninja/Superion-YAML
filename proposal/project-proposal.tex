@@ -46,12 +46,12 @@
 \section*{Project Proposal}
 
 For our project, we propose to perform application security testing of the program \emph{NetHack} \cite{NetHack_page} by using the fuzzing tool AFL \cite{AFL_page} to generate aberrant user inputs. 
-\emph{NetHack} is an actively developed, open source terminal game forked from the game \emph{Hack} which itself was a clone of the game \emph{Rogue}. 
-\emph{NetHack} can trace it's origins all the way back to it's initial release 1987, though arguably it could be considered as old as the game \emph{Hack} from which it was forked, released in 1982. 
+\emph{NetHack} is an actively developed, open source terminal game forked from the game \emph{Hack} \cite{Hack} which itself was a clone of the game \emph{Rogue} \cite{Rogue}. 
+\emph{NetHack} can trace it's origins all the way back to it's initial release 1987, though arguably it could be considered as old as the game \emph{Hack} from which it was forked, released in 1984. 
 \emph{NetHack} accepts keyboard inputs from the user to direct gameplay and updates the terminal to display the game state to the user.
 
-American Fuzzy Lop (AFL) is an open source fuzzing tool.
-Fuzzing is a venerable application security testing technique developed in the late '80s and published in 1990.
+American Fuzzy Lop (AFL) \cite{AFL_page} is an open source fuzzing tool.
+Fuzzing is a venerable application security testing technique developed in the late '80s \cite{Barton1988} and published in 1990 \cite{Miller1990}.
 Fuzzing tools generate input which is directed towards the program and detect if the input was accepted or caused unexpected behavior.
 Unexpected behavior can take many forms including, infinite loops, stack smashing, buffer overflows, arithmetic overflows or errors, and illegal program states.
 Unexpected behavior that we are looking for include runtime exceptions, infinite loops, and illegal states.
