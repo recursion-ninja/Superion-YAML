@@ -10,7 +10,6 @@
 %command -v texcount &> /dev/null && texcount -sum -1 csci-724-paper.tex
 %\END
 
-
 %Shorthand formatting commands
 \newcommand{\F}[1]{$\quad$\texttt{#1}}
 \newcommand{\A}{$\alpha$}
@@ -45,8 +44,8 @@
 
 \section*{Project Proposal}
 
-For our project, we propose to perform application security testing of the program \emph{NetHack} \cite{NetHack_page} by using the fuzzing tool AFL \cite{AFL_page} to generate aberrant user inputs. 
-\emph{NetHack} is an actively developed, open source terminal game forked from the game \emph{Hack} \cite{Hack} which itself was a clone of the game \emph{Rogue} \cite{Rogue}. 
+For our project, we propose to perform application security testing of the program \emph{NetHack} \cite{NetHack_page} \cite{NetHack01} by using the fuzzing tool AFL \cite{AFL_page} to generate aberrant user inputs. 
+\emph{NetHack} is an actively developed, open source terminal game forked from the game \emph{Hack} \cite{Hack} which itself was a clone of the game \emph{Rogue} \cite{Rogue} \cite{Rogue01}. 
 \emph{NetHack} can trace it's origins all the way back to it's initial release 1987, though arguably it could be considered as old as the game \emph{Hack} from which it was forked, released in 1984. 
 \emph{NetHack} accepts keyboard inputs from the user to direct gameplay and updates the terminal to display the game state to the user.
 
@@ -56,24 +55,25 @@ Fuzzing tools generate input which is directed towards the program and detect if
 Unexpected behavior can take many forms including, infinite loops, stack smashing, buffer overflows, arithmetic overflows or errors, and illegal program states.
 Unexpected behavior that we are looking for include runtime exceptions, infinite loops, and illegal states.
 Examples of illegal states we will look for include performing actions not allowed in the game even if the game has not crashed, such as like going through walls or spawning items.
-Fuzzing tools can take many forms and modify program input in many ways.
-Different fuzzing tools tend to specialize in a few related forms of input manipulation.
-AFL relies on genetic algorithm techniques to mutate acceptable input into input triggering unexpected behavior.
+Fuzzing tools can take many forms \cite{ModelBasedFuzzing}\cite{GrammarBasedFuzzing}\cite{ProtocolBasedFuzzing} and modify program input in many ways.
+Different fuzzing tools tend to specialize in a few related forms of input\cite{InputDiversity} manipulation.
+AFL relies on genetic algorithm techniques\cite{InputMutationAlgorithm} to mutate acceptable input into input triggering unexpected behavior.
 
-The goal of this project is to use AFL to produce one or more \emph{minimal} sequences of ``player keyboard input'' which generate unexpected behavior in \emph{NetHack}.
+The goal of this project is to use AFL to produce one or more \emph{minimal} sequences of ``player keyboard input''\cite{PlayerKeyboardInput} which generate unexpected behavior in \emph{NetHack}.
 Since \emph{NetHack} is open source, we intend to patch and submit pull requests for any defects we discover.
 If the discovered defect(s) are notable, we will draft a manuscript and publish in an appropriate journal after the semester ends.
 
-\clearpage
+
+% \clearpage
 
 
 \section*{Motivation}
 
 As gamers, we all have experiences of observing actions which are not designed to be possible in a game.
 Whether this is wall hacks, save glitches, item duplication, speed-running skips, or just a means to gain an advantage in competitive online play, the experience becomes ubiquitous as playtime increases.
-Notable examples are present in the game speed-running community.
+Notable examples are present in the game speed-running\cite{SpeedRunning} community.
 The goal of speed running is to complete a game as quickly as possible, and hence speed-runners are incentivised to find exploit which reduce playtime of the game.
-A common example is speed-runners using unconventional input sequences to bypass an in-game locked door, often skipping large sections of game dedicated to unlocking the door.
+A common example is speed-runners using unconventional input sequences to bypass an in-game locked door, often skipping\cite{SequenceBreaking} large sections of game dedicated to unlocking the door.
 It is often surprising how these exploits are found.
 Many profess manually play-testing the game until uncovering unexpected behavior that they find beneficial.
 After taking the cybersecurity course and learning about the fuzzing software, we hope to see whether these tools might can be utilized as an automated method of finding out these game exploits.
@@ -83,12 +83,12 @@ After taking the cybersecurity course and learning about the fuzzing software, w
 
 We will use AFL to fuzz the game \emph{NetHack} in search of unexpected behavior.
 First we will generate a series of ``seed inputs'' for AFL which are accepted by \emph{NetHack} and generate expected behavior.
-Then we will then allow AFL to mutate these seed inputs in to probe for unexpected behavior.
+Then we will then allow AFL to mutate these seed inputs \cite{Seed} in to probe for unexpected behavior.
 During the initial calibration of AFL we will manually monitor AFL's progress and adapt the seeding process as needed to ensure that AFL is effectively probing \emph{NetHack} for gameplay defects.
 
 We will configure AFL to send textual inputs to \emph{NetHack} in a manner simulating player keyboard input.
 \emph{NetHack} will interpret the keyboard input as gameplay commands and update it's internal state accordingly.
-Given \emph{NetHack's} age, nearly 40 years old, we anticipate that finding unexpected behavior will not be an exercise in picking ``low hanging fruit,'' but rather will require some creativity on the part of our team in guiding AFL's fuzzing techniques with appropriate seeds.
+Given \emph{NetHack's} age, nearly 40 years old, we anticipate that finding unexpected behavior will not be an exercise in picking ``low hanging fruit,'' but rather will require some creativity on the part of our team in guiding AFL's fuzzing techniques \cite{FuzzingTechnic} with appropriate seeds.
 
 Success of the project can easily be detected if AFL discovers an input sequence which causes \emph{NetHack} to loop indefinitely or to crash; via thrown runtime exception or OS intervention.
 Additionally, we will check for AFL causing \emph{NetHack} to enter an ``unplayable'' state.
@@ -104,8 +104,8 @@ We intend to, if possible within the time constraints of the semester, to patch 
 The team expects to use their personal, commodity computer hardware to carry out this project.
 As both AFL and \emph{NetHack} are time and space efficient programs, it is unlikely that team members will encounter hardware limitations which prevent progress of the project.
 However, should hardware constraints be discovered or it is determined to be beneficial for the project, the team members will have access to the discrete arithmetic computing cluster at the American Museum of Natural History (AMNH).
-This cluster has 256 Intel cores and 4TB of RAM allowing for work to be massively parallelized if the AFL fuzzing of \emph{NetHack} can be left in a most automated state.
-This cluster at AMNH does not have good floating point arithmetic support, and hence is generally unused by researcher in the astronomy and biology fields.
+This cluster has 256 Intel cores and 4TB of RAM allowing for work to be massively parallelized \cite{ClusteringParallel} if the AFL fuzzing of \emph{NetHack} can be left in a most automated state.
+This cluster at AMNH does not have good floating point arithmetic \cite{FloatingPointArithmetic} support, and hence is generally unused by researcher in the astronomy and biology fields.
 Fortunately for the team, neither \emph{NetHack} nor AFL relies heavily on floating point arithmetic, making this cluster a useful and available resource.
 
 
@@ -145,24 +145,24 @@ In general, the processes of authoring reports, completing literature review, pr
 The project timeline is partially defined by the course syllabus where deadline are concerned and partially team defined where the syllabus does not give guidance.
 The team has collaboratively discussed and drafted a tentative timeline of the project based on our assumptions of progress and integrated this with the deliverable deadlines laid out in the course syllabus. The current, tentative project timeline is as follows:
 
-  \begin{enumerate}[label={}]
-  	\item \texttt{2021-08-29:} Form team and brainstorm project ideas
-  	\item \texttt{2021-09-05:} \textbf{Project Proposal due}
-  	\item \texttt{2021-09-12:} Get AFL \& \emph{NetHack} working locally and interfaced
- 	\item \texttt{2021-09-19:} Begin generating fuzzing inputs to \emph{NetHack}
-  	\item \texttt{2021-09-26:} Start the project report draft
-  	\item \texttt{2021-10-03:} Search for a cool demo breaking input for presentation
-  	\item \texttt{2021-10-10:} \textbf{Midterm project presentations due}
-  	\item \texttt{2021-10-17:} \textbf{Midterm project reports due}
-  	\item \texttt{2021-10-24:} Apply parallelism input fizzing
-  	\item \texttt{2021-10-31:} Root cause analysis of \emph{NetHack} source code
-  	\item \texttt{2021-11-07:} Debugging \emph{NetHack}
-  	\item \texttt{2021-11-14:} Author patch \& pull requests for discovered defects
-  	\item \texttt{2021-11-21:} Start finalizing final draft
-  	\item \texttt{2021-11-28:} Start project report final draft \& final presentation
-  	\item \texttt{2021-12-05:} \textbf{Final project presentations due}
-  	\item \texttt{2021-12-12:} \textbf{Final project reports due 5:35 pm}
-  \end{enumerate}
+\begin{enumerate}[label={}]
+	\item \texttt{2021-08-29:} Form team and brainstorm project ideas
+	\item \texttt{2021-09-05:} \textbf{Project Proposal due}
+	\item \texttt{2021-09-12:} Get AFL \& \emph{NetHack} working locally and interfaced
+	\item \texttt{2021-09-19:} Begin generating fuzzing inputs to \emph{NetHack}
+	\item \texttt{2021-09-26:} Start the project report draft
+	\item \texttt{2021-10-03:} Search for a cool demo breaking input for presentation
+	\item \texttt{2021-10-10:} \textbf{Midterm project presentations due}
+	\item \texttt{2021-10-17:} \textbf{Midterm project reports due}
+	\item \texttt{2021-10-24:} Apply parallelism input fizzing
+	\item \texttt{2021-10-31:} Root cause analysis of \emph{NetHack} source code
+	\item \texttt{2021-11-07:} Debugging \emph{NetHack}
+	\item \texttt{2021-11-14:} Author patch \& pull requests for discovered defects
+	\item \texttt{2021-11-21:} Start finalizing final draft
+	\item \texttt{2021-11-28:} Start project report final draft \& final presentation
+	\item \texttt{2021-12-05:} \textbf{Final project presentations due}
+	\item \texttt{2021-12-12:} \textbf{Final project reports due 5:35 pm}
+\end{enumerate}
 
 
 \clearpage
