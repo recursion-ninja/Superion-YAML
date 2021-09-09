@@ -110,7 +110,8 @@ Fortunately for the team, neither \emph{NetHack} nor AFL relies heavily on float
 
 
 
-\section*{Expected Outcomes/Deliverables}
+\section*{Anticipated Results}
+\label{results}
 
 The expected outcome of the project is to uncover one or more defects in the game \emph{NetHack}, perform a root cause analysis to determine the source of each defect, and author a patch to correct each defect. 
 A successful project will produce a catalogue of discovered defects. 
@@ -133,23 +134,29 @@ In the (unfortunate) event that no defects could be found in \emph{NetHack}, the
 
 \section*{Division of Labor}
 
-Each member will be using the fuzzing software to investigate for unexpected behavior in \emph{NetHack}. As defects are discovered, one or more group members may be diverted from actively guiding AFL's fuzzing efforts to debugging \emph{NetHack} and performing root cause analysis of the game's source code to identify, classify, and correct the defect.
+Each member will be using the fuzzing software to investigate for unexpected behavior in \emph{NetHack}.
+As defects are discovered, one or more group members may be diverted from actively guiding AFL's fuzzing efforts to debugging \emph{NetHack} and performing root cause analysis of the game's source code to identify, classify, and correct the defect.
+Where appropriate, ``ownership'' of a defect may be assigned to, or voluntarily assumed by, a team member who will then be responsible for completing the catalogue entry of the defect as described in the \nameref{results} section.
+In general, the processes of authoring reports, completing literature review, preparting presentations, and presenting will be shared by all team members.
 
 
 \section*{Timeline}
 
+The project timeline is partially defined by the course syllabus where deadline are concerned and partially team defined where the syllabus does not give guidance.
+The team has collaboratively discussed and drafted a tentative timeline of the project based on our assumptions of progress and integrated this with the deliverable deadlines laid out in the course syllabus. The current, tentative project timeline is as follows:
+
   \begin{enumerate}[label={}]
   	\item \texttt{2021-08-29:} Form team and brainstorm project ideas
   	\item \texttt{2021-09-05:} \textbf{Project Proposal due}
-  	\item \texttt{2021-09-12:} Get AFL \& NetHack working locally and interfaced
- 	\item \texttt{2021-09-19:} Begin generating fuzzing inputs to NetHack
+  	\item \texttt{2021-09-12:} Get AFL \& \emph{NetHack} working locally and interfaced
+ 	\item \texttt{2021-09-19:} Begin generating fuzzing inputs to \emph{NetHack}
   	\item \texttt{2021-09-26:} Start the project report draft
   	\item \texttt{2021-10-03:} Search for a cool demo breaking input for presentation
   	\item \texttt{2021-10-10:} \textbf{Midterm project presentations due}
   	\item \texttt{2021-10-17:} \textbf{Midterm project reports due}
   	\item \texttt{2021-10-24:} Apply parallelism input fizzing
-  	\item \texttt{2021-10-31:} Inspect NetHack source code
-  	\item \texttt{2021-11-07:} Debugging NetHack
+  	\item \texttt{2021-10-31:} Root cause analysis of \emph{NetHack} source code
+  	\item \texttt{2021-11-07:} Debugging \emph{NetHack}
   	\item \texttt{2021-11-14:} Author patch \& pull requests for discovered defects
   	\item \texttt{2021-11-21:} Start finalizing final draft
   	\item \texttt{2021-11-28:} Start project report final draft \& final presentation
