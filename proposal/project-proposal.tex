@@ -81,29 +81,59 @@ After taking the cybersecurity course and learning about the fuzzing software, w
 
 \section*{Approach}
 
-\begin{enumerate}
-  \item Use AFL to generate aberrant inputs to NetHack, simulating textual user gameplay inputs.
-  \item Author a series of seed inputs for AFL to mutate.
-  \item Record and case in which the game crashes
-  \item Record any cases in which the game hangs
-  \item Record any cases in which the game enters an “unplayable state”
-  \item “Unplayable” will be tested by attempting to perform basic, automated, deterministic user inputs *after* an AFL fuzzing sequence has ended.
-  \item Anticipated resources are the student’s commodity laptops, as both AFL and NetHack are time and memory efficient programs.
-  \item However, the students have access to the 256 Intel core, 4TB RAM, discrete arithmetic computing cluster at AMNH, which could be used to massively parallelize work once AFL fuzzing has been fully operationalized.
-\end{enumerate}
+We will use AFL to fuzze the game \emph{NetHack} in search of unexpected behavior.
+First we will generate a series of ``seed inputs'' for AFL which are accepted by \emph{NetHack} and generate expected behavior.
+Then we will then allow AFL to mutate these seed inputs in to probe for unexpected behavior.
+During the initial calibration of AFL we will manually monitor AFL's progress and adapt the seeding process as needed to ensure that AFL is effectively probing \emph{NetHack} for gameplay defects.
+
+We will configure AFL to send textual inputs to \emph{NetHack} in a manner simulating player keyboard input.
+\emph{NetHack} will interpret the keyboard input as gameplay commands and update it's internal state accordingly.
+Given \emph{NetHack's} age, nearly 40 years old, we anticipate that finding unexpected behavior will not be an exercise in picking ``low hanging fruit,'' but rather will require some creativity on the part of our team in guiding AFL's fuzzing techniques with appropriate seeds.
+
+Success of the project can easily be detected if AFL discovers an input sequence which causes \emph{NetHack} to loop indefinitely or to crash; via thrown runtime exception or OS intervention.
+Additionally, we will check for AFL causing \emph{NetHack} to enter an ``unplayable'' state.
+By this we mean that not input to \emph{NetHack} causes it's state to change.
+We will test for entering an unplayable state by attempting to perform basic, automated, deterministic user inputs *after* an AFL fuzzing sequence has ended.
+In any of the cases described above, we will record the triggering input sequence and attempt reduce it to a minimal triggering sequence.
+
+Once one or more minimal triggering sequences have been discovered, we will begin a process of debugging \emph{NetHack} to locate the source of the defect.
+This is possible due to \emph{NetHack} being an open source game.
+The process of debugging the discovered unexpected behavior will give us insight into the nature of the defect.
+We intend to, if possible within the time constraints of the semester, to patch and submit pull requests correcting the discovered defects.
+
+The team expects to use their personal, commodity computer hardware to carry out this project.
+As both AFL and \emph{NetHack} are time and space efficient programs, it is unlikely that team members will encounter hardware limitations which prevent progress of the project.
+However, should hardware constraints be discovered or it is determined to be beneficial for the project, the team members will have access to the discrete arithmetic computing cluster at the American Museum of Natural History (AMNH).
+This cluster has 256 Intel cores and 4TB of RAM allowing for work to be massively parallelized if the AFL fuzzing of \emph{NetHack} can be left in a most automated state.
+This cluster at AMNH does not have good floating point arithmetic support, and hence is generally unused by researcher in the astronomy and biology fields.
+Fortunately for the team, neither \emph{NetHack} nor AFL relies heavily on floating point arithmetic, making this cluster a useful and available resource.
+
 
 
 \section*{Expected Outcomes/Deliverables}
 
+The expected outcome of the project is to uncover one or more defects in the game \emph{NetHack}, perform a root cause analysis to determine the source of each defect, and author a patch to correct each defect. 
+A successful project will produce a catalogue of discovered defects. 
+Each catalogue entry will contain the following: 
+
 \begin{enumerate}
-  \item Desired outcome is one or more detected user input vulnerabilities.
-  \item Stack smashing, buffer overflows, infinite loops, etc.
-  \item Author a patch to fix the user input vulnerabilities.
-  \item Submit a pull request to the open source project of NetHack.
+
+  \item Description of the triggering input sequence
+  \item Description of the unexpected behavior
+  \item Script to replicate the unexpected behavior
+  \item Summarized code review of the source code involving the defect
+  \item Classification of the defect
+  \item File diff representing the patch correcting to the defect
+  \item Reference to the pull request to apply the patch
+
 \end{enumerate}
+
+In the (unfortunate) event that no defects could be found in \emph{NetHack}, the team will author a report describing the techniques used and identifying the shortcomings of these techniques in the application security testing of \emph{NetHack}.
 
 
 \section*{Division of Labor}
+
+Each member will be using the fuzzing software to investigate for unexpected behavior in \emph{NetHack}. As defects are discovered, one or more group members may be diverted from actively guiding AFL's fuzzing efforts to debugging \emph{NetHack} and performing root cause analysis of the game's source code to identify, classify, and correct the defect.
 
 
 \section*{Timeline}
