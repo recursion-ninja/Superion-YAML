@@ -45,8 +45,25 @@
 
 \section*{Project Proposal}
 
-The goal of this project is to try to produce unexpected behavior in the single-player game NetHack by using fuzzing software tools, such as BFF, AFL, or Peach.
-By doing so, we would like to see if we can prevent players from crashing the game and performing actions not allowed in the game even if the game is not crashed (like going through the wall etc).
+For our project, we propose to perform application security testing of the program \emph{NetHack} by using the fuzzing tool AFL to generate aberrant user inputs. 
+\emph{NetHack} is an actively developed, open source terminal game forked from the game \emph{Hack} which itself was a clone of the game \emph{Rogue}. 
+\emph{NetHack}can trace it's origins all the way back to it's initial release 1987, though arguably it could be considered as old as the game \emph{Hack} which it was forked from, released in 1982. 
+\emph{NetHack} accepts keyboard inputs from the user to direct gameplay and updates the terminal to display the game state to the user.
+
+American Fuzzy Lop (AFL) is an open source fuzzing tool.
+Fuzzing is a venerable application security testing technique developed in the late '80s and published in 1990.
+Fuzzing tools generate input which is directed towards the program and detect if the input was accepted or caused unexpected behavior.
+Unexpected behavior can take many forms including, runtime exceptions, infinite loops, stack smashing, buffer overflows, and illegal program states.
+Fuzzing tools can take many forms and modify program input in many ways.
+Different fuzzing tools tend to specialize in a few related forms of input manipulation.
+AFL relies on genetic algorithm techniques to mutate acceptable input into input triggering unexpected behavior.
+
+The goal of this project is to produce one or more \emph{minimal} input sequences which generate unexpected behavior.
+Unexpected behavior that we are looking for include runtime exceptions, infinite loops, and illegal states.
+Examples of illegal states we will look for include performing actions not allowed in the game even if the game has not crashed, such as like going through walls or spawning items.
+Since \emph{NetHack} is open source, we intend to patch and submit pull requests for any defects we discover.
+
+\clearpage
 
 
 \section*{Motivation}
