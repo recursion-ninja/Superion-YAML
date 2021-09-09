@@ -26,7 +26,7 @@
 %	TITLE SECTION
 %----------------------------------------------------------------------------------------
 
-\title{\texttt{\huge{Fuzzing NetHack for Fun and Prestige} \\ {\large A CSCI-795 Project Proposal}}} % Title and subtitle
+\title{\texttt{\huge{Fuzzing NetHack for Fun and Prestige} \\ {\large A Hunter College CSCI-795 Project Proposal}}} % Title and subtitle
 
 \author{\texttt{{\Huge Team:}\\\vspace*{-0.5em} 
 		Sabina Bhuiyan \\\vspace*{-0.5em} 
@@ -72,7 +72,7 @@ If the discovered defect(s) are notable, we will draft a manuscript and publish 
 As gamers, we all have experiences of observing actions which are not designed to be possible in a game.
 Whether this is wall hacks, save glitches, item duplication, speed-running skips, or just a means to gain an advantage in competitive online play, the experience becomes ubiquitous as playtime increases.
 Notable examples are present in the game speed-running community.
-The goal of speed running is to compelete a game as quickly as possible, and hence speed-runners are incentivised to find exploit which reduce playime of the game.
+The goal of speed running is to complete a game as quickly as possible, and hence speed-runners are incentivised to find exploit which reduce playtime of the game.
 A common example is speed-runners using unconventional input sequences to bypass an in-game locked door, often skipping large sections of game dedicated to unlocking the door.
 It is often surprising how these exploits are found.
 Many profess manually play-testing the game until uncovering unexpected behavior that they find beneficial.
@@ -81,7 +81,7 @@ After taking the cybersecurity course and learning about the fuzzing software, w
 
 \section*{Approach}
 
-We will use AFL to fuzze the game \emph{NetHack} in search of unexpected behavior.
+We will use AFL to fuzz the game \emph{NetHack} in search of unexpected behavior.
 First we will generate a series of ``seed inputs'' for AFL which are accepted by \emph{NetHack} and generate expected behavior.
 Then we will then allow AFL to mutate these seed inputs in to probe for unexpected behavior.
 During the initial calibration of AFL we will manually monitor AFL's progress and adapt the seeding process as needed to ensure that AFL is effectively probing \emph{NetHack} for gameplay defects.
@@ -114,7 +114,7 @@ Fortunately for the team, neither \emph{NetHack} nor AFL relies heavily on float
 \label{results}
 
 The expected outcome of the project is to uncover one or more defects in the game \emph{NetHack}, perform a root cause analysis to determine the source of each defect, and author a patch to correct each defect. 
-A successful project will produce a catalogue of discovered defects. 
+A successful project will produce a catalog of discovered defects. 
 Each catalogue entry will contain the following: 
 
 \begin{enumerate}
@@ -136,8 +136,8 @@ In the (unfortunate) event that no defects could be found in \emph{NetHack}, the
 
 Each member will be using the fuzzing software to investigate for unexpected behavior in \emph{NetHack}.
 As defects are discovered, one or more group members may be diverted from actively guiding AFL's fuzzing efforts to debugging \emph{NetHack} and performing root cause analysis of the game's source code to identify, classify, and correct the defect.
-Where appropriate, ``ownership'' of a defect may be assigned to, or voluntarily assumed by, a team member who will then be responsible for completing the catalogue entry of the defect as described in the \nameref{results} section.
-In general, the processes of authoring reports, completing literature review, preparting presentations, and presenting will be shared by all team members.
+Where appropriate, ``ownership'' of a defect may be assigned to, or voluntarily assumed by, a team member who will then be responsible for completing the catalog entry of the defect as described in the \nameref{results} section.
+In general, the processes of authoring reports, completing literature review, preparing presentations, and presenting will be shared by all team members.
 
 
 \section*{Timeline}
