@@ -45,28 +45,27 @@
 \vspace{-1cm}
 \section*{Project Proposal}
 
-For our project, we propose to perform application security testing of the program \emph{NetHack} \cite{NetHack_page} \cite{NetHack01} by using the fuzzing tool AFL \cite{AFL_page} to generate aberrant user inputs. 
-\emph{NetHack} is an actively developed, open source terminal game forked from the game \emph{Hack} \cite{Hack} which itself was a clone of the game \emph{Rogue} \cite{Rogue} \cite{Rogue01}. 
-\emph{NetHack} can trace it's origins all the way back to it's initial release 1987, though arguably it could be considered as old as the game \emph{Hack} from which it was forked, released in 1984. 
-\emph{NetHack} accepts keyboard inputs from the user to direct gameplay and updates the terminal to display the game state to the user.
-
-American Fuzzy Lop (AFL) \cite{AFL_page} is an open source fuzzing tool.
+For our project, we propose to explore the efficiency of fuzzing programs which take YAML as input.
 Fuzzing is a venerable application security testing technique developed in the late '80s \cite{Barton1988} and published in 1990 \cite{Miller1990}.
 Fuzzing tools generate input which is directed towards the program and detect if the input was accepted or caused unexpected behavior.
 Unexpected behavior can take many forms including, infinite loops, stack smashing, buffer overflows, arithmetic overflows or errors, and illegal program states.
 Unexpected behavior that we are looking for include runtime exceptions, infinite loops, and illegal states.
-Examples of illegal states we will look for include performing actions not allowed in the game even if the game has not crashed, such as like going through walls or spawning items.
 Fuzzing tools can take many forms \cite{ModelBasedFuzzing}\cite{GrammarBasedFuzzing}\cite{ProtocolBasedFuzzing} and modify program input in many ways.
 Different fuzzing tools tend to specialize in a few related forms of input\cite{InputDiversity} manipulation.
-AFL relies on genetic algorithm techniques\cite{InputMutationAlgorithm} to mutate acceptable input into input triggering unexpected behavior.
 
-The goal of this project is to use AFL to produce one or more \emph{minimal} sequences of ``player keyboard input''\cite{PlayerKeyboardInput} which generate unexpected behavior in \emph{NetHack}.
-Since \emph{NetHack} is open source, we intend to patch and submit pull requests for any defects we discover.
+AFL relies on genetic algorithm techniques\cite{InputMutationAlgorithm} to mutate acceptable input into input triggering unexpected behavior. Using the generic AFL approach, inputs would be mutated randomly, and an initially valid YAML input would quickly become invalid.
+This is a longstanding problem in the art of fuzzing and is the subject of emerging research
+Generating consistently well structured inputs via ``grammar-aware'' mutations is a technique one such technique for addressing the problem of structured inputs.
+
+Superion \cite{superion} is an open source fuzzing tool created by modifying and extending AFL.
+Superion currently generates valid JavaScript and XML inputs by taking a context free grammar and an input seed, then performing a series of ``grammar-aware'' mutations to create a sequence of validly structured inputs.
+The results of Superion show a great increase in fuzzing efficacy when targeting programs which expect structured input. 
+
+The goal of this project is extend the capabilities of Superion to support generating structured YAML inputs.
+We will compare the efficacy of our extended Superion to generic AFL.
 If the discovered defect(s) are notable, we will draft a manuscript and publish in an appropriate journal after the semester ends.
 
-
 % \clearpage
-
 
 \section*{Motivation}
 
