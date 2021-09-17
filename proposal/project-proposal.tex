@@ -25,7 +25,7 @@
 %	TITLE SECTION
 %----------------------------------------------------------------------------------------
 
-\title{\texttt{\huge{Fuzzing NetHack for Fun and Prestige} \\\vspace{-0.65cm} {\large A Hunter College CSCI-795 Project Proposal}\\\normalsize\url{https://github.com/recursion-ninja/NetHack-Fuzzing}}} % Title and subtitle
+\title{\texttt{\huge{Fuzzing NetHack for Fun and Prestige} \\\vspace{-0.65cm} {\large A Hunter College CSCI-795 Project Proposal}\\\normalsize\url{https://github.com/recursion-ninja/Superion-YAML}}} % Title and subtitle
 
 \author{\texttt{{\Huge Team:}\\\vspace*{-0.5em} 
 		Sabina Bhuiyan \\\vspace*{-0.5em} 
@@ -86,6 +86,7 @@ However, we can also fuzz YAML processing libraries directly, as the output shou
 First we will generate a series of ``seed inputs'' for both AFL and our extended Superion which are accepted by the target programs and generate expected behavior.
 Then we will then allow both fuzzing programs to mutate these seed inputs \cite{Seed} in order to probe for unexpected behavior.
 During the initial calibration of of both AFL and Superion we will manually monitor progress and adapt the seeds as needed to ensure that they effectively probing the target programs.
+Our target programs will be a suite of open source YAML processing libraries.
 
 We will record each unique defect detected by both AFL and Superion during the fuzzing process.
 We will take care to give both programs comparable CPU time on the target programs, to ensure that neither program is given an ``unfair'' advantage in searching for defects.
@@ -117,13 +118,14 @@ In the event that the above results come ahead of schedule, we intend to extend 
 Each of our selected service have a method for locally testing your build.
 For obvious ethical reasons we will not be fuzzing the live services, but rather the replicated services on our local machines.
 We anticipate that these service may have vulnerabilities in mishandling configuration files which our extended Superion fuzzer may uncover.
-We omitted these fuzzing targets from our core proposal, as we are unsure of the feasibility in creating an adapter to connect both AFL and our extended Superion to the local CI instances.
+We omitted these fuzzing targets from our core proposal, as we are unsure of the feasibility in creating an adapter to connect both AFL and our extended Superion to the local CI instances along with some of the targets being closed source.
+
 
 \section*{Division of Labor}
 
-Each member will be using the fuzzing software to investigate for unexpected behavior in \emph{NetHack}.
-As defects are discovered, one or more group members may be diverted from actively guiding AFL's fuzzing efforts to debugging \emph{NetHack} and performing root cause analysis of the game's source code to identify, classify, and correct the defect.
-Where appropriate, ``ownership'' of a defect may be assigned to, or voluntarily assumed by, a team member who will then be responsible for completing the catalog entry of the defect as described in the \nameref{results} section.
+Each member participate in extending Superion according to their abilities.
+Furthermore, each member will use AFL and Superion to fuzz out target programs.
+As defects are discovered, one or more group members may be diverted from actively guiding the fuzzing efforts to debugging the target program and performing root cause analysis of the source code to identify, classify, and correct the defect.
 In general, the processes of authoring reports, completing literature review, preparing presentations, and presenting will be shared by all team members.
 
 
@@ -142,7 +144,7 @@ The team has collaboratively discussed and drafted a tentative timeline of the p
 	\item \texttt{2021-10-10:} \textbf{Midterm project presentations due} \hfill (Show fuzzing YAML output)
 	\item \texttt{2021-10-17:} \textbf{Midterm project reports due} \hfill (Tune fuzzing instrumentation)
 	\item \texttt{2021-10-24:} Tune AFL/Superion instrumentation 
-	\item \texttt{2021-10-31:} Parallelize fuzzing (DETER/AWS)
+	\item \texttt{2021-10-31:} Parallelize fuzzing \hfill (DETER/AWS)
 	\item \texttt{2021-11-07:} Root cause analysis of library source code
 	\item \texttt{2021-11-14:} Patch any applicable defects in YAML libraries
 	\item \texttt{2021-11-21:} Start finalizing final draft
