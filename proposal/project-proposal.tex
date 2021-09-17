@@ -111,24 +111,7 @@ Either way, we hope to reach a point of automation in the project where parallei
 \section*{Anticipated Results}
 \label{results}
 
-The expected outcome of the project is to uncover one or more defects in the game \emph{NetHack}, perform a root cause analysis to determine the source of each defect, and author a patch to correct each defect. 
-A successful project will produce a catalog of discovered defects. 
-Each catalogue entry will contain the following: 
-
-\begin{enumerate}
-
-  \item Description of the triggering input sequence
-  \item Description of the unexpected behavior
-  \item Script to replicate the unexpected behavior
-  \item Summarized code review of the source code involving the defect
-  \item Classification of the defect
-  \item File diff representing the patch correcting to the defect
-  \item Reference to the pull request to apply the patch
-
-\end{enumerate}
-
-In the (unfortunate) event that no defects could be found in \emph{NetHack}, the team will author a report describing the techniques used and identifying the shortcomings of these techniques in the application security testing of \emph{NetHack}.
-
+We know that it is more efficient to test targets with structured input rather than with just simple random keywords in fuzzing. Targeting YAML parsers, we expect our extension on superion fuzzer to effectively find richer defects. We will compare our extended fuzzer with general AFL over multiple YAML parsers, and see how our improvement on superion performs better under which specific circumstances. For every non-trivial defect, we run a root cause analysis to determine the source of each defect. In case we find meaningful defects on targeted parsers, we also expect to author a patch to correct each defect.
 
 \section*{Division of Labor}
 
