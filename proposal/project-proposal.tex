@@ -82,33 +82,30 @@ After taking the cybersecurity course and learning about the fuzzing software, w
 
 \section*{Approach}
 
-We will use AFL to fuzz the game \emph{NetHack} in search of unexpected behavior.
-First we will generate a series of ``seed inputs'' for AFL which are accepted by \emph{NetHack} and generate expected behavior.
-Then we will then allow AFL to mutate these seed inputs \cite{Seed} in to probe for unexpected behavior.
-During the initial calibration of AFL we will manually monitor AFL's progress and adapt the seeding process as needed to ensure that AFL is effectively probing \emph{NetHack} for gameplay defects.
+We will extend the functionality of Superion to generate mutable, grammar-aware YAML output.
+The YAML output can be used for a variety of fuzzing techniques.
+The most notable is as a configuration file fuzzer, as many programs use YAML as the input language for configuration files.
+However, we can also fuzz YAML processing libraries directly, as the output should be accepted by the parsing phase of the libraries, allowing it to effective test the library's internal workings.
 
-We will configure AFL to send textual inputs to \emph{NetHack} in a manner simulating player keyboard input.
-\emph{NetHack} will interpret the keyboard input as gameplay commands and update it's internal state accordingly.
-Given \emph{NetHack's} age, nearly 40 years old, we anticipate that finding unexpected behavior will not be an exercise in picking ``low hanging fruit,'' but rather will require some creativity on the part of our team in guiding AFL's fuzzing techniques \cite{FuzzingTechnic} with appropriate seeds.
+First we will generate a series of ``seed inputs'' for both AFL and our extended Superion which are accepted by the target programs and generate expected behavior.
+Then we will then allow both fuzzing programs to mutate these seed inputs \cite{Seed} in order to probe for unexpected behavior.
+During the initial calibration of of both AFL and Superion we will manually monitor progress and adapt the seeds as needed to ensure that they effectively probing the target programs.
 
-Success of the project can easily be detected if AFL discovers an input sequence which causes \emph{NetHack} to loop indefinitely or to crash; via thrown runtime exception or OS intervention.
-Additionally, we will check for AFL causing \emph{NetHack} to enter an ``unplayable'' state.
-By this we mean that not input to \emph{NetHack} causes it's state to change.
-We will test for entering an unplayable state by attempting to perform basic, automated, deterministic user inputs *after* an AFL fuzzing sequence has ended.
-In any of the cases described above, we will record the triggering input sequence and attempt reduce it to a minimal triggering sequence.
+We will record each unique defect detected by both AFL and Superion during the fuzzing process.
+We will take care to give both programs comparable CPU time on the target programs, to ensure that neither program is given an ``unfair'' advantage in searching for defects.
+At the end of the experiment we will construct a comparative analysis on the fuzzing efficacy of our extended Superion compared to AFL.
+Success of the project can easily be detected if out extended Superion detects more defects than AFL in the target programs.
 
-Once one or more minimal triggering sequences have been discovered, we will begin a process of debugging \emph{NetHack} to locate the source of the defect.
-This is possible due to \emph{NetHack} being an open source game.
+Once one or more minimal triggering YAML inputs have been discovered, we will begin a process of debugging the YAML processing libraries to locate the source of the defect.
+This is possible due to our selected YAML libraries being open source projects.
 The process of debugging the discovered unexpected behavior will give us insight into the nature of the defect.
 We intend to, if possible within the time constraints of the semester, to patch and submit pull requests correcting the discovered defects.
+This final goal of patching discovered defects, is desirable to deepen our understand, but is not critical to the project, as the focus is on the experiment of improving fuzzing efficacy for YAML inputs.
 
 The team expects to use their personal, commodity computer hardware to carry out this project.
-As both AFL and \emph{NetHack} are time and space efficient programs, it is unlikely that team members will encounter hardware limitations which prevent progress of the project.
-However, should hardware constraints be discovered or it is determined to be beneficial for the project, the team members will have access to the discrete arithmetic computing cluster at the American Museum of Natural History (AMNH).
-This cluster has 256 Intel cores and 4TB of RAM allowing for work to be massively parallelized \cite{ClusteringParallel} if the AFL fuzzing of \emph{NetHack} can be left in a most automated state.
-This cluster at AMNH does not have good floating point arithmetic \cite{FloatingPointArithmetic} support, and hence is generally unused by researcher in the astronomy and biology fields.
-Fortunately for the team, neither \emph{NetHack} nor AFL relies heavily on floating point arithmetic, making this cluster a useful and available resource.
-
+However, should hardware constraints be discovered or it is determined to be beneficial for the project, the team members will have access to the DETER computing cluster at Hunter College.
+Additionally, we can attempt to use Hunter's research credits on AWS.
+Either way, we hope to reach a point of automation in the project where paralleization on a cluster is achievable, but can cope with commodity hardware.
 
 
 \section*{Anticipated Results}
