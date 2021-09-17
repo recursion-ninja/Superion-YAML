@@ -45,19 +45,19 @@
 \vspace{-1cm}
 \section*{Project Proposal}
 
-For our project, we propose to explore the efficiency of fuzzing programs which take YAML as input.
-Fuzzing is a venerable application security testing technique developed in the late '80s \cite{Barton1988} and published in 1990 \cite{Miller1990}.
+For our project, we propose to explore the efficiency of fuzzing programs which take YAML\cite{YAMLdraft} as input.
+Fuzzing is a venerable application security testing technique developed in the late '80s\cite{Barton1988} and published in 1990\cite{Miller1990}.
 Fuzzing tools generate input which is directed towards the program and detect if the input was accepted or caused unexpected behavior.
 Unexpected behavior can take many forms including, infinite loops, stack smashing, buffer overflows, arithmetic overflows or errors, and illegal program states.
 Unexpected behavior that we are looking for include runtime exceptions, infinite loops, and illegal states.
-Fuzzing tools can take many forms \cite{ModelBasedFuzzing}\cite{GrammarBasedFuzzing}\cite{ProtocolBasedFuzzing} and modify program input in many ways.
+Fuzzing tools can take many forms\cite{ModelBasedFuzzing}\cite{GrammarBasedFuzzing}\cite{ProtocolBasedFuzzing} and modify program input in many ways.
 Different fuzzing tools tend to specialize in a few related forms of input\cite{InputDiversity} manipulation.
 
 AFL relies on genetic algorithm techniques\cite{InputMutationAlgorithm} to mutate acceptable input into input triggering unexpected behavior. Using the generic AFL approach, inputs would be mutated randomly, and an initially valid YAML input would quickly become invalid.
-This is a longstanding problem in the art of fuzzing and is the subject of emerging research
-Generating consistently well structured inputs via ``grammar-aware'' mutations is a technique one such technique for addressing the problem of structured inputs.
+This is a longstanding problem in the art of fuzzing and is the subject of emerging research.
+Generating consistently well structured inputs\cite{structuredInput} via ``grammar-aware'' mutations is a technique one such technique for addressing the problem of structured inputs.
 
-Superion \cite{superion} is an open source fuzzing tool created by modifying and extending AFL.
+Superion\cite{superion} is an open source fuzzing tool created by modifying and extending AFL.
 Superion currently generates valid JavaScript and XML inputs by taking a context free grammar and an input seed, then performing a series of ``grammar-aware'' mutations to create a sequence of validly structured inputs.
 The results of Superion show a great increase in fuzzing efficacy when targeting programs which expect structured input. 
 
@@ -81,7 +81,7 @@ After taking the cybersecurity course and learning about the fuzzing software, w
 We will extend the functionality of Superion to generate mutable, grammar-aware YAML output.
 The YAML output can be used for a variety of fuzzing techniques.
 The most notable is as a configuration file fuzzer, as many programs use YAML as the input language for configuration files.
-However, we can also fuzz YAML processing libraries directly, as the output should be accepted by the parsing phase of the libraries, allowing it to effective test the library's internal workings.
+However, we can also fuzz YAML processing libraries\cite{libfYAML}\cite{libYAML}\cite{YAMLcpp}\cite{rapidYAML}\cite{miniYAML} directly, as the output should be accepted by the parsing phase of the libraries, allowing it to effective test the library's internal workings.
 
 First we will generate a series of ``seed inputs'' for both AFL and our extended Superion which are accepted by the target programs and generate expected behavior.
 Then we will then allow both fuzzing programs to mutate these seed inputs \cite{Seed} in order to probe for unexpected behavior.
@@ -113,7 +113,7 @@ We will compare our extended fuzzer with general AFL over multiple YAML parsers,
 For every non-trivial defect, we run a root cause analysis to determine the source of each defect.
 In case we find meaningful defects on targeted parsers, we also expect to author a patch to correct each defect.
 
-In the event that the above results come ahead of schedule, we intend to extend our methodologies to common continuous integration (CI) services which use YAML as configuration files.
+In the event that the above results come ahead of schedule, we intend to extend our methodologies to common continuous integration (CI\cite{cicd}) services\cite{trevisci}\cite{circleci}\cite{jeninks} which use YAML as configuration files.
 Each of our selected service have a method for locally testing your build.
 For obvious ethical reasons we will not be fuzzing the live services, but rather the replicated services on our local machines.
 We anticipate that these service may have vulnerabilities in mishandling configuration files which our extended Superion fuzzer may uncover.
