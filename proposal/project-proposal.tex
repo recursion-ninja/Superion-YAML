@@ -46,28 +46,49 @@
 \section*{Project Proposal}
 
 For our project, we propose to explore the efficiency of fuzzing programs which take YAML\cite{YAMLdraft} as input.
+There are a few existing fuzzers which can generate YAML inputs.
+However, these fuzzers are not state of the art.
+We will extend the functionality of state of two the art fuzzers and compare their fuzzing capabilities against a corpus of CVEs from previous work.
+Our comparative metric will be both qualitative and quantitative; measuring coverage of CVEs and execution time to obtain coverage.
+
+\section*{Motivation}
+
 Fuzzing is a venerable application security testing technique developed in the late '80s\cite{Barton1988} and published in 1990\cite{Miller1990}.
 Fuzzing tools generate input which is directed towards the program and detect if the input was accepted or caused unexpected behavior.
 Unexpected behavior can take many forms, such as infinite loops, stack smashing, buffer overflows, arithmetic overflows or errors, and illegal program states.
-Unexpected behavior that we are looking for include runtime exceptions, infinite loops, and illegal states.
-Fuzzing tools can take many forms\cite{ModelBasedFuzzing}\cite{GrammarBasedFuzzing}\cite{ProtocolBasedFuzzing} and modify program input in many ways.
+Fuzzing themselves tools can take many forms\cite{ModelBasedFuzzing}\cite{GrammarBasedFuzzing}\cite{ProtocolBasedFuzzing} and modify program input in many ways.
 Different fuzzing tools tend to specialize in a few related forms of input\cite{InputDiversity} manipulation.
+There are three main classes of interaction between the fuzzer and the program under test, black-box \cite{takanen2018fuzzing}, grey-box, and white-box.
+In a black-box scenario, the fuzzer has no knowledge of the program's internal structure and cannot use any program specific information to direct it's fuzzing efforts.
+In a grey-box scenario, the fuzzer gleans information from it's previous input to guide into future inputs.
+Lastly, in a white-box scenario, the fuzzer can utilize program analysis to inform it's fuzzing inputs.
+There are also two broad classes of inputs fuzzers generate; naive and structured.
+Naive inputs do not provide any guarantees regarding it's form.
+Structured inputs on the other hand can be defined to always preserve desired structures within the inputs.
 
 AFL\cite{AFL_page} relies on genetic algorithm techniques\cite{InputMutationAlgorithm} to mutate acceptable input into input triggering unexpected behavior. Using the generic AFL approach, inputs would be mutated randomly, and an initially valid YAML input would quickly become invalid.
 This is a longstanding problem in the art of fuzzing and is the subject of emerging research.
 Generating consistently well-structured inputs\cite{structuredInput} via ``grammar-aware'' mutations is one such technique for addressing the problem of structured inputs.
+AFL is a poster child for efficient, naive input fuzzing.
 
-Superion\cite{superion} is an open source fuzzing tool created by modifying and extending AFL.
+Superion\cite{superion} is recent an open source fuzzing tool created by modifying and extending AFL to produce structured inputs released in 2018.
 Superion currently generates valid JavaScript and XML inputs by taking a context free grammar and an input seed, then performing a series of ``grammar-aware'' mutations to create a sequence of validly structured inputs.
-The results of Superion show a great increase in fuzzing efficacy when targeting programs which expect structured input. 
+The results of Superion show a great increase in fuzzing efficacy when targeting programs which expect structured input.
 
-The goal of this project is to extend the capabilities of Superion to support generating structured YAML inputs.
-We will compare the efficacy of our extended Superion to generic AFL.
-If the discovered defect(s) are notable, we will draft a manuscript and publish it in an appropriate journal after the semester ends.
+Gramatron\cite{srivastava2021gramatron} is a second, and even more recent, open source fuzzing tool designed to produce structured inputs.
+Released in 2018, the Gramatron was designed to with new mutation algorithms to minimize increase the speed at which defects are discovered.
+It does this by reducing the number of mutation steps from the input seed to the trigger input, rather than simply optimizing the speed at which new inputs can be generated.
+Gramatron currently generated structured PHP and JavaScript inputs.
+
+The goal of this project is to extend the capabilities of Gramatron and Superion to support generating structured YAML inputs.
+We will compare the efficacy of our extended versions of Gramatron and Superion to previous work targeting YAML fuzzing.
+We selected YAML ans the extension language for numerous reasons.
+First, it has a well defined formal grammar, allowing it to be quickly and reliably integrated into the two fuzzers.
+Second, YAMl is a ubiquitous input format.
+Though primarily used as a configuration file format, it has also seen niche uses as data structure representation.
+This ubiquity makes YAMl a well motivated language to extend these fuzzers to support.
 
 % \clearpage
-
-\section*{Motivation}
 
 Fuzzing is an automated technique generating random data as input to a software system and trying to find out a vulnerability.
 However, the random input generated by the fuzzing tools should be common enough to fit in the interpreter that only accept a semantically valid program. On the other hand, the fuzzed input also needs to be uncommon enough to trigger exceptional behavior.
@@ -83,10 +104,26 @@ The YAML output can be used for a variety of fuzzing techniques.
 The most notable is as a configuration file fuzzer, as many programs use YAML as the input language for configuration files.
 However, we can also fuzz YAML processing libraries\cite{libfYAML}\cite{libYAML}\cite{YAMLcpp}\cite{rapidYAML}\cite{miniYAML} directly, as the output should be accepted by the parsing phase of the libraries, allowing it to effectively test the library's internal workings.
 
+Qualitatively, we will compose a corpus of CVEs discovered from previous work.
+There are currently over 100 CVEs cataloged on MITRE \cite{MITRE}.
+We will select a reproducible subset of these to use as our coverage test.
+The degree to which our extended fuzzing programs discover the known CVEs will be our qualatative metric of completeness.
+
+Quantitatively, we will measure the execution time of each extended fuzzing program.
+We will perform a comparison between Gramatron and Superion mutation strategies in terms of how quickly they discover the known CVEs.
+Where possible, we will also compare the performance of Gramatron and Superion to previous work which provides execution metrics.
+
 First we will generate a series of ``seed inputs'' for both AFL and our extended Superion which are accepted by the target programs and generate expected behavior.
 We will then allow both fuzzing programs to mutate these seed inputs\cite{Seed} in order to probe for unexpected behavior.
 During the initial calibration of both AFL and Superion we will manually monitor progress and adapt the seeds as needed to ensure that they effectively probing the target programs.
 Our target programs will be a suite of open source YAML processing libraries.
+
+The comparison of our extended fuzzers to previous work will be two fold; qualitative and quantitative.
+Understanding the performance comparison between these programs' internal algorithms, and how they compare to previous work is of academic interest.
+It will help inform the direction of future research in fuzzing.
+
+
+
 
 We will record each unique defect detected by both AFL and Superion during the fuzzing process.
 We will take care to give both programs comparable CPU time on the target programs, to ensure that neither program is given an ``unfair'' advantage in searching for defects.
