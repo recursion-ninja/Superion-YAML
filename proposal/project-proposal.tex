@@ -63,11 +63,11 @@ Fuzzing tools generate input which is directed towards the program and detect if
 Unexpected behavior can take many forms, such as infinite loops, stack smashing, buffer overflows, arithmetic overflows or errors, and illegal program states.
 Fuzzing tools themselves can take many forms\cite{ModelBasedFuzzing}\cite{GrammarBasedFuzzing}\cite{ProtocolBasedFuzzing} and modify program input in many ways.
 Different fuzzing tools tend to specialize in a few related forms of input\cite{InputDiversity} manipulation.
-There are three main classes of interaction between the fuzzer and the program under test, black-box\cite{takanen2018fuzzing}, grey-box, and white-box.
+There are three main classes of interaction between the fuzzer and the program under test, black-box\cite{takanen2018fuzzing}, grey-box, and white-box\cite{fuzzingsurvey}.
 In a black-box scenario, the fuzzer has no knowledge of the program's internal structure and cannot use any program-specific information to direct its fuzzing efforts.
 In a grey-box scenario, the fuzzer gleans information from its previous input to guide future inputs.
 Lastly, in a white-box scenario, the fuzzer can utilize program analysis to inform its fuzzing inputs.
-There are also two broad classes of inputs fuzzers generate; naive and structured.
+There are also two broad classes of inputs fuzzers generate; naive and structured\cite{fuzzingsurvey}.
 Naive inputs do not provide any guarantees regarding its form.
 Structured inputs on the other hand can be defined to always preserve desired structures within the inputs.
 
