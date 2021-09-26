@@ -89,7 +89,7 @@ Grimoire is a structured input fuzzer which does not require an explicit structu
 Rather Grimoire deduces the required input structure via feedback from the program.
 Initial research suggests that this form of structured inferring fuzzing may be more effective than explicitly defined structured input fuzzing as Grimoire can probe corner cases which are excluded from formal grammars.
 
-The goal of this project is to extend the capabilities of Gramatron and Superion to support generating structured YAML\cite{YAMLdraft} inputs.
+We propose extending the capabilities of Gramatron and Superion to support generating structured YAML\cite{YAMLdraft} inputs
 We will compare the efficacy of our extended versions of Gramatron and Superion to both Grimoire and previous work targeting YAML fuzzing.
 We selected YAML and the extension language for numerous reasons.
 First, it has a well defined formal grammar, allowing it to be quickly and reliably integrated into the two fuzzers.
@@ -97,7 +97,13 @@ Second, YAMl is a ubiquitous input format.
 Though primarily used as a configuration file format, it has also seen niche uses as data structure representation.
 This ubiquity makes YAMl a well motivated language to extend these fuzzers to support.
 
+The goal of this project is to extend the capabilities of both Gramatron and Superion, then compare their performance along with Grimoire towards replicated selected CVEs, i.e. YAML defects.
+If the novel defect(s) are discovered and notable, we will consider the ancillary goal of drafting a manuscript and publishing in an appropriate journal after the semester ends.
+By utilizing the three fuzzers; Gramatron, Superion, and Grimoire we hope to draw a rich somparison of modern fuzzing techniques.
+After taking the cybersecurity course and learning about the fuzzing software, we hope be well equiped in determining whether these tools might be utilized as an automated method of finding software exploits in other domains.
+
 % \clearpage
+
 
 \section*{Approach}
 
