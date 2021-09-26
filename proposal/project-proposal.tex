@@ -51,9 +51,9 @@
 
 For our project, we propose to explore the efficiency of fuzzing programs which take YAML as input.
 YAML is a ubiquitous file format consumed as input by a wide array of programs.
-However, there are a few existing fuzzers capable of generating YAML inputs, none of which are state-of-the-art fuzzers.
-However, these fuzzers are not state of the art.
-We will extend the functionality of state of two the art fuzzers and compare their fuzzing capabilities against a corpus of CVEs from previous work.
+There are a few existing fuzzers capable of generating YAML inputs.
+However, these fuzzers are not state-of-the-art.
+We will extend the functionality of two state-of-the-art fuzzers and compare their fuzzing capabilities against a corpus of CVEs from previous work.
 Our comparative metric will be both qualitative and quantitative; measuring coverage of CVEs and execution time to obtain coverage.
 
 \section*{Motivation}
@@ -61,46 +61,49 @@ Our comparative metric will be both qualitative and quantitative; measuring cove
 Fuzzing is a venerable application security testing technique developed in the late '80s\cite{Barton1988} and published in 1990\cite{Miller1990}.
 Fuzzing tools generate input which is directed towards the program and detect if the input was accepted or caused unexpected behavior.
 Unexpected behavior can take many forms, such as infinite loops, stack smashing, buffer overflows, arithmetic overflows or errors, and illegal program states.
-Fuzzing themselves tools can take many forms\cite{ModelBasedFuzzing}\cite{GrammarBasedFuzzing}\cite{ProtocolBasedFuzzing} and modify program input in many ways.
+Fuzzing tools themselves can take many forms\cite{ModelBasedFuzzing}\cite{GrammarBasedFuzzing}\cite{ProtocolBasedFuzzing} and modify program input in many ways.
 Different fuzzing tools tend to specialize in a few related forms of input\cite{InputDiversity} manipulation.
-There are three main classes of interaction between the fuzzer and the program under test, black-box \cite{takanen2018fuzzing}, grey-box, and white-box.
-In a black-box scenario, the fuzzer has no knowledge of the program's internal structure and cannot use any program specific information to direct it's fuzzing efforts.
-In a grey-box scenario, the fuzzer gleans information from it's previous input to guide into future inputs.
-Lastly, in a white-box scenario, the fuzzer can utilize program analysis to inform it's fuzzing inputs.
+There are three main classes of interaction between the fuzzer and the program under test, black-box\cite{takanen2018fuzzing}, grey-box, and white-box.
+In a black-box scenario, the fuzzer has no knowledge of the program's internal structure and cannot use any program-specific information to direct its fuzzing efforts.
+In a grey-box scenario, the fuzzer gleans information from its previous input to guide future inputs.
+Lastly, in a white-box scenario, the fuzzer can utilize program analysis to inform its fuzzing inputs.
 There are also two broad classes of inputs fuzzers generate; naive and structured.
-Naive inputs do not provide any guarantees regarding it's form.
+Naive inputs do not provide any guarantees regarding its form.
 Structured inputs on the other hand can be defined to always preserve desired structures within the inputs.
 
-AFL\cite{AFL_page} relies on genetic algorithm techniques\cite{InputMutationAlgorithm} to mutate acceptable input into input triggering unexpected behavior. Using the generic AFL approach, inputs would be mutated randomly, and an initially valid structured input would quickly become invalid.
+AFL\cite{AFL_page} relies on genetic algorithm techniques\cite{InputMutationAlgorithm} to mutate acceptable input into an input that triggers unexpected behavior.
+Using the generic AFL approach, inputs would be mutated randomly, and an initially valid structured input would quickly become invalid.
+The invalid input in this scenario is not the one that introduces the vulnerability of the target system.
+Random inputs just fail to run the major part of the target system, suspended by the type checkers or the input validators.
 This is a longstanding problem in the art of fuzzing and is the subject of emerging research.
-Generating consistently well-structured inputs\cite{structuredInput} via ``grammar-aware'' mutations is one such technique for addressing the problem of structured inputs.
+Generating consistently well-structured inputs\cite{structuredInput} via "grammar-aware" mutations is one such technique for addressing the problem of randomly mutated inputs.
 AFL is a poster child for efficient, naive input fuzzing.
 
-Superion\cite{superion} is recent an open source fuzzing tool created by modifying and extending AFL to produce structured inputs released in 2018.
-Superion currently generates valid JavaScript and XML inputs by taking a context free grammar and an input seed, then performing a series of ``grammar-aware'' mutations to create a sequence of validly structured inputs.
+Superion\cite{superion} is an fairly recent open source fuzzing tool created by modifying and extending AFL to produce structured inputs released in 2018.
+Superion currently generates valid JavaScript and XML inputs by taking a context free grammar and an input seed, then performing a series of "grammar-aware" mutations to create a sequence of validly structured inputs.
 The results of Superion show a great increase in fuzzing efficacy when targeting programs which expect structured input.
 
 Gramatron\cite{srivastava2021gramatron} is a second, and even more recent, open source fuzzing tool designed to produce structured inputs.
-Released in 2018, the Gramatron was designed to with new mutation algorithms to minimize increase the speed at which defects are discovered.
+Released in 2018, the Gramatron was designed with new mutation algorithms to increase the speed at which defects are discovered.
 It does this by reducing the number of mutation steps from the input seed to the trigger input, rather than simply optimizing the speed at which new inputs can be generated.
-Gramatron currently generated structured PHP and JavaScript inputs.
+Gramatron currently generates structured PHP and JavaScript as inputs.
 
 Grimoire is a structured input fuzzer which does not require an explicit structural definition to effectively generate fuzzing inputs.
 Rather Grimoire deduces the required input structure via feedback from the program.
-Initial research suggests that this form of structured inferring fuzzing may be more effective than explicitly defined structured input fuzzing as Grimoire can probe corner cases which are excluded from formal grammars.
+Initial research suggests that this form of structure inferring fuzz technique may be more effective than explicitly defined structured input fuzzing as Grimoire can probe corner cases which are excluded from formal grammars.
 
-We propose extending the capabilities of Gramatron and Superion to support generating structured YAML\cite{YAMLdraft} inputs
+We propose extending the capabilities of Gramatron and Superion to support generating structured YAML\cite{YAMLdraft} inputs.
 We will compare the efficacy of our extended versions of Gramatron and Superion to both Grimoire and previous work targeting YAML fuzzing.
 We selected YAML and the extension language for numerous reasons.
-First, it has a well defined formal grammar, allowing it to be quickly and reliably integrated into the two fuzzers.
-Second, YAMl is a ubiquitous input format.
+First, it has a well-defined formal grammar, allowing it to be quickly and reliably integrated into the two fuzzers.
+Second, YAML is a ubiquitous input format.
 Though primarily used as a configuration file format, it has also seen niche uses as data structure representation.
-This ubiquity makes YAMl a well motivated language to extend these fuzzers to support.
+This ubiquity makes YAML a well-motivated language to extend these fuzzers to support.
 
 The goal of this project is to extend the capabilities of both Gramatron and Superion, then compare their performance along with Grimoire towards replicated selected CVEs, i.e. YAML defects.
-If the novel defect(s) are discovered and notable, we will consider the ancillary goal of drafting a manuscript and publishing in an appropriate journal after the semester ends.
-By utilizing the three fuzzers; Gramatron, Superion, and Grimoire we hope to draw a rich somparison of modern fuzzing techniques.
-After taking the cybersecurity course and learning about the fuzzing software, we hope be well equiped in determining whether these tools might be utilized as an automated method of finding software exploits in other domains.
+If the novel defect(s) are discovered and notable, we will consider the ancillary goal of drafting a manuscript and publishing it in an appropriate journal after the semester ends.
+By utilizing the three fuzzers; Gramatron, Superion, and Grimoire we hope to draw a rich comparison of modern fuzzing techniques.
+After taking the cybersecurity course and learning about the fuzzing software, we hope to be well equiped in determining whether these tools might be utilized as an automated method of finding software exploits in other domains.
 
 % \clearpage
 
@@ -110,23 +113,23 @@ After taking the cybersecurity course and learning about the fuzzing software, w
 We will extend the functionality of Gramatron to generate mutable, structure-aware YAML output.
 Additionally, we will extend the functionality of Superion to generate mutable, structure-aware YAML output.
 Both projects are open source and are modular in their design for incorporating new grammars.
-These extension, which valuable to the wider fuzzing community, ought not to be too onerous.
+These extensions, which are valuable to the wider fuzzing community, ought not to be too onerous.
 
 Qualitatively, we will compose a corpus of CVEs discovered from previous work.
-There are currently over 100 CVEs cataloged on MITRE \cite{MITRE}.
-We will select a reproducible subset of these to use as our coverage test.
+There are currently over 100 CVEs cataloged on MITRE\cite{MITRE}.
+We will select a reproducible subset of these CVEs to use as our coverage test.
 The degree to which our extended fuzzing programs discover the known CVEs will be our qualitative metric of completeness.
 
 Quantitatively, we will measure the execution time of each extended fuzzing program.
 We will perform a comparison between Gramatron, Superion, and Grimoire mutation strategies in terms of how quickly they discover the known CVEs.
-Where possible, we will also compare the performance of Gramatron, Superion, and Grimoire to previous published work which provides execution metrics.
+Where possible, we will also compare the performance of Gramatron, Superion, and Grimoire to previously published work which provides execution metrics.
 
 We will generate a series of ``seed inputs'' for our three fuzzers which are accepted by the programs under test and generate expected behavior.
-We will then allow both fuzzing programs to mutate these seed inputs\cite{Seed} according to their unique internal algorithms in order to probe for the CVE defects.
-During the initial calibration of the fuzzers we will manually monitor progress and adapt the seeds as needed to ensure that they effectively probing the target programs.
+We will then allow these fuzzing programs to mutate the seed inputs\cite{Seed} according to their unique internal algorithms in order to probe for the CVE defects.
+During the initial calibration of the fuzzers, we will manually monitor progress and adapt the seeds as needed to ensure that they are effectively probing the target programs.
 Our programs under test will be those cataloged from the selected CVEs corpus.
 
-The process of comparing these fuzzers opens the possibility of discover novel defects outside the pre-selected CVEs.
+The process of comparing these fuzzers opens the possibility of discovering novel defects outside the pre-selected CVEs.
 While investigating these novel defects are outside the scope of this course project, we will take care to preserve the triggering inputs for future work.
 
 The team expects to use their personal, commodity computer hardware to carry out this project.
@@ -146,20 +149,20 @@ This is of academic interest as it will inform the direction of future research 
 We will produce a qualitative table detailing the coverage of extended Gramatron, extended Superion, and Grimoire for each CVE of our selected corpus.
 The table will consist of binary attributes, i.e. discovered or not discovered.
 The coverage table presents the utility of each tool's approach without regard to execution time.
-This is an insightful comparison as some mutation algorithms may produce better coverage at the expense of slower, more thorough exploration of the mutation space.
+This is an insightful comparison as some mutation algorithms may produce better coverage at the expense of a slower, more thorough exploration of the mutation space.
 
 We will also produce a quantitative analysis of the execution speed of each fuzzer.
 This will consist of a table comparing the runtime required for each fuzzer to discover each CVE from the corpus.
-When possible, we will include the runtime of previous published work as well to place our observations in context of the extended literature.
-The combination of the execution time table and the coverage table will provide the reader with the information to understand the potential time/coverage trade-off(s) between the fuzzers.
+When possible, we will include the runtime of previously published work as well to place our observations in the context of the extended literature.
+The combination of the execution timetable and the coverage table will provide the reader with the information to understand the potential time/coverage trade-off(s) between the fuzzers.
 
 \section*{Division of Labor}
 
-Each member will participate in extending Gramatron, extending Superion and configuring Grimoire according to their abilities.
+Each member will participate in extending Gramatron, extending Superion, and configuring Grimoire according to their abilities.
 Each member will participate in evaluating and voting on the CVEs to be included in the corpus.
 The team will divide up the CVEs among the group members and each group member will run the three fuzzers on their program(s) under test related to their assigned CVEs. 
 As CVEs are replicated by the fuzzers, the associated member will log the relevant information in our output tables.
-In the case of novel defects being discovered in the programs under test, one or more team members may be diverted to collect relevant information and document the defect as potential future work.
+In the case of novel defects being discovered in the programs under test, one or more team members maybe diverted to collect relevant information and document the defect as potential future work.
 In general, the processes of authoring reports, completing literature reviews, preparing presentations, and presenting will be shared by all team members.
 
 \clearpage
