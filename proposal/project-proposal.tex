@@ -53,7 +53,7 @@ For our project, we propose exploring the efficiency of grey-box fuzzing program
 The assessment will be adapted to test three major file formats: YAML, JSON, and Markdown.
 Of all the ubiquitous file formats, these three are the most popular ones that are consumed as input by a wide array of programs and have enough CVEs that we can gauge the efficacy with.
 There are some state-of-the-art fuzzers that accentuate their effectiveness with structured input such as Gramatron, Superion, and Mayhem.
-Excluding a commercial project, we take Gramatron and Superion as extension targets that can generate our test file formats.
+Excluding a commercial project, we take Gramatron and Superion as extension targets that can generate our test file formats, since they are both open sources but Mayhem is not.
 Grimoire is a fuzzer that, without structured inputs, can perform grammar awareness fuzzing by itself.
 In the course of this project, we will extend the functionality of two fuzzers and scrutinize the fuzzing capabilities of these compared to Grimoire against a corpus of CVEs of our three target file formats.
 Our comparative metric will be both qualitative and quantitative; measuring coverage of CVEs and execution time to obtain coverage.
@@ -65,13 +65,17 @@ Fuzzing tools generate input which is directed towards the program and detect if
 Unexpected behavior can take many forms, such as infinite loops, stack smashing, buffer overflows, arithmetic overflows or errors, and illegal program states.
 Fuzzing tools themselves can take many forms\cite{ModelBasedFuzzing}\cite{GrammarBasedFuzzing}\cite{ProtocolBasedFuzzing} and modify program input in many ways.
 Different fuzzing tools tend to specialize in a few related forms of input\cite{InputDiversity} manipulation.
-There are three main classes of interaction between the fuzzer and the program under test, black-box\cite{takanen2018fuzzing}, grey-box, and white-box.
+There are three main classes of interaction between the fuzzer and the program under test, black-box\cite{takanen2018fuzzing}, grey-box, and white-box\cite{fuzzingsurvey}.
 In a black-box scenario, the fuzzer has no knowledge of the program's internal structure and cannot use any program-specific information to direct its fuzzing efforts.
 In a grey-box scenario, the fuzzer gleans information from its previous input to guide future inputs.
 Lastly, in a white-box scenario, the fuzzer can utilize program analysis to inform its fuzzing inputs.
-There are also two broad classes of inputs fuzzers generate; naive and structured.
+There are also two broad classes of inputs fuzzers generate; naive and structured\cite{fuzzingsurvey}.
 Naive inputs do not provide any guarantees regarding its form.
 Structured inputs on the other hand can be defined to always preserve desired structures within the inputs.
+We are also aware of the topic "Going Beyond Coverage-Guided Fuzzing with Structured Fuzzing" by Jonathan Metzman in the Black Hat USA 2019\cite{blackhat2019}.
+In the talk, the speaker talked about the structured fuzzing and how to improve the fuzzer by adding structure awareness to it. 
+However, we focused on existing academic papers published in journals for our literature review instead of presentations at Black Hat.
+It was quite difficult to incorporate conference talks into our literature review - such talks cannot be searched via key words, but we still have gained more understandings of “What is Structured Fuzzing?”, and the concept of writing the well-structured inputs via "grammar-aware" mutations.
 
 AFL\cite{AFL_page} relies on genetic algorithm techniques\cite{InputMutationAlgorithm} to mutate acceptable input into an input that triggers unexpected behavior.
 Using the generic AFL approach, inputs would be mutated randomly, and an initially valid structured input would quickly become invalid.
@@ -104,7 +108,7 @@ Lastly, to a proper assessment of its performances, we picked the ones with suff
 There are 108(YAML), 664(JSON), and 103(Markdown) CVEs on MITRE\cite{MITRE}.
 
 The goal of this project is to extend the capabilities of both Gramatron and Superion, then compare their performance along with Grimoire towards replicated selected CVEs.
-If the novel defect(s) are discovered and notable, we will consider the ancillary goal of drafting a manuscript and publishing it in an appropriate journal after the semester ends.
+If the novel defect(s) are discovered and notable, we will consider the ancillary goal of publishing new CVE(s).
 By utilizing the three fuzzers; Gramatron, Superion, and Grimoire we hope to draw a rich comparison of modern fuzzing techniques.
 After taking the cybersecurity course and learning about the fuzzing software, we hope to be well equiped in determining whether these tools might be utilized as an automated method of finding software exploits in other domains.
 
