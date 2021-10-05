@@ -208,14 +208,203 @@ month = aug,
 author = {Li, Jun and Zhao, Bodong and Zhang, Chao},
 year = {2018},
 month = {12},
-pages = {},
 title = {Fuzzing: a survey},
 volume = {1},
 journal = {Cybersecurity},
 doi = {10.1186/s42400-018-0002-y}
 }
+
 @misc{blackhat2019,
   author = {Jonathan Metzman},
   title = {Going Beyond Coverage Guided Fuzzing with Structured Fuzzing},
   note = { \url{https://www.blackhat.com/us-19/briefings/schedule/#going-beyond-coverage-guided-fuzzing-with-structured-fuzzing-16110}},
+}
+
+@inproceedings{CodeAlchemist1,
+  author = {HyungSeok Han and DongHyeon Oh and Sang Kil Cha},
+  title = {{CodeAlchemist}: Semantics-Aware Code Generation to Find Vulnerabilities in JavaScript Engines},
+  booktitle = ndss,
+  year = 2019
+}
+
+@misc{CodeAlchemist2,
+  month = {08},
+  title = {CodeAlchemist},
+  url = {https://github.com/SoftSec-KAIST/CodeAlchemist},
+  urldate = {2021-10-05},
+  year = {2021},
+  organization = {GitHub}
+}
+
+@inproceedings{Hawkeye,
+  author = {Chen, Hongxu and Xue, Yinxing and Li, Yuekang and Chen, Bihuan and Xie, Xiaofei and Wu, Xiuheng and Liu, Yang},
+  title = {Hawkeye: Towards a Desired Directed Grey-Box Fuzzer},
+  year = {2018},
+  isbn = {9781450356930},
+  publisher = {Association for Computing Machinery},
+  address = {New York, NY, USA},
+  url = {https://doi.org/10.1145/3243734.3243849},
+  doi = {10.1145/3243734.3243849},
+  booktitle = {Proceedings of the 2018 ACM SIGSAC Conference on Computer and Communications Security},
+  pages = {2095–2108},
+  numpages = {14},
+  keywords = {static analysis, fuzz testing},
+  location = {Toronto, Canada},
+  series = {CCS '18}
+}
+
+@misc{Angora1,
+  title = {Angora: Efficient Fuzzing by Principled Search}, 
+  author = {Peng Chen and Hao Chen},
+  year = {2018},
+  eprint = {1803.01307},
+  archivePrefix = {arXiv},
+  primaryClass = {cs.CR}
+}
+
+@misc{Angora2,
+  month = {10},
+  title = {Angora},
+  url = {https://github.com/AngoraFuzzer/Angora},
+  urldate = {2021-10-05},
+  year = {2021},
+  organization = {GitHub}
+}
+
+@INPROCEEDINGS{CollAFL,
+  author = {Gan, Shuitao and Zhang, Chao and Qin, Xiaojun and Tu, Xuwen and Li, Kang and Pei, Zhongyu and Chen, Zuoning},
+  booktitle = {2018 IEEE Symposium on Security and Privacy (SP)},
+  title = {CollAFL: Path Sensitive Fuzzing},
+  year = {2018},
+  pages = {679-696},
+  doi = {10.1109/SP.2018.00040}
+}
+
+@inproceedings{IoTFuzzer,
+  title = "IoTFuzzer: Discovering memory corruptions in IoT through app-based fuzzing",
+  booktitle = "Proceedings 2018 Network and Distributed System Security Symposium",
+  author = "Chen, Jiongyi;Diao, Wenrui;Zhao, Qingchuan;Zuo, Chaoshun;Lin, Zhiqiang;Wang, Xiaofeng;Lau, Wing Cheong;Sun, Menghan;Yang, Ronghai;Zhang, Kehuan",
+  year = 2018,
+  address = {Reston, VA},
+  doi = {10.14722/ndss.2018.23159},
+  isbn = {9781891562495},
+}
+
+@inproceedings{redqueen,
+  title = {REDQUEEN: Fuzzing with Input-to-State Correspondence},
+  author = {Aschermann, Cornelius and Schumilo, Sergej and Blazytko, Tim and Gawlik, Robert and Holz, Thorsten},
+  booktitle = {Symposium on Network and Distributed System Security (NDSS)},
+  year = {2019},
+}
+
+@inproceedings{Nautilus1,
+  author = {Cornelius Aschermann and Tommaso Frassetto and Thorsten Holz and Patrick Jauernig and Ahmad{-}Reza Sadeghi and Daniel Teuchert},
+  title = {{NAUTILUS:} Fishing for Deep Bugs with Grammars},
+  booktitle = {26th Annual Network and Distributed System Security Symposium, {NDSS} 2019, San Diego, California, USA, February 24-27, 2019},
+  publisher = {The Internet Society},
+  year = {2019},
+  url = {https://www.ndss-symposium.org/ndss-paper/nautilus-fishing-for-deep-bugs-with-grammars/},
+  timestamp = {Mon, 01 Feb 2021 08:42:22 +0100},
+  biburl = {https://dblp.org/rec/conf/ndss/AschermannFHJST19.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+@misc{Nautilus2,
+  month = {09},
+  title = {Nautilus 2.0},
+  url = {https://github.com/nautilus-fuzz/nautilus},
+  urldate = {2021-10-05},
+  year = {2021},
+  organization = {GitHub}
+}
+
+
+@inproceedings{PeriScope1,
+  title = {{PeriScope}: An Effective Probing and Fuzzing Framework for the Hardware-{OS} Boundary},
+  author = {Song, Dokyung and Hetzelt, Felicitas and Das, Dipanjan and Spensky, Chad and Na, Yeoul and Volckaert, Stijn and Vigna, Giovanni and Kruegel, Christopher and Seifert, Jean-Pierre and Franz, Michael},
+  booktitle = {Network and Distributed System Security Symposium (NDSS)},
+  year = {2019}
+}
+
+@misc{PeriScope2,
+  month = {09},
+  title = {securesystemslab/periscope},
+  url = {https://github.com/securesystemslab/periscope},
+  urldate = {2021-10-05},
+  year = {2021},
+  organization = {GitHub}
+}
+
+@inproceedings{TFuzz1,
+  author = {Peng, Hui and Shoshitaishvili, Yan and Payer, Mathias},
+  booktitle = {2018 IEEE Symposium on Security and Privacy (SP)},
+  title = {T-Fuzz: Fuzzing by Program Transformation},
+  year = {2018},
+  pages = {697-710},
+  doi = {10.1109/SP.2018.00056}
+}
+
+@misc{TFuzz2,
+  month = {09},
+  title = {T-Fuzz},
+  url = {https://github.com/HexHive/T-Fuzz},
+  urldate = {2021-10-05},
+  year = {2021},
+  organization = {GitHub}
+}
+
+@inproceedings{Chopper,
+  title = "Chopped symbolic execution",
+  booktitle = "Proceedings of the 40th International Conference on Software Engineering - {ICSE} '18",
+  author = "Trabish, David and Mattavelli, Andrea and Rinetzky, Noam and Cadar, Cristian",
+  publisher = "ACM Press",
+  year = 2018,
+  address = "New York, New York, USA"
+}
+
+@inproceedings{QSYM1,
+  title = "Qsym : A Practical Concolic Execution Engine Tailored for Hybrid Fuzzing",
+  booktitle = "Proceedings of the 27th {USENIX} Security Symposium",
+  author = "{Insu Yun, Sangho Lee, Meng Xu, Yeongjin Jang, Taesoo Kim}",
+  month = aug,
+  year = 2018,
+  address = "Baltimore, MD, USA"
+}
+
+@misc{QSYM2,
+  month = {10},
+  title = {QSYM: A Practical Concolic Execution Engine Tailored for Hybrid Fuzzing},
+  url = {https://github.com/sslab-gatech/qsym},
+  urldate = {2021-10-05},
+  year = {2021},
+  organization = {GitHub}
+}
+
+@inproceedings{DigFuzz,
+  title = "Send hardest problems my way: Probabilistic path prioritization for hybrid fuzzing",
+  booktitle = "Proceedings 2019 Network and Distributed System Security Symposium",
+  author = "Zhao, Lei and Duan, Yue and Yin, Heng and Xuan, Jifeng",
+  publisher = "Internet Society",
+  year = 2019,
+  address = "Reston, VA"
+}
+
+@article{FairFuzz1,
+  author = {Lemieux, Caroline and Sen, Koushik},
+  month = {07},
+  title = {FairFuzz-TC: a fuzzer targeting rare branches},
+  doi = {10.1007/s10009-020-00569-w},
+  urldate = {2020-12-18},
+  year = {2020},
+  journal = {International Journal on Software Tools for Technology Transfer}
+}
+
+@misc{FairFuzz2,
+  author = {Lemieux, Caroline},
+  month = {09},
+  title = {FairFuzz},
+  url = {https://github.com/carolemieux/afl-rb/},
+  urldate = {2021-10-05},
+  year = {2021},
+  organization = {GitHub}
 }

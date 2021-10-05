@@ -25,7 +25,7 @@
 %	TITLE SECTION
 %----------------------------------------------------------------------------------------
 
-\title{\texttt{\huge{Efficient \& Structured YAML FuzzingAn analysis on the effectiveness of structure-aware fuzzing} \\\vspace{-0.65cm} {\large A Hunter College CSCI-795 Project Proposal}\\\normalsize\url{https://github.com/recursion-ninja/Superion-YAML}}} % Title and subtitle
+\title{\texttt{\huge{An analysis about effectiveness\\of structure-aware fuzzing} \\\vspace{-0.65cm} {\large A Hunter College CSCI-795 Project Proposal}\\\normalsize\url{https://github.com/recursion-ninja/Superion-YAML}}} % Title and subtitle
 
 \author{\texttt{{\Huge Team:}\\\vspace*{-0.5em} 
 		Sabina Bhuiyan \\\vspace*{-0.5em} 
@@ -52,12 +52,15 @@
 For our project, we propose exploring the efficiency of grey-box fuzzing programs with structured inputs compared to generically mutated random-like inputs.
 The assessment will be adapted to test three major file formats: YAML, JSON, and Markdown.
 Of all the ubiquitous file formats, these three are the most popular ones that are consumed as input by a wide array of programs and have enough CVEs that we can gauge the efficacy with.
+
 There are some state-of-the-art fuzzers that accentuate their effectiveness with structured input such as Gramatron, Superion, and Mayhem.
-Excluding a commercial project, we take Gramatron and Superion as extension targets that can generate our test file formats, since they are both open sources but Mayhem is not.
+We take Gramatron and Superion as extension targets that can generate our test file formats, as they are both open sources but Mayhem is not.
 Grimoire is a fuzzer that, without structured inputs, can perform grammar awareness fuzzing by itself.
-In the course of this project, we will extend the functionality of two fuzzers and scrutinize the fuzzing capabilities of these compared to Grimoire against a corpus of CVEs of our three target file formats.
+
+In the course of this project, we will extend the functionality of these two fuzzers and scrutinize the fuzzing capabilities of these extensions compared to Grimoire against a corpus of CVEs of our three target file formats.
 Our comparative metric will be both qualitative and quantitative; measuring coverage of CVEs and execution time to obtain coverage.
 
+\clearpage
 \section*{Motivation}
 
 Fuzzing is a venerable application security testing technique developed in the late '80s\cite{Barton1988} and published in 1990\cite{Miller1990}.
@@ -65,13 +68,16 @@ Fuzzing tools generate input which is directed towards the program and detect if
 Unexpected behavior can take many forms, such as infinite loops, stack smashing, buffer overflows, arithmetic overflows or errors, and illegal program states.
 Fuzzing tools themselves can take many forms\cite{ModelBasedFuzzing}\cite{GrammarBasedFuzzing}\cite{ProtocolBasedFuzzing} and modify program input in many ways.
 Different fuzzing tools tend to specialize in a few related forms of input\cite{InputDiversity} manipulation.
+
 There are three main classes of interaction between the fuzzer and the program under test, black-box\cite{takanen2018fuzzing}, grey-box, and white-box\cite{fuzzingsurvey}.
 In a black-box scenario, the fuzzer has no knowledge of the program's internal structure and cannot use any program-specific information to direct its fuzzing efforts.
 In a grey-box scenario, the fuzzer gleans information from its previous input to guide future inputs.
 Lastly, in a white-box scenario, the fuzzer can utilize program analysis to inform its fuzzing inputs.
+
 There are also two broad classes of inputs fuzzers generate; naive and structured\cite{fuzzingsurvey}.
 Naive inputs do not provide any guarantees regarding its form.
-Structured inputs on the other hand can be defined to always preserve desired structures within the inputs.
+Structured inputs, on the other hand, can be defined to always preserve desired structures within the inputs.
+
 We are also aware of the topic "Going Beyond Coverage-Guided Fuzzing with Structured Fuzzing" by Jonathan Metzman in the Black Hat USA 2019\cite{blackhat2019}.
 In the talk, the speaker talked about the structured fuzzing and how to improve the fuzzer by adding structure awareness to it. 
 However, we focused on existing academic papers published in journals for our literature review instead of presentations at Black Hat.
@@ -79,7 +85,7 @@ It was quite difficult to incorporate conference talks into our literature revie
 
 AFL\cite{AFL_page} relies on genetic algorithm techniques\cite{InputMutationAlgorithm} to mutate acceptable input into an input that triggers unexpected behavior.
 Using the generic AFL approach, inputs would be mutated randomly, and an initially valid structured input would quickly become invalid.
-The invalid input in this scenario is not the one that introduces the vulnerability of the target system.
+The invalid input in this scenario, is not the one that introduces the vulnerability of the target system.
 Random inputs just fail to run the major part of the target system, suspended by the type checkers or the input validators.
 This is a longstanding problem in the art of fuzzing and is the subject of emerging research.
 Generating consistently well-structured inputs\cite{structuredInput} via "grammar-aware" mutations is one such technique for addressing the problem of randomly mutated inputs.
@@ -100,17 +106,27 @@ Initial research suggests that this form of structure inferring fuzz technique m
 
 We propose extending the capabilities of Gramatron and Superion to support generating three structured inputs: YAML\cite{YAMLdraft}, JSON and Markdown.
 We will compare the efficacy of our extended versions of Gramatron and Superion to both Grimoire and previous work targeted at fuzzing these three file formats.
-Selecting YAML, JSON, and Markdown as our extension language, we have numerous reasons except for the fact that there is room for these formats on extending our target fuzzers.
+
+Aside from the fact that there is room for these formats on extending our target fuzzers, we have numerous reasons for selecting YAML, JSON, and Markdown as our extension language.
 First, it has a well-defined formal grammar, allowing it to be quickly and reliably integrated into the two fuzzers.
 Second, these file formats are ubiquitous input formats.
-This ubiquity makes YAML a well-motivated language to extend these fuzzers to support.
-Lastly, to a proper assessment of its performances, we picked the ones with sufficient corpus of CVEs.
+This ubiquity makes our target languages a well-motivated language to extend these fuzzers to support.
+Lastly, to a proper assessment of its performances, languages that have a sufficient corpus of CVEs are required. 
+These are the ones with a decent amount CVEs we can work with.
 There are 108(YAML), 664(JSON), and 103(Markdown) CVEs on MITRE\cite{MITRE}.
+
+There are other modern fuzzers on might tackle with on future projects.
 
 The goal of this project is to extend the capabilities of both Gramatron and Superion, then compare their performance along with Grimoire towards replicated selected CVEs.
 If the novel defect(s) are discovered and notable, we will consider the ancillary goal of publishing new CVE(s).
+
 By utilizing the three fuzzers; Gramatron, Superion, and Grimoire we hope to draw a rich comparison of modern fuzzing techniques.
 After taking the cybersecurity course and learning about the fuzzing software, we hope to be well equiped in determining whether these tools might be utilized as an automated method of finding software exploits in other domains.
+
+Although we have confined our extension targets to two cutting-edge fuzzers for various reasons, there are other modern fuzzers one might want to tackle on future projects such as;
+CodeAlchemist\cite{CodeAlchemist1}\cite{CodeAlchemist2}, Hawkeye\cite{Hawkeye}, Angora\cite{Angora1}\cite{Angora2}, CollAFL\cite{CollAFL}, IoTFuzzer\cite{IoTFuzzer}, RedQueen\cite{redqueen}, Nautilus\cite{Nautilus1}\cite{Nautilus2}, Periscope\cite{PeriScope1}\cite{PeriScope2}, T-Fuzz\cite{TFuzz1}\cite{TFuzz2}, Chopper\cite{Chopper}, QSYM\cite{QSYM1}\cite{QSYM2}, DigFuzz\cite{DigFuzz}, and FairFuzz\cite{FairFuzz1}\cite{FairFuzz2}.
+All these tools are distinguished in their specialized scoped, but we have decided to work with Gramatron and Superion for those are open-sourced projects, and are specialized in generating structured inputs in a modular manner.
+
 
 % \clearpage
 
@@ -184,9 +200,9 @@ The team has collaboratively discussed and drafted a tentative timeline of the p
 	\item \texttt{2021-08-29:} Form team and brainstorm project ideas
 	\item \texttt{2021-09-05:} \textbf{Project Proposal due}
 	\item \texttt{2021-09-12:} Revise and resubmit proposal
-	\item \texttt{2021-09-19:} Finilize proposal
+	\item \texttt{2021-09-19:} Background research \& Revise \/ resubmit proposal
 	\item \texttt{2021-09-26:} Begin modifying Superion \& Gramatron to generate YAML, JSON, and Markdown
-	\item \texttt{2021-10-03:} Complete modified Gramatron \& Superion generating , Collect and finalize CVEs corpus
+	\item \texttt{2021-10-03:} Finilize proposal Complete modified Gramatron \& Superion generating , Collect and finalize CVEs corpus
 	\item \texttt{2021-10-10:} \textbf{Midterm project presentations due} \hfill (Show fuzzing YAML output)
 	\item \texttt{2021-10-17:} \textbf{Midterm project reports due} \hfill (Tune fuzzing instrumentation)
 	\item \texttt{2021-10-24:} Tune 3 fuzzers instrumentation with programs under test
