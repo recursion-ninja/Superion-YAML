@@ -42,7 +42,7 @@
 
 \maketitle % Print the title section
 
-\vspace{-2cm}
+\vspace{2cm}
 \section*{Abstract}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -101,8 +101,8 @@ It does this by reducing the number of mutation steps from the input seed to the
 Gramatron currently generates structured PHP and JavaScript as inputs.
 
 Grimoire\cite{GRIMOIRE} is a structured input fuzzer which does not require an explicit structural definition to effectively generate fuzzing inputs.
-Rather Grimoire deduces the required input structure via feedback from the program.
-Initial research suggests that this form of structure inferring fuzz technique may be more effective than explicitly defined structured input fuzzing as Grimoire can probe corner cases which are excluded from formal grammars.
+Instead, Grimoire deduces the required input structure via feedback from the program.
+Initial research suggests that this form of structure-inferring fuzz technique may be more effective than explicitly defined structured input fuzzing as Grimoire can probe corner cases which are excluded from formal grammars.
 
 We propose extending the capabilities of Gramatron and Superion to support generating three structured inputs: YAML\cite{YAMLdraft}, JSON and Markdown.
 We will compare the efficacy of our extended versions of Gramatron and Superion to both Grimoire and previous work targeted at fuzzing these three file formats.
@@ -112,18 +112,16 @@ First, it has a well-defined formal grammar, allowing it to be quickly and relia
 Second, these file formats are ubiquitous input formats.
 This ubiquity makes our target languages a well-motivated language to extend these fuzzers to support.
 Lastly, to a proper assessment of its performances, languages that have a sufficient corpus of CVEs are required. 
-These are the ones with a decent amount CVEs we can work with.
+These languages have a decent amount CVEs that we can work with.
 There are 108(YAML), 664(JSON), and 103(Markdown) CVEs on MITRE\cite{MITRE}.
-
-There are other modern fuzzers on might tackle with on future projects.
 
 The goal of this project is to extend the capabilities of both Gramatron and Superion, then compare their performance along with Grimoire towards replicated selected CVEs.
 If the novel defect(s) are discovered and notable, we will consider the ancillary goal of publishing new CVE(s).
 
-By utilizing the three fuzzers; Gramatron, Superion, and Grimoire we hope to draw a rich comparison of modern fuzzing techniques.
-After taking the cybersecurity course and learning about the fuzzing software, we hope to be well equiped in determining whether these tools might be utilized as an automated method of finding software exploits in other domains.
+By utilizing the three fuzzers- Gramatron, Superion, and Grimoire- we hope to draw a rich comparison of modern fuzzing techniques.
+After taking the cybersecurity course and learning about the fuzzing software, we hope to be well-equipped in determining whether these tools might be utilized as an automated method of finding software exploits in other domains.
 
-Although we have confined our extension targets to two cutting-edge fuzzers for various reasons, there are other modern fuzzers one might want to tackle on future projects such as;
+Although we have confined our extension targets to two cutting-edge fuzzers for various reasons, there are other modern fuzzers that can be tackled in future projects such as;
 CodeAlchemist\cite{CodeAlchemist1}\cite{CodeAlchemist2}, Hawkeye\cite{Hawkeye}, Angora\cite{Angora1}\cite{Angora2}, CollAFL\cite{CollAFL}, IoTFuzzer\cite{IoTFuzzer}, RedQueen\cite{redqueen}, Nautilus\cite{Nautilus1}\cite{Nautilus2}, Periscope\cite{PeriScope1}\cite{PeriScope2}, T-Fuzz\cite{TFuzz1}\cite{TFuzz2}, Chopper\cite{Chopper}, QSYM\cite{QSYM1}\cite{QSYM2}, DigFuzz\cite{DigFuzz}, and FairFuzz\cite{FairFuzz1}\cite{FairFuzz2}.
 All these tools are distinguished in their specialized scoped, but we have decided to work with Gramatron and Superion for those are open-sourced projects, and are specialized in generating structured inputs in a modular manner.
 
@@ -202,7 +200,7 @@ The team has collaboratively discussed and drafted a tentative timeline of the p
 	\item \texttt{2021-09-12:} Revise and resubmit proposal
 	\item \texttt{2021-09-19:} Background research \& Revise \/ resubmit proposal
 	\item \texttt{2021-09-26:} Begin modifying Superion \& Gramatron to generate YAML, JSON, and Markdown
-	\item \texttt{2021-10-03:} Finilize proposal Complete modified Gramatron \& Superion generating , Collect and finalize CVEs corpus
+	\item \texttt{2021-10-03:} Finilize proposal, Complete modified Gramatron \& Superion generating , Collect and finalize CVEs corpus
 	\item \texttt{2021-10-10:} \textbf{Midterm project presentations due} \hfill (Show fuzzing YAML output)
 	\item \texttt{2021-10-17:} \textbf{Midterm project reports due} \hfill (Tune fuzzing instrumentation)
 	\item \texttt{2021-10-24:} Tune 3 fuzzers instrumentation with programs under test
