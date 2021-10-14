@@ -96,7 +96,7 @@ Superion currently generates valid JavaScript and XML inputs by taking a context
 The results of Superion show a great increase in fuzzing efficacy when targeting programs which expect structured input.
 
 Gramatron\cite{srivastava2021gramatron} is a second, and even more recent, open source fuzzing tool designed to produce structured inputs.
-Released in 2018, the Gramatron was designed with new mutation algorithms to increase the speed at which defects are discovered.
+Released in 2018, Gramatron was designed with new mutation algorithms to increase the speed at which defects are discovered.
 It does this by reducing the number of mutation steps from the input seed to the trigger input, rather than simply optimizing the speed at which new inputs can be generated.
 Gramatron currently generates structured PHP and JavaScript as inputs.
 
@@ -223,9 +223,11 @@ This table shows how well-performed our fuzzers are, compared with the Grimoire 
 These combination of the coverage table and the execution timetable provides the time/coverage trade-off(s) between the fuzzers.
 
 \section*{Discussion}
-Superion generated an input that resembled javascript, by taking a context free grammar and an input seed, then performing a series of "grammar-aware" mutations to create a sequence of validly structured inputs. Meanwhile, Gramatron was harder to read. Superion created an input that was similar to what we were looking for. 
+Superion generated an input that resembled javascript, by taking a context free grammar and an input seed, then performing a series of "grammar-aware" mutations to create a sequence of validly structured inputs. Superion created an input that was similar to what we were looking for. 
 
-Some problems we experienced so far was sampling bias during input generation. We also noticed that the input mutation of parse trees performed small-scale changes on the local level. To fix some of these issues, we plan on using CFG with restructured input generation rules, such as placing constraints on transition rules. We will also use finite state automata and pushdown automata. We utilize mutation operators as well, such as random mutation, random recursive, and splicing operators.
+Meanwhile, Gramatron was harder to read. This may be because Gramatron reduces the number of mutation steps from the input seed to the trigger input. 
+
+Some problems we experienced so far was sampling bias during input generation. We also noticed that the input mutation of parse trees performed small-scale changes on the local level. To fix some of these issues, we plan on using CFG with restructured input generation rules, such as placing constraints on transition rules. We will also use finite state automata and pushdown automata. We will utilize mutation operators as well, such as random mutation, random recursive, and splicing operators.
 
 \section*{Future Experimentation}
 We will set up Grimoire and extend it on Gramatron and Superion. We'll also keep reproducing CVEs we chose and gauging execution time and performance with the extended fuzzers.
