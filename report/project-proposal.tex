@@ -232,9 +232,9 @@ Meanwhile, Gramatron was harder to read. This may be because Gramatron reduces t
 We hope that our tests on the extension of Superion and Gramatron will be more performant than those conducted on Grimoire since Superion and Gramatron directly produce the inputs, while Grimoire creates the input from feedback, rather than a defined structure.
 
 \section*{Future Experimentation}
-For the future work, different fuzzing tools and strategies could be combined for large-scale testing to explore the new CVEs. 
-We can also extend the fuzzers to support more languages for generating the grammar aware inputs. 
-Lastly, by adapting the fuzzing process into the part of CI/CD, developers can automatically and continuously detect the bugs of their products. 
+For the future work, Grimoire, Gramatron, Superion could be combined for large-scale testing to explore the new CVEs. 
+We can combine the structured inputs generated from Gramatron, Superion with Grimoire, since Grimoire generates input only based on the feedback.
+Lastly, We can keep extending the fuzzers to support more languages for generating the grammar aware inputs. 
 
 \section*{Division of Labor}
 
