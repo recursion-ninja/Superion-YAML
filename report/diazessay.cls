@@ -43,6 +43,10 @@
 \usepackage{enumitem} % Required for list customisation
 \setlist{noitemsep} % No spacing between list items
 
+\usepackage{tabularx} % Required for table generation
+\usepackage{multirow} % Supports center-align / new line in table cells
+\usepackage{boldline} % Supports bold line
+
 \makeatletter
 \renewcommand\@biblabel[1]{\textbf{#1.}} % Remove the square brackets from each bibliography item ('[1]' to '1.')
 \makeatother
