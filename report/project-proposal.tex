@@ -225,7 +225,7 @@ These combination of the coverage table and the execution timetable provides the
 \section*{Discussion}
 Superion generated an input that resembled javascript, by taking a context free grammar and an input seed, then performing a series of "grammar-aware" mutations to create a sequence of validly structured inputs. Meanwhile, Gramatron was harder to read. Superion created an input that was similar to what we were looking for. 
 
-Some problems we experienced so far was sampling bias during input generation. We also noticed that the input mutation of parse trees performed small-scale changes on the local level. To fix some of these issues, we plan on restructuring the input generation rules, such as placing constraints on transition rules in the CFG. We will also utilize mutation operators, such as random mutation, random recursive, and splicing operators.
+Some problems we experienced so far was sampling bias during input generation. We also noticed that the input mutation of parse trees performed small-scale changes on the local level. To fix some of these issues, we plan on using CFG with restructured input generation rules, such as placing constraints on transition rules. We will also use finite state automata and pushdown automata. We utilize mutation operators as well, such as random mutation, random recursive, and splicing operators.
 
 \section*{Future Experimentation}
 We will set up Grimoire and extend it on Gramatron and Superion. We'll also keep reproducing CVEs we chose and gauging execution time and performance with the extended fuzzers.
