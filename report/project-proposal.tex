@@ -203,7 +203,7 @@ In coverage-wise, as we can see, the test proved that our extended version of tw
 	\texttt{2020-7729} & - & - & \texttt{2021-26690} & - & - & \texttt{2021-22242} & - & - \\ \hlineB{3}
 \end{tabular}} \\ \vspace{3mm} CVE replication with Superion(S*) and Gramatron(G*) \end{table}
 
-To gauge on what expense did our fuzzers managed to perform input generation, we have also produced a quantitative analysis of the execution speed of each.
+To gauge on what expense our fuzzers managed to perform input generation, we have also produced a quantitative analysis of the execution speed of each.
 This table shows how well-performed our fuzzers are, compared with the Grimoire and the unextended version of AFL++.
 
 \begin{table}[h!] \centering \scalebox{1} { \begin{tabular}{V{4}l|l|l|l|l|l|l|l|lV{4}} \hlineB{3}
@@ -223,7 +223,9 @@ This table shows how well-performed our fuzzers are, compared with the Grimoire 
 These combination of the coverage table and the execution timetable provides the time/coverage trade-off(s) between the fuzzers.
 
 \section*{Discussion}
-We found that Superion created a more clear and concise input than Gramatron, which was disorganized. Superion created an input that was similar to what we were looking for.
+Superion generated an input that resembled javascript, by taking a context free grammar and an input seed, then performing a series of "grammar-aware" mutations to create a sequence of validly structured inputs. Meanwhile, Gramatron was harder to read. Superion created an input that was similar to what we were looking for. 
+
+Some problems we experienced so far was sampling bias during input generation. We also noticed that the input mutation of parse trees performed small-scale changes on the local level. To fix some of these issues, we plan on restructuring the input generation rules, such as placing constraints on transition rules in the CFG. We will also utilize mutation operators, such as random mutation, random recursive, and splicing operators.
 
 \section*{Future Experimentation}
 We will set up Grimoire and extend it on Gramatron and Superion. We'll also keep reproducing CVEs we chose and gauging execution time and performance with the extended fuzzers.
