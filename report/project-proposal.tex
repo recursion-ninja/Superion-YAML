@@ -223,7 +223,7 @@ This table shows how well-performed our fuzzers are, compared with the Grimoire 
 These combination of the coverage table and the execution timetable provides the time/coverage trade-off(s) between the fuzzers.
 
 \section*{Discussion}
-Superion generated an input that resembled javascript, by taking a context free grammar and an input seed, then performing a series of "grammar-aware" mutations to create a sequence of validly structured inputs. Superion created an input that was similar to what we were looking for. 
+Based on the fuzzing tests conducted on the selected CVEs, we found that our extension of Superion and Gramatron were feasible. Superion generated an input that resembled javascript, by taking a context free grammar and an input seed, then performing a series of "grammar-aware" mutations to create a sequence of validly structured inputs. Superion created an input that was similar to what we were looking for. 
 
 Meanwhile, Gramatron was harder to read. This may be because Gramatron reduces the number of mutation steps from the input seed to the trigger input. 
 
