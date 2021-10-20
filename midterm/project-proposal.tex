@@ -61,14 +61,12 @@ In the course of this project, we will extend the functionality of these two fuz
 Our comparative metric will be both qualitative and quantitative; measuring coverage of CVEs and execution time to obtain coverage.
 
 \clearpage
-\section*{Motivation}
-
+\section*{Introduction}
 Fuzzing is a venerable application security testing technique developed in the late '80s\cite{Barton1988} and published in 1990\cite{Miller1990}.
 Fuzzing tools generate input which is directed towards the program and detect if the input was accepted or caused unexpected behavior.
 Unexpected behavior can take many forms, such as infinite loops, stack smashing, buffer overflows, arithmetic overflows or errors, and illegal program states.
 Fuzzing tools themselves can take many forms\cite{ModelBasedFuzzing}\cite{GrammarBasedFuzzing}\cite{ProtocolBasedFuzzing} and modify program input in many ways.
 Different fuzzing tools tend to specialize in a few related forms of input\cite{InputDiversity} manipulation.
-
 There are three main classes of interaction between the fuzzer and the program under test, black-box\cite{takanen2018fuzzing}, grey-box, and white-box\cite{fuzzingsurvey}.
 In a black-box scenario, the fuzzer has no knowledge of the program's internal structure and cannot use any program-specific information to direct its fuzzing efforts.
 In a grey-box scenario, the fuzzer gleans information from its previous input to guide future inputs.
@@ -78,18 +76,19 @@ There are also two broad classes of inputs fuzzers generate; naive and structure
 Naive inputs do not provide any guarantees regarding its form.
 Structured inputs, on the other hand, can be defined to always preserve desired structures within the inputs.
 
-We are also aware of the topic "Going Beyond Coverage-Guided Fuzzing with Structured Fuzzing" by Jonathan Metzman in the Black Hat USA 2019\cite{blackhat2019}.
-In the talk, the speaker presented structured fuzzing and how to improve the fuzzer by adding structure awareness to it. 
-However, we focused on existing academic papers published in journals for our literature review instead of presentations at Black Hat.
-It was quite difficult to incorporate conference talks into our literature review - such talks cannot be searched via key words, but we still have gained more understandings of “What is Structured Fuzzing?”, and the concept of writing the well-structured inputs via "grammar-aware" mutations.
-
-AFL\cite{AFL_page} relies on genetic algorithm techniques\cite{InputMutationAlgorithm} to mutate acceptable input into an input that triggers unexpected behavior.
+AFL\cite{AFL_page} is one of the best-known fuzzing tools. AFL relies on genetic algorithm techniques\cite{InputMutationAlgorithm} to mutate acceptable input into an input that triggers unexpected behavior.
 Using the generic AFL approach, inputs would be mutated randomly, and an initially valid structured input would quickly become invalid.
 The invalid input in this scenario, is not the one that introduces the vulnerability of the target system.
 Random inputs just fail to run the major part of the target system, suspended by the type checkers or the input validators.
 This is a longstanding problem in the art of fuzzing and is the subject of emerging research.
 Generating consistently well-structured inputs\cite{structuredInput} via "grammar-aware" mutations is one such technique for addressing the problem of randomly mutated inputs.
 AFL is a poster child for efficient, naive input fuzzing.
+
+\section*{Motivation}
+We are aware of the topic "Going Beyond Coverage-Guided Fuzzing with Structured Fuzzing" by Jonathan Metzman in the Black Hat USA 2019\cite{blackhat2019}.
+In the talk, the speaker presented structured fuzzing and how to improve the fuzzer by adding structure awareness to it. 
+Therefore, we started our project with learning “What is Structured Fuzzing?”, and the concept of writing the well-structured inputs via "grammar-aware" mutations to improve the fuzzers we chose.
+
 
 Superion\cite{superion} is an fairly recent open source fuzzing tool created by modifying and extending AFL to produce structured inputs released in 2018.
 Superion currently generates valid JavaScript and XML inputs by taking a context free grammar and an input seed, then performing a series of "grammar-aware" mutations to create a sequence of validly structured inputs.
@@ -121,12 +120,13 @@ If the novel defect(s) are discovered and notable, we will consider the ancillar
 By utilizing the three fuzzers- Gramatron, Superion, and Grimoire- we hope to draw a rich comparison of modern fuzzing techniques.
 After taking the cybersecurity course and learning about the fuzzing software, we hope to be well-equipped in determining whether these tools might be utilized as an automated method of finding software exploits in other domains.
 
-Although we have confined our extension targets to two cutting-edge fuzzers for various reasons, there are other modern fuzzers that can be tackled in future projects such as;
-CodeAlchemist\cite{CodeAlchemist1}\cite{CodeAlchemist2}, Hawkeye\cite{Hawkeye}, Angora\cite{Angora1}\cite{Angora2}, CollAFL\cite{CollAFL}, IoTFuzzer\cite{IoTFuzzer}, RedQueen\cite{redqueen}, Nautilus\cite{Nautilus1}\cite{Nautilus2}, Periscope\cite{PeriScope1}\cite{PeriScope2}, T-Fuzz\cite{TFuzz1}\cite{TFuzz2}, Chopper\cite{Chopper}, QSYM\cite{QSYM1}\cite{QSYM2}, DigFuzz\cite{DigFuzz}, and FairFuzz\cite{FairFuzz1}\cite{FairFuzz2}.
+Although we have confined our extension targets to two cutting-edge fuzzers for various reasons, 
+there are other modern fuzzers that can be tackled in future projects such as; CodeAlchemist\cite{CodeAlchemist1}\cite{CodeAlchemist2}, Hawkeye\cite{Hawkeye}, Angora\cite{Angora1}\cite{Angora2}, CollAFL\cite{CollAFL}, IoTFuzzer\cite{IoTFuzzer}, RedQueen\cite{redqueen}, Nautilus\cite{Nautilus1}\cite{Nautilus2}, Periscope\cite{PeriScope1}\cite{PeriScope2}, T-Fuzz\cite{TFuzz1}\cite{TFuzz2}, Chopper\cite{Chopper}, QSYM\cite{QSYM1}\cite{QSYM2}, DigFuzz\cite{DigFuzz}, and FairFuzz\cite{FairFuzz1}\cite{FairFuzz2}.
 All these tools are distinguished in their specialized scoped, but we have decided to work with Gramatron and Superion as these are open-sourced projects, and are specialized in generating structured inputs in a modular manner.
 
 
 % \clearpage
+
 
 \section*{Approach}
 
