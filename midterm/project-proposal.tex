@@ -51,7 +51,7 @@
 
 For our project, we propose exploring the efficiency of grey-box fuzzing programs with structured inputs compared to generically mutated random-like inputs.
 The assessment will be adapted to test three major file formats: YAML, JSON, and Markdown.
-Of all the ubiquitous file formats, these three are currently the most popular ones that are consumed as input by a wide array of programs and have enough CVEs that we can gauge the efficacy with.
+Of all the ubiquitous file formats, these three are currently the most popular that both, are consumed as input by a wide array of programs, and have enough CVEs that we can gauge the efficacy with.
 
 There are some state-of-the-art fuzzers that accentuate their effectiveness with structured input such as Gramatron, Superion, and Mayhem.
 We take Gramatron and Superion as extension targets that can generate our test file formats, as they are both open sources but Mayhem is not.
@@ -63,7 +63,7 @@ Our comparative metric will be both qualitative and quantitative; measuring cove
 \clearpage
 \section*{Introduction}
 Fuzzing is a venerable application security testing technique developed in the late '80s\cite{Barton1988} and published in 1990\cite{Miller1990}.
-Fuzzing tools generate input which is directed towards the program and detect if the input was accepted or caused unexpected behavior.
+Fuzzing tools generate input which is directed towards the program under test and detect if the input was accepted or caused unexpected behavior.
 Unexpected behavior can take many forms, such as infinite loops, stack smashing, buffer overflows, arithmetic overflows or errors, and illegal program states.
 Fuzzing tools themselves can take many forms\cite{ModelBasedFuzzing}\cite{GrammarBasedFuzzing}\cite{ProtocolBasedFuzzing} and modify program input in many ways.
 Different fuzzing tools tend to specialize in a few related forms of input\cite{InputDiversity} manipulation.
