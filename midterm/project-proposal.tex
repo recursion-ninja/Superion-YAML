@@ -170,58 +170,20 @@ For each target language, we have selected 10 CVEs to administer qualitative eva
 The table below is a corpus of CVEs that we choose to run our tests on.
 These are some of the most recent known defects on open-sourced applications with reference to our target languages.
 
-\begin{table}[h!] \centering \scalebox{1} { \begin{tabular}{V{4}l|l|lV{4}}
-\hlineB{3}
-\multicolumn{1}{V{4}c|}{YAML} & \multicolumn{1}{c|}{JSON} & \multicolumn{1}{cV{4}}{Markdown}  \\ \hline
-\texttt{CVE-2021-42139\cite{CVE-2021-42139}} & \texttt{CVE-2021-41106\cite{CVE-2021-41106}} & \texttt{CVE-2021-39887\cite{CVE-2021-39887}} \\ \hline
-\texttt{CVE-2021-39194\cite{CVE-2021-39194}} & \texttt{CVE-2021-39215\cite{CVE-2021-39215}} & \texttt{CVE-2021-39199\cite{CVE-2021-39199}} \\ \hline
-\texttt{CVE-2021-39132\cite{CVE-2021-39132}} & \texttt{CVE-2021-39205\cite{CVE-2021-39205}} & \texttt{CVE-2021-39175\cite{CVE-2021-39175}} \\ \hline
-\texttt{CVE-2021-36793\cite{CVE-2021-36793}} & \texttt{CVE-2021-32781\cite{CVE-2021-32781}} & \texttt{CVE-2021-37700\cite{CVE-2021-37700}} \\ \hline
-\texttt{CVE-2021-36162\cite{CVE-2021-36162}} & \texttt{CVE-2021-32677\cite{CVE-2021-32677}} & \texttt{CVE-2021-29503\cite{CVE-2021-29503}} \\ \hline
-\texttt{CVE-2021-30180\cite{CVE-2021-30180}} & \texttt{CVE-2021-31618\cite{CVE-2021-31618}} & \texttt{CVE-2021-29475\cite{CVE-2021-29475}} \\ \hline
-\texttt{CVE-2021-22557\cite{CVE-2021-22557}} & \texttt{CVE-2021-30641\cite{CVE-2021-30641}} & \texttt{CVE-2021-29474\cite{CVE-2021-29474}} \\ \hline
-\texttt{CVE-2021-21250\cite{CVE-2021-21250}} & \texttt{CVE-2021-30179\cite{CVE-2021-30179}} & \texttt{CVE-2021-27907\cite{CVE-2021-27907}} \\ \hline
-\texttt{CVE-2021-21249\cite{CVE-2021-21249}} & \texttt{CVE-2021-26691\cite{CVE-2021-26691}} & \texttt{CVE-2021-27578\cite{CVE-2021-27578}} \\ \hline
-\texttt{CVE-2020-7729\cite{CVE-2020-7729}} & \texttt{CVE-2021-26690\cite{CVE-2021-26690}} & \texttt{CVE-2021-22242\cite{CVE-2021-22242}} \\ \hlineB{3}
-\end{tabular} 
-}
-\end{table}
+\begin{table}[h!] \centering \scalebox{1} { \begin{tabular}{V{4}l|l|lV{4}} \hlineB{3}
+	\multicolumn{1}{V{4}c|}{YAML} & \multicolumn{1}{c|}{JSON} & \multicolumn{1}{cV{4}}{Markdown}  \\ \hline
+	\texttt{CVE-2021-42139\cite{CVE-2021-42139}} & \texttt{CVE-2021-41106\cite{CVE-2021-41106}} & \texttt{CVE-2021-39887\cite{CVE-2021-39887}} \\ \hline
+	\texttt{CVE-2021-39194\cite{CVE-2021-39194}} & \texttt{CVE-2021-39215\cite{CVE-2021-39215}} & \texttt{CVE-2021-39199\cite{CVE-2021-39199}} \\ \hline
+	\texttt{CVE-2021-39132\cite{CVE-2021-39132}} & \texttt{CVE-2021-39205\cite{CVE-2021-39205}} & \texttt{CVE-2021-39175\cite{CVE-2021-39175}} \\ \hline
+	\texttt{CVE-2021-36793\cite{CVE-2021-36793}} & \texttt{CVE-2021-32781\cite{CVE-2021-32781}} & \texttt{CVE-2021-37700\cite{CVE-2021-37700}} \\ \hline
+	\texttt{CVE-2021-36162\cite{CVE-2021-36162}} & \texttt{CVE-2021-32677\cite{CVE-2021-32677}} & \texttt{CVE-2021-29503\cite{CVE-2021-29503}} \\ \hline
+	\texttt{CVE-2021-30180\cite{CVE-2021-30180}} & \texttt{CVE-2021-31618\cite{CVE-2021-31618}} & \texttt{CVE-2021-29475\cite{CVE-2021-29475}} \\ \hline
+	\texttt{CVE-2021-22557\cite{CVE-2021-22557}} & \texttt{CVE-2021-30641\cite{CVE-2021-30641}} & \texttt{CVE-2021-29474\cite{CVE-2021-29474}} \\ \hline
+	\texttt{CVE-2021-21250\cite{CVE-2021-21250}} & \texttt{CVE-2021-30179\cite{CVE-2021-30179}} & \texttt{CVE-2021-27907\cite{CVE-2021-27907}} \\ \hline
+	\texttt{CVE-2021-21249\cite{CVE-2021-21249}} & \texttt{CVE-2021-26691\cite{CVE-2021-26691}} & \texttt{CVE-2021-27578\cite{CVE-2021-27578}} \\ \hline
+	\texttt{CVE-2020-7729\cite{CVE-2020-7729}} & \texttt{CVE-2021-26690\cite{CVE-2021-26690}} & \texttt{CVE-2021-22242\cite{CVE-2021-22242}} \\ \hlineB{3}
+\end{tabular} } \end{table}
 
-%Should we include this sentance without results?
-Coverage-wise, as we can see, the initial replication testing proved that our extended version of two fuzzers is reasonably credible.
-
-\begin{table}[h!] \centering \scalebox{1} { \begin{tabular}{V{4}l|l|l|l|l|l|l|l|lV{4}} \hlineB{3}
-	\multicolumn{1}{V{4}c|}{\#CVE} & S* & G* & \multicolumn{1}{c|}{\#CVE} & S* & G* & \multicolumn{1}{c|}{\#CVE} & S* & G*  \\ \hline
-	\texttt{2021-42139} & - & - & \texttt{2021-41106} & - & - & \texttt{2021-39887} & - & - \\ \hline
-	\texttt{2021-39194} & - & - & \texttt{2021-39215} & - & - & \texttt{2021-39199} & - & - \\ \hline
-	\texttt{2021-39132} & - & - & \texttt{2021-39205} & - & - & \texttt{2021-39175} & - & - \\ \hline
-	\texttt{2021-36793} & - & - & \texttt{2021-32781} & - & - & \texttt{2021-37700} & - & - \\ \hline
-	\texttt{2021-36162} & - & - & \texttt{2021-32677} & - & - & \texttt{2021-29503} & - & - \\ \hline
-	\texttt{2021-30180} & - & - & \texttt{2021-31618} & - & - & \texttt{2021-29475} & - & - \\ \hline
-	\texttt{2021-22557} & - & - & \texttt{2021-30641} & - & - & \texttt{2021-29474} & - & - \\ \hline
-	\texttt{2021-21250} & - & - & \texttt{2021-30179} & - & - & \texttt{2021-27907} & - & - \\ \hline
-	\texttt{2021-21249} & - & - & \texttt{2021-26691} & - & - & \texttt{2021-27578} & - & - \\ \hline
-	\texttt{2020-7729} & - & - & \texttt{2021-26690} & - & - & \texttt{2021-22242} & - & - \\ \hlineB{3}
-\end{tabular}} \\ \vspace{3mm} CVE replication with Superion(S*) and Gramatron(G*) \end{table}
-
-To gauge effort our fuzzers required to replicate CVEs, we have also produced a quantitative analysis of the execution time required of each to produce the triggering input.
-This table shows how well-performing our fuzzers are, compared with the Grimoire and the unextended version of AFL++.
-
-\begin{table}[h!] \centering \scalebox{1} { \begin{tabular}{V{4}l|l|l|l|l|l|l|l|lV{4}} \hlineB{3}
-	\multicolumn{1}{V{4}c|}{\#CVE} & S* & G* & \multicolumn{1}{c|}{\#CVE} & S* & G* & \multicolumn{1}{c|}{\#CVE} & S* & G*  \\ \hline
-	\texttt{2021-42139} & - & - & \texttt{2021-41106} & - & - & \texttt{2021-39887} & - & - \\ \hline
-	\texttt{2021-39194} & - & - & \texttt{2021-39215} & - & - & \texttt{2021-39199} & - & - \\ \hline
-	\texttt{2021-39132} & - & - & \texttt{2021-39205} & - & - & \texttt{2021-39175} & - & - \\ \hline
-	\texttt{2021-36793} & - & - & \texttt{2021-32781} & - & - & \texttt{2021-37700} & - & - \\ \hline
-	\texttt{2021-36162} & - & - & \texttt{2021-32677} & - & - & \texttt{2021-29503} & - & - \\ \hline
-	\texttt{2021-30180} & - & - & \texttt{2021-31618} & - & - & \texttt{2021-29475} & - & - \\ \hline
-	\texttt{2021-22557} & - & - & \texttt{2021-30641} & - & - & \texttt{2021-29474} & - & - \\ \hline
-	\texttt{2021-21250} & - & - & \texttt{2021-30179} & - & - & \texttt{2021-27907} & - & - \\ \hline
-	\texttt{2021-21249} & - & - & \texttt{2021-26691} & - & - & \texttt{2021-27578} & - & - \\ \hline
-	\texttt{2020-7729} & - & - & \texttt{2021-26690} & - & - & \texttt{2021-22242} & - & - \\ \hlineB{3}
-\end{tabular}} \\ \vspace{3mm} Runtime of CVE replication for each fuzzers \end{table}
-
-These combination of the coverage table and the execution timetable provides the time/coverage trade-off(s) between the fuzzers.
 
 \section*{Discussion}
 Based on the fuzzing tests conducted on the selected CVEs, we found that our extension of Superion and Gramatron were feasible. 
