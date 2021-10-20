@@ -47,6 +47,8 @@
 \usepackage{multirow} % Supports center-align / new line in table cells
 \usepackage{boldline} % Supports bold line
 
+\usepackage{alltt,xcolor} % Supports code embedding
+
 \makeatletter
 \renewcommand\@biblabel[1]{\textbf{#1.}} % Remove the square brackets from each bibliography item ('[1]' to '1.')
 \makeatother

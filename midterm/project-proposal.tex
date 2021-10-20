@@ -121,7 +121,7 @@ By utilizing the three fuzzers- Gramatron, Superion, and Grimoire- we hope to dr
 After taking the cybersecurity course and learning about the fuzzing software, we hope to be well-equipped in determining whether these tools might be utilized as an automated method of finding software exploits in other domains.
 
 Although we have confined our extension targets to two cutting-edge fuzzers for various reasons, 
-there are other modern fuzzers that can be tackled in future projects such as; CodeAlchemist\cite{CodeAlchemist1}\cite{CodeAlchemist2}, Hawkeye\cite{Hawkeye}, Angora\cite{Angora1}\cite{Angora2}, CollAFL\cite{CollAFL}, IoTFuzzer\cite{IoTFuzzer}, RedQueen\cite{redqueen}, Nautilus\cite{Nautilus1}\cite{Nautilus2}, Periscope\cite{PeriScope1}\cite{PeriScope2}, T-Fuzz\cite{TFuzz1}\cite{TFuzz2}, Chopper\cite{Chopper}, QSYM\cite{QSYM1}\cite{QSYM2}, DigFuzz\cite{DigFuzz}, and FairFuzz\cite{FairFuzz1}\cite{FairFuzz2}.
+there are other modern fuzzers that can be tackled in future projects such as; CodeAlchemist\cite{CodeAlchemist1}\cite{CodeAlchemist2}, Hawkeye\cite{Hawkeye}, Angora\cite{Angora1}\cite{Angora2}, CollAFL\cite{CollAFL}, IoTFuzzer\cite{IoTFuzzer}, RedQueen\,\cite{redqueen}, Nautilus\,\cite{Nautilus1}\cite{Nautilus2}, Periscope\cite{PeriScope1}\cite{PeriScope2}, T-Fuzz\,\cite{TFuzz1}\cite{TFuzz2}, Chopper\cite{Chopper}, QSYM\cite{QSYM1}\cite{QSYM2}, DigFuzz\cite{DigFuzz}, and FairFuzz\cite{FairFuzz1}\cite{FairFuzz2}.
 All these tools are distinguished in their specialized scoped, but we have decided to work with Gramatron and Superion as these are open-sourced projects, and are specialized in generating structured inputs in a modular manner.
 
 
@@ -165,7 +165,6 @@ This is of academic interest as it will inform the direction of future fuzzing r
 \label{results}
 \vspace{-0.25cm}
 
-First, we have conducted series of fuzzing tests mainly focused on reproducing our targeted CVEs.
 For each target language, we have selected 10 CVEs to administer qualitative evaluation of our extended fuzzers.
 The table below is a corpus of CVEs that we choose to run our tests on.
 These are some of the most recent known defects on open-sourced applications with reference to our target languages.
@@ -182,7 +181,23 @@ These are some of the most recent known defects on open-sourced applications wit
 	\texttt{CVE-2021-21250\cite{CVE-2021-21250}} & \texttt{CVE-2021-30179\cite{CVE-2021-30179}} & \texttt{CVE-2021-27907\cite{CVE-2021-27907}} \\ \hline
 	\texttt{CVE-2021-21249\cite{CVE-2021-21249}} & \texttt{CVE-2021-26691\cite{CVE-2021-26691}} & \texttt{CVE-2021-27578\cite{CVE-2021-27578}} \\ \hline
 	\texttt{CVE-2020-7729\cite{CVE-2020-7729}} & \texttt{CVE-2021-26690\cite{CVE-2021-26690}} & \texttt{CVE-2021-22242\cite{CVE-2021-22242}} \\ \hlineB{3}
-\end{tabular} } \end{table}
+\end{tabular}  } 
+\vspace{3mm}\\ \textbf{Table 1.} Target CVEs for each languages
+\end{table}
+
+We have administered two major tasks prior to extending the functionality of each fuzzers.
+First, we have set up Gramatron and Superior run in the test environment.
+The input generators for each fuzzer successfully constructed seed files\cite{superion-example}\cite{gramatron-example}that conform to the grammatic constraints of Javascript.
+Configuring grammar-specific protocols and rules for each fuzzer was followed by the environment setup.
+This was done through the course of literature review and presentation preparation, and we have built the JSON grammar definition file\cite{json-source.json} for extending Gramatron.
+
+\vspace{6mm}
+\hrule height 0.4mm
+\begingroup \fontsize{12pt}{12pt} \selectfont \begin{alltt}
+\input{input.js}
+\end{alltt} \vspace{-6mm} \endgroup \hrule height 0.4mm
+\vspace{3mm}
+\centerline{\textbf{Figure 1.} Input created from Grammar-aware input generators}
 
 
 \section*{Discussion}
