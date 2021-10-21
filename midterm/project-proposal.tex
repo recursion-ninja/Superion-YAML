@@ -106,7 +106,7 @@ Superion\cite{superion} is an fairly recent open source fuzzing tool created by 
 Superion currently generates valid JavaScript and XML inputs by taking a context free grammar and an input seed, then performing a series of "grammar-aware" mutations to create a sequence of validly structured inputs. The process is illustrated in the figure below.
 
 \begin{center}
-	\includegraphics[scale=0.4, trim={0 1cm 0 0}, clip]{superionfig2.PNG}\\
+	\includegraphics[scale=0.4, trim={0 1cm 0 0}, clip]{superionfig.png}\\
 	\textbf{Figure 1.} Grammar-aware input generation process of Superion
 \end{center}
 \vspace{3mm}
@@ -121,7 +121,7 @@ It does this by reducing the number of mutation steps from the input seed to the
 
 \vspace{-1cm}
 \begin{center}
-	\includegraphics[scale=0.4, trim={0 3cm 0 0}, clip]{gramatronfig1.PNG}
+	\includegraphics[scale=0.4, trim={0 3cm 0 0}, clip]{gramatronfig.png}
 	\textbf{Figure 2.} Preprocessing phase of Gramatron
 \end{center}
 \vspace{6mm}
@@ -189,6 +189,7 @@ Our project quantifying and qualifying the performance of these three modern fuz
 This is of academic interest as it will inform the direction of future fuzzing research.
 
 
+\vspace{4mm}
 \section*{Preliminary Results}
 \label{results}
 
@@ -196,6 +197,7 @@ For each target language, we have selected 10 CVEs to administer qualitative eva
 The table below is a corpus of CVEs that we choose to run our tests on.
 These are some of the most recent known defects on open-sourced applications with reference to our target languages.
 
+\clearpage
 
 \begin{table}[h!]
 \centering
@@ -296,11 +298,10 @@ These are some of the most recent known defects on open-sourced applications wit
 }
 \vspace{6mm}\\ \textbf{Table 1.} Target CVEs for each languages
 \end{table}
-\vspace{3mm}
+\vspace{6mm}
 
-The names of open-sources application are showed at the bottom of each cell of the \textbf{Table 1.}, 
-and the numbers next to the name indicates the latest version that defect can be found. For example, 
-CVE-2021-42139 can be found in Deno if the version is equal or older than 0.107.0.
+Selected CVEs and the defective applications are shown at the bottom of each cell of \textbf{Table 1}. The numbers next to the name indicate the latest version that the defect was fixed. For example, CVE-2021-42139 can be found in the Deno version prior to 0.107.0.
+
 
 We have administered two major tasks prior to extending the functionality of each fuzzers.
 First, we have set up Gramatron and Superion to run in the test environment.
@@ -308,7 +309,7 @@ The input generators for each fuzzer successfully constructed seed files \cite{s
 Configuring grammar-specific protocols and rules for extending each fuzzer was followed by the environment setup.
 This was done through the course of literature review and presentation preparation, and we have built the JSON grammar definition\cite{json-source.json} for extending Gramatron.
 
-\vspace{6mm}
+\vspace{12mm}
 \hrule height 0.4mm
 \begingroup \fontsize{12pt}{12pt} \selectfont \begin{alltt}
 \input{input.js}
