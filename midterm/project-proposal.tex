@@ -84,6 +84,13 @@ This is a longstanding problem in the art of fuzzing and is the subject of emerg
 Generating consistently well-structured inputs\cite{structuredInput} via "grammar-aware" mutations is one such technique for addressing the problem of randomly mutated inputs.
 AFL is a poster child for efficient, naive input fuzzing.
 
+Unexpected behavior induced by a fuzzer often reveals security flaws in the program under test.
+When security flaws affect publicly available software, professional ethics dictate the responsible disclosure of said security flaw and eventually publishing a Common Vulnerabilities and Exposures (CVEs) \cite{mell2002use} report detailing the security flaw's nature and available correction(s).
+The utility of CVEs is two fold.
+First, they provide a method for individuals to ensure that their software is patched for all known security flaws.
+Second, it facilitates security researcher's ability to replicate the detailed security flaw.
+We will be making use of this second role in our project.
+
 \section*{Motivation}
 We are aware of the topic "Going Beyond Coverage-Guided Fuzzing with Structured Fuzzing" by Jonathan Metzman in the Black Hat USA 2019\cite{blackhat2019}.
 In the talk, the speaker presented structured fuzzing and how to improve the fuzzer by adding structure awareness to it. 
