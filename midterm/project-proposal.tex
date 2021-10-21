@@ -101,10 +101,18 @@ Superion\cite{superion} is an fairly recent open source fuzzing tool created by 
 Superion currently generates valid JavaScript and XML inputs by taking a context free grammar and an input seed, then performing a series of "grammar-aware" mutations to create a sequence of validly structured inputs.
 The results of Superion show a great increase in fuzzing efficacy when targeting programs which expect structured input.
 
+\begin{center}
+    \includegraphics[scale=0.4]{superionfig2.PNG}
+\end{center}
+
 Gramatron\cite{srivastava2021gramatron} is a second, and even more recent, open source fuzzing tool designed to produce structured inputs.
 Released in 2021, Gramatron was designed with new mutation algorithms to increase the speed at which defects are discovered.
 It does this by reducing the number of mutation steps from the input seed to the trigger input, rather than simply optimizing the speed at which new inputs can be generated.
 Gramatron currently generates structured PHP and JavaScript as inputs.
+
+\begin{center}
+    \includegraphics[scale=0.4]{gramatronfig1.PNG}
+\end{center}
 
 Grimoire\cite{GRIMOIRE} is a structured input fuzzer which does not require an explicit structural definition to effectively generate fuzzing inputs.
 Instead, Grimoire deduces the required input structure via feedback from the program.
