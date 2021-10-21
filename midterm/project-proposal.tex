@@ -103,21 +103,24 @@ In the talk, the speaker presented structured fuzzing and how to improve the fuz
 Therefore, we started our project with learning “What is Structured Fuzzing?”, and the concept of writing the well-structured inputs via "grammar-aware" mutations to improve the fuzzers we chose.
 
 Superion\cite{superion} is an fairly recent open source fuzzing tool created by modifying and extending AFL to produce structured inputs released in 2018.
-Superion currently generates valid JavaScript and XML inputs by taking a context free grammar and an input seed, then performing a series of "grammar-aware" mutations to create a sequence of validly structured inputs.
-The results of Superion show a great increase in fuzzing efficacy when targeting programs which expect structured input.
+Superion currently generates valid JavaScript and XML inputs by taking a context free grammar and an input seed, then performing a series of "grammar-aware" mutations to create a sequence of validly structured inputs. The process is illustrated in the figure below.
 
 \begin{center}
 	\includegraphics[scale=0.4]{superionfig2.PNG}
 \end{center}
 
+
+The results of Superion show a great increase in fuzzing efficacy when targeting programs which expect structured input.
+
 Gramatron\cite{srivastava2021gramatron} is a second, and even more recent, open source fuzzing tool designed to produce structured inputs.
 Released in 2021, Gramatron was designed with new mutation algorithms to increase the speed at which defects are discovered.
-It does this by reducing the number of mutation steps from the input seed to the trigger input, rather than simply optimizing the speed at which new inputs can be generated.
-Gramatron currently generates structured PHP and JavaScript as inputs.
+It does this by reducing the number of mutation steps from the input seed to the trigger input, rather than simply optimizing the speed at which new inputs can be generated. There are two steps in which Gramatron modifies AFL++. First, in the preprocessing phase, the context-free grammar, CFG, is converted into Chomsky normal form, GNF/CNF, which is then turned into a finite state automata, FSA. This can be seen in the figure below.
 
 \begin{center}
 	\includegraphics[scale=0.4]{gramatronfig1.PNG}
 \end{center}
+
+In the second step, the fuzzing phase, Gramatron performs the mutations with the FSAs and operators. Gramatron currently generates structured PHP and JavaScript as inputs.
 
 Grimoire\cite{GRIMOIRE} is a structured input fuzzer which does not require an explicit structural definition to effectively generate fuzzing inputs.
 Instead, Grimoire deduces the required input structure via feedback from the program.
