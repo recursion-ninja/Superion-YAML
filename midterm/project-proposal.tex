@@ -36,6 +36,7 @@
 \date{\texttt{\today}} % Date, use \date{} for no date
 
 \pagestyle{empty}
+
 %----------------------------------------------------------------------------------------
 
 \begin{document}
@@ -60,8 +61,11 @@ Grimoire is a fuzzer that, without structured inputs, can perform grammar awaren
 In the course of this project, we will extend the functionality of these two fuzzers and scrutinize the fuzzing capabilities of these extensions compared to Grimoire against a corpus of CVEs of our three target file formats.
 Our comparative metric will be both qualitative and quantitative; measuring coverage of CVEs and execution time to obtain coverage.
 
+
 \clearpage
+
 \section*{Introduction}
+
 Fuzzing is a venerable application security testing technique developed in the late '80s\cite{Barton1988} and published in 1990\cite{Miller1990}.
 Fuzzing tools generate input which is directed towards the program under test and detect if the input was accepted or caused unexpected behavior.
 Unexpected behavior can take many forms, such as infinite loops, stack smashing, buffer overflows, arithmetic overflows or errors, and illegal program states.
@@ -91,18 +95,19 @@ First, they provide a method for individuals to ensure that their software is pa
 Second, it facilitates security researcher's ability to replicate the detailed security flaw.
 We will be making use of this second role in our project.
 
+
 \section*{Motivation}
+
 We are aware of the topic "Going Beyond Coverage-Guided Fuzzing with Structured Fuzzing" by Jonathan Metzman in the Black Hat USA 2019\cite{blackhat2019}.
 In the talk, the speaker presented structured fuzzing and how to improve the fuzzer by adding structure awareness to it. 
 Therefore, we started our project with learning “What is Structured Fuzzing?”, and the concept of writing the well-structured inputs via "grammar-aware" mutations to improve the fuzzers we chose.
-
 
 Superion\cite{superion} is an fairly recent open source fuzzing tool created by modifying and extending AFL to produce structured inputs released in 2018.
 Superion currently generates valid JavaScript and XML inputs by taking a context free grammar and an input seed, then performing a series of "grammar-aware" mutations to create a sequence of validly structured inputs.
 The results of Superion show a great increase in fuzzing efficacy when targeting programs which expect structured input.
 
 \begin{center}
-    \includegraphics[scale=0.4]{superionfig2.PNG}
+	\includegraphics[scale=0.4]{superionfig2.PNG}
 \end{center}
 
 Gramatron\cite{srivastava2021gramatron} is a second, and even more recent, open source fuzzing tool designed to produce structured inputs.
@@ -111,7 +116,7 @@ It does this by reducing the number of mutation steps from the input seed to the
 Gramatron currently generates structured PHP and JavaScript as inputs.
 
 \begin{center}
-    \includegraphics[scale=0.4]{gramatronfig1.PNG}
+	\includegraphics[scale=0.4]{gramatronfig1.PNG}
 \end{center}
 
 Grimoire\cite{GRIMOIRE} is a structured input fuzzer which does not require an explicit structural definition to effectively generate fuzzing inputs.
@@ -138,9 +143,6 @@ After taking the cybersecurity course and learning about the fuzzing software, w
 Although we have confined our extension targets to two cutting-edge fuzzers for various reasons, 
 there are other modern fuzzers that can be tackled in future projects such as; CodeAlchemist\cite{CodeAlchemist1}\cite{CodeAlchemist2}, Hawkeye\cite{Hawkeye}, Angora\cite{Angora1}\cite{Angora2}, CollAFL\cite{CollAFL}, IoTFuzzer\cite{IoTFuzzer}, RedQueen\,\cite{redqueen}, Nautilus\,\cite{Nautilus1}\cite{Nautilus2}, Periscope\cite{PeriScope1}\cite{PeriScope2}, T-Fuzz\,\cite{TFuzz1}\cite{TFuzz2}, Chopper\cite{Chopper}, QSYM\cite{QSYM1}\cite{QSYM2}, DigFuzz\cite{DigFuzz}, and FairFuzz\cite{FairFuzz1}\cite{FairFuzz2}.
 All these tools are distinguished in their specialized scoped, but we have decided to work with Gramatron and Superion as these are open-sourced projects, and are specialized in generating structured inputs in a modular manner.
-
-
-% \clearpage
 
 
 \section*{Approach}
@@ -178,7 +180,6 @@ This is of academic interest as it will inform the direction of future fuzzing r
 
 \section*{Preliminary Results}
 \label{results}
-\vspace{-0.25cm}
 
 For each target language, we have selected 10 CVEs to administer qualitative evaluation of our extended fuzzers.
 The table below is a corpus of CVEs that we choose to run our tests on.
@@ -283,9 +284,9 @@ These are some of the most recent known defects on open-sourced applications wit
 
 We have administered two major tasks prior to extending the functionality of each fuzzers.
 First, we have set up Gramatron and Superion to run in the test environment.
-The input generators for each fuzzer successfully constructed seed files\cite{superion-example}\cite{gramatron-example}that conform to the grammatic constraints of Javascript.
-Configuring grammar-specific protocols and rules for each fuzzer was followed by the environment setup.
-This was done through the course of literature review and presentation preparation, and we have built the JSON grammar definition file\cite{json-source.json} for extending Gramatron.
+The input generators for each fuzzer successfully constructed seed files \cite{superion-example}\cite{gramatron-example}that conform to the grammatic constraints of Javascript.
+Configuring grammar-specific protocols and rules for extending each fuzzer was followed by the environment setup.
+This was done through the course of literature review and presentation preparation, and we have built the JSON grammar definition\cite{json-source.json} for extending Gramatron.
 
 \vspace{6mm}
 \hrule height 0.4mm
@@ -293,17 +294,22 @@ This was done through the course of literature review and presentation preparati
 \input{input.js}
 \end{alltt} \vspace{-6mm} \endgroup \hrule height 0.4mm
 \vspace{3mm}
-\centerline{\textbf{Figure 1.} Input created from Grammar-aware input generators}
+\centerline{\textbf{Figure 3.} Input created from Grammar-aware input generators}
 
 
 \section*{Discussion}
+
 Based on the fuzzing tests conducted on the selected CVEs, we found that our extension of Superion and Gramatron were feasible. 
 
-Superion generated an input that resembled human-written javascript, by taking a context free grammar and an input seed, then performing a series of "grammar-aware" mutations to create a sequence of validly structured inputs. Superion created an input that was similar to what we were looking for. 
+Superion generated an input that resembled human-written javascript, by taking a context free grammar and an input seed,
+then performing a series of "grammar-aware" mutations to create a sequence of validly structured inputs.
+Superion created an input that was similar to what we were looking for. 
 
-Meanwhile, Gramatron was harder to read. This may be because Gramatron reduces the number of mutation steps from the input seed to the trigger input. 
+Meanwhile, Gramatron was harder to read.
+This may be because Gramatron reduces the number of mutation steps from the input seed to the trigger input. 
 
-We hope to show that our tests on the extensions of Superion and Gramatron will be more performant than those conducted on Grimoire since Superion and Gramatron directly produce the inputs, while Grimoire creates the input from feedback, rather than a defined structure.
+We hope to show that our tests on the extensions of Superion and Gramatron will be more performant than those conducted on Grimoire since Superion and Gramatron directly produce the inputs,
+while Grimoire creates the input from feedback, rather than a defined structure.
 
 \section*{Future Experimentation}
 For the future work, Grimoire, Gramatron, Superion could be combined for large-scale testing to explore the new CVEs. 
@@ -323,9 +329,11 @@ Chuanyao Lin and Sabina Bhuiyan analyzed the project in comparison with Grimoire
 
 
 \clearpage
+
 \section*{Timeline}
 
-The project timeline is partially defined by the course syllabus where deadlines are concerned and partially team defined where the syllabus does not give guidance.
+The project timeline is partially defined by the course syllabus where deadlines are concerned
+and partially team defined where the syllabus does not give guidance.
 The team has collaboratively discussed and drafted a tentative timeline of the project based on our assumptions of progress and integrated this with the deliverable deadlines laid out in the course syllabus. The current, tentative project timeline is as follows:
 
 \begin{enumerate}[label={}]
@@ -349,6 +357,7 @@ The team has collaboratively discussed and drafted a tentative timeline of the p
 
 
 \clearpage
+
 \bibliographystyle{acm}
 \bibliography{project-proposal}
 
