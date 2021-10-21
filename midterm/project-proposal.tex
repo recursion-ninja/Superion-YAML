@@ -109,8 +109,7 @@ Superion currently generates valid JavaScript and XML inputs by taking a context
 	\includegraphics[scale=0.4]{superionfig2.PNG}
 \end{center}
 
-
-The results of Superion show a great increase in fuzzing efficacy when targeting programs which expect structured input.
+Based on the grammar, Superion parses each test input into an abstract syntax tree, an AST. Using ASTs, Superion introduces a grammar-aware trimming strategy that can effectively trim test inputs while keeping the input structure valid, then randomly chooses another input from AFL’s queue and also parses it into AST. A sub-tree of the target input can be replaced by another sub-tree, either from the target input itself or from a randomly chosen supplementary sample. Therefore, hundreds of new samples are generated and executed to find a new path in tested programs. The results of Superion show a great increase in fuzzing efficacy when targeting programs which expect structured input.
 
 Gramatron\cite{srivastava2021gramatron} is a second, and even more recent, open source fuzzing tool designed to produce structured inputs.
 Released in 2021, Gramatron was designed with new mutation algorithms to increase the speed at which defects are discovered.
@@ -189,103 +188,99 @@ The table below is a corpus of CVEs that we choose to run our tests on.
 These are some of the most recent known defects on open-sourced applications with reference to our target languages.
 
 \vspace{3mm}
-\begin{table}[h!]
-\centering
-\scalebox{0.8} {
-\begin{tabular}{V{4}l|l|lV{4}} \hlineB{3}
+\begin{table}[h!] \centering \scalebox{0.8} { \begin{tabular}{V{4}l|l|lV{4}} \hlineB{3}
 	\multicolumn{1}{V{4}c|}{YAML} & \multicolumn{1}{c|}{JSON} & \multicolumn{1}{cV{4}}{Markdown}  \\ \hline
 	\multicolumn{1}{V{4}c|}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2021-42139\cite{CVE-2021-42139}} \vspace{-2mm} \\ \footnotesize Deno < v0.107.0
+		\texttt{CVE-2021-42139\cite{CVE-2021-42139}} \vspace{-2mm} \\ \footnotesize Deno < 0.107.0
 	\end{tabular}} & 
 	\multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2021-41106\cite{CVE-2021-41106}} \vspace{-2mm} \\ \footnotesize JWT < v3.4.6
+		\texttt{CVE-2021-41106\cite{CVE-2021-41106}} \vspace{-2mm} \\ \footnotesize JWT < 3.4.6
 	\end{tabular}} &
 	\multicolumn{1}{cV{4}}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2021-39887\cite{CVE-2021-39887}} \vspace{-2mm} \\ \footnotesize GitLab CE/EE > v8.4 
+		\texttt{CVE-2021-39887\cite{CVE-2021-39887}} \vspace{-2mm} \\ \footnotesize GitLab CE/EE > 8.4 
 	\end{tabular}} \\ \hline
 	\multicolumn{1}{V{4}c|}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2021-39194\cite{CVE-2021-39194}} \vspace{-2mm} \\ \footnotesize kaml < v0.35.3
+		\texttt{CVE-2021-39194\cite{CVE-2021-39194}} \vspace{-2mm} \\ \footnotesize kaml < 0.35.3
 	\end{tabular}} & 
 	\multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2021-39215\cite{CVE-2021-39215}} \vspace{-2mm} \\ \footnotesize Jitsi Meet < v2.0.5963
+		\texttt{CVE-2021-39215\cite{CVE-2021-39215}} \vspace{-2mm} \\ \footnotesize Jitsi Meet < 2.0.5963
 	\end{tabular}} &
 	\multicolumn{1}{cV{4}}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2021-39199\cite{CVE-2021-39199}} \vspace{-2mm} \\ \footnotesize remark-html < v13.0.2
+		\texttt{CVE-2021-39199\cite{CVE-2021-39199}} \vspace{-2mm} \\ \footnotesize remark-html < 13.0.2
 	\end{tabular}} \\ \hline
 	\multicolumn{1}{V{4}c|}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2021-39132\cite{CVE-2021-39132}} \vspace{-2mm} \\ \footnotesize Rundeck < v3.3.14
+		\texttt{CVE-2021-39132\cite{CVE-2021-39132}} \vspace{-2mm} \\ \footnotesize Rundeck < 3.3.14
 	\end{tabular}} & 
 	\multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2021-39205\cite{CVE-2021-39205}} \vspace{-2mm} \\ \footnotesize Jitsi Meet < v2.0.6173
+		\texttt{CVE-2021-39205\cite{CVE-2021-39205}} \vspace{-2mm} \\ \footnotesize Jitsi Meet < 2.0.6173
 	\end{tabular}} &
 	\multicolumn{1}{cV{4}}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2021-39175\cite{CVE-2021-39175}} \vspace{-2mm} \\ \footnotesize HedgeDoc < v1.9.0
+		\texttt{CVE-2021-39175\cite{CVE-2021-39175}} \vspace{-2mm} \\ \footnotesize HedgeDoc < 1.9.0
 	\end{tabular}} \\ \hline
 	\multicolumn{1}{V{4}c|}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2021-36793\cite{CVE-2021-36793}} \vspace{-2mm} \\ \footnotesize Routes extension for TYPO3 < v2.1.1 
+		\texttt{CVE-2021-36793\cite{CVE-2021-36793}} \vspace{-2mm} \\ \footnotesize Routes extension for TYPO3 < 2.1.1 
 	\end{tabular}} & 
 	\multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2021-32781\cite{CVE-2021-32781}} \vspace{-2mm} \\ \footnotesize Envoy < v1.16.5
+		\texttt{CVE-2021-32781\cite{CVE-2021-32781}} \vspace{-2mm} \\ \footnotesize Envoy < 1.16.5
 	\end{tabular}} &
 	\multicolumn{1}{cV{4}}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2021-37700\cite{CVE-2021-37700}} \vspace{-2mm} \\ \footnotesize @github/paste-markdown < v0.3.4
+		\texttt{CVE-2021-37700\cite{CVE-2021-37700}} \vspace{-2mm} \\ \footnotesize @github/paste-markdown < 0.3.4
 	\end{tabular}} \\ \hline
 	\multicolumn{1}{V{4}c|}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2021-36162\cite{CVE-2021-36162}} \vspace{-2mm} \\ \footnotesize Apache Dubbo < v2.7.13
+		\texttt{CVE-2021-36162\cite{CVE-2021-36162}} \vspace{-2mm} \\ \footnotesize Apache Dubbo < 2.7.13
 	\end{tabular}} & 
 	\multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2021-32677\cite{CVE-2021-32677}} \vspace{-2mm} \\ \footnotesize FastAPI < v0.65.2
+		\texttt{CVE-2021-32677\cite{CVE-2021-32677}} \vspace{-2mm} \\ \footnotesize FastAPI < 0.65.2
 	\end{tabular}} &
 	\multicolumn{1}{cV{4}}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2021-29503\cite{CVE-2021-29503}} \vspace{-2mm} \\ \footnotesize HedgeDoc < v1.8.2
+		\texttt{CVE-2021-29503\cite{CVE-2021-29503}} \vspace{-2mm} \\ \footnotesize HedgeDoc < 1.8.2
 	\end{tabular}} \\ \hline
 	\multicolumn{1}{V{4}c|}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2021-30180\cite{CVE-2021-30180}} \vspace{-2mm} \\ \footnotesize Apache Dubbo < v2.7.9
+		\texttt{CVE-2021-30180\cite{CVE-2021-30180}} \vspace{-2mm} \\ \footnotesize Apache Dubbo < 2.7.9
 	\end{tabular}} & 
 	\multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2021-31618\cite{CVE-2021-31618}} \vspace{-2mm} \\ \footnotesize Apache HTTP Server mod\_http2 v1.15.17
+		\texttt{CVE-2021-31618\cite{CVE-2021-31618}} \vspace{-2mm} \\ \footnotesize Apache HTTP Server mod\_http2 1.15.17
 	\end{tabular}} &
 	\multicolumn{1}{cV{4}}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2021-29475\cite{CVE-2021-29475}} \vspace{-2mm} \\ \footnotesize HedgeDoc < v1.5.0
+		\texttt{CVE-2021-29475\cite{CVE-2021-29475}} \vspace{-2mm} \\ \footnotesize HedgeDoc < 1.5.0
 	\end{tabular}} \\ \hline
 	\multicolumn{1}{V{4}c|}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2021-22557\cite{CVE-2021-22557}} \vspace{-2mm} \\ \footnotesize SLO generator < v2.0.0
+		\texttt{CVE-2021-22557\cite{CVE-2021-22557}} \vspace{-2mm} \\ \footnotesize SLO generator < 2.0.0
 	\end{tabular}} & 
 	\multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2021-30641\cite{CVE-2021-30641}} \vspace{-2mm} \\ \footnotesize Apache HTTP Server v2.4.39-v2.4.46
+		\texttt{CVE-2021-30641\cite{CVE-2021-30641}} \vspace{-2mm} \\ \footnotesize Apache HTTP Server 2.4.39-2.4.46
 	\end{tabular}} &
 	\multicolumn{1}{cV{4}}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2021-29474\cite{CVE-2021-29474}} \vspace{-2mm} \\ \footnotesize HedgeDoc < v1.8.0
+		\texttt{CVE-2021-29474\cite{CVE-2021-29474}} \vspace{-2mm} \\ \footnotesize HedgeDoc < 1.8.0
 	\end{tabular}} \\ \hline
 	\multicolumn{1}{V{4}c|}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2021-21250\cite{CVE-2021-21250}} \vspace{-2mm} \\ \footnotesize OneDev < v4.0.3
+		\texttt{CVE-2021-21250\cite{CVE-2021-21250}} \vspace{-2mm} \\ \footnotesize OneDev < 4.0.3
 	\end{tabular}} & 
 	\multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2021-30179\cite{CVE-2021-30179}} \vspace{-2mm} \\ \footnotesize Apache Dubbo < v2.6.9
+		\texttt{CVE-2021-30179\cite{CVE-2021-30179}} \vspace{-2mm} \\ \footnotesize Apache Dubbo < 2.6.9
 	\end{tabular}} &
 	\multicolumn{1}{cV{4}}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2021-27907\cite{CVE-2021-27907}} \vspace{-2mm} \\ \footnotesize Apache Superset $\leq$ v0.38.0
+		\texttt{CVE-2021-27907\cite{CVE-2021-27907}} \vspace{-2mm} \\ \footnotesize Apache Superset \leq 0.38.0
 	\end{tabular}} \\ \hline
 	\multicolumn{1}{V{4}c|}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2021-21249\cite{CVE-2021-21249}} \vspace{-2mm} \\ \footnotesize OneDev < v4.0.3
+		\texttt{CVE-2021-21249\cite{CVE-2021-21249}} \vspace{-2mm} \\ \footnotesize OneDev < 4.0.3
 	\end{tabular}} & 
 	\multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2021-26691\cite{CVE-2021-26691}} \vspace{-2mm} \\ \footnotesize Apache HTTP Server v2.4.0-v2.4.46
+		\texttt{CVE-2021-26691\cite{CVE-2021-26691}} \vspace{-2mm} \\ \footnotesize Apache HTTP Server 2.4.0-2.4.46
 	\end{tabular}} &
 	\multicolumn{1}{cV{4}}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2021-27578\cite{CVE-2021-27578}} \vspace{-2mm} \\ \footnotesize Apache Zeppelin < v0.9.0
+		\texttt{CVE-2021-27578\cite{CVE-2021-27578}} \vspace{-2mm} \\ \footnotesize Apache Zeppelin < 0.9.0
 	\end{tabular}} \\ \hline
 	\multicolumn{1}{V{4}c|}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2020-7729\cite{CVE-2020-7729}} \vspace{-2mm} \\ \footnotesize Grunt < v1.3.0
+		\texttt{CVE-2020-7729\cite{CVE-2020-7729}} \vspace{-2mm} \\ \footnotesize Grunt < 1.3.0
 	\end{tabular}} & 
 	\multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2021-26690\cite{CVE-2021-26690}} \vspace{-2mm} \\ \footnotesize Apache HTTP Server v2.4.0-v2.4.46
-	\end{tabular}} & 
+		\texttt{CVE-2021-26690\cite{CVE-2021-26690}} \vspace{-2mm} \\ \footnotesize Apache HTTP Server 2.4.0-2.4.46
+	\end{tabular}} &
 	\multicolumn{1}{cV{4}}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2021-22242\cite{CVE-2021-22242}} \vspace{-2mm} \\ \footnotesize GitLab CE/EE > v11.4
+		\texttt{CVE-2021-22242\cite{CVE-2021-22242}} \vspace{-2mm} \\ \footnotesize GitLab CE/EE > 11.4
 	\end{tabular}} \\ \hlineB{3}
-\end{tabular}
-}
+\end{tabular}  } 
 \vspace{3mm}\\ \textbf{Table 1.} Target CVEs for each languages
 \end{table}
 \clearpage
