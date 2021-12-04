@@ -1,0 +1,15 @@
+allow-newer:
+    base,
+    base-compat,
+    bytestring,
+    ghc-prim,
+    lens,
+    primative,
+    template-haskell,
+    th-abstraction
+
+constraints: th-abstraction >= 0.4.0.0
+
+packages: .
+
+with-compiler: ghc-9.0.1
