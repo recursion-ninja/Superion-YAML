@@ -15,16 +15,19 @@ import Data.Bifunctor
 import Data.Char          (toUpper)
 import Data.Coerce
 import Data.Foldable      hiding (toList)
-import Data.Ord
 import Data.List.NonEmpty (NonEmpty(..))
 import Data.Map.Strict    (Map, insert, keysSet, unionWith)
+import Data.Ord
 import Data.Sequence      (Seq)
 import Data.Set           (Set, filter, member)
-import GHC.Exts           (IsList(..))
 import Data.String
 import Data.Text          (Text, intercalate, map, unpack)
+import GHC.Exts           (IsList(..))
 import Numeric            (showHex)
 import Prelude            hiding (filter, map)
+
+import Debug.Trace
+
 
 
 newtype Grammar = Grammar (Map NonTerminal (Set Rule))
@@ -596,10 +599,13 @@ applyProduction g val deps
 enumerableValuesOf
   :: ( Bounded a
      , Enum a
+     , Show a
+     , HasNonTerminal a
      )
   => a
   -> [a]
-enumerableValuesOf input = tail $ [input] <> [minBound .. maxBound]
+enumerableValuesOf input = (\x -> trace ("Enums of: " <> show (nonTerminal input) <> "\n" <> unlines (show <$> x)) x )
+  . tail $ [input] <> [minBound .. maxBound]
 
 
 enumerableProductions
@@ -607,6 +613,8 @@ enumerableProductions
      , Enum a
      , HasRuleByValue a
      , IsDefinedBy g
+     , Show a
+     , HasNonTerminal a
      )
   => g
   -> NonTerminal
@@ -654,3 +662,19 @@ definitionsRemovedFrom grammar =
       in  if   null pruned
           then mempty
           else Deps $ Just pruned
+
+
+mkNonTerminal :: IsString s => [Char] -> b -> s
+mkNonTerminal = const . fromString . fmap toUpper
+
+
+modulusOf
+  :: ( Bounded a
+     , Enum a
+     )
+  => Int
+  -> a
+  -> Word
+modulusOf n e =
+   let m = succ . fromEnum . last $ [e] <> [maxBound]
+   in  toEnum $ n `mod` m

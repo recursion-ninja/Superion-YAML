@@ -28,6 +28,7 @@ import Prelude            hiding (words)
 import BNF
 import LoremIpsum
 import TopLevelDomain
+import URI
 
 
 grammarSeed :: Block
@@ -36,37 +37,6 @@ grammarSeed = minBound
 
 grammarName :: String
 grammarName = "markdown"
-
-
-newtype URI = URI (Either URL Path)
-  deriving newtype (Show, Eq, Ord)
-  deriving stock   (Data, Typeable, Generic)
-
-
-newtype URL = URL (Host, Maybe (NonEmpty Text), Maybe Fragment)
-  deriving newtype (Show, Eq, Ord)
-  deriving stock   (Data, Typeable, Generic)
-
-
-newtype Path = Path (Slash, NonEmpty Text, Slash)
-  deriving newtype (Show, Eq, Ord)
-  deriving stock   (Data, Typeable, Generic)
-
-
-newtype Host = Host (Maybe Text, Text, TopLevelDomain)
-  deriving newtype (Show, Eq, Ord)
-  deriving stock   (Data, Typeable, Generic)
-
-
--- | Fragament text without the @ # @.
-newtype Fragment = Fragment Text
-  deriving newtype (Show, Eq, Ord, IsString)
-  deriving stock   (Data, Typeable, Generic)
-
-
-newtype Slash = Slash Bool
-  deriving newtype (Show, Enum, Eq, Ord)
-  deriving stock   (Data, Typeable, Generic)
 
 
 -- | Options for cell alignment in tables.
@@ -168,46 +138,11 @@ instance Bounded Block where
     minBound = ThematicBreak False
 
 
-instance Bounded Fragment where
-
-    maxBound = Fragment ""
-
-    minBound = Fragment ""
-
-
-instance Bounded Host where
-
-    maxBound = Host (Just "", "", minBound)
-
-    minBound = Host (Nothing, "", minBound)
-
-
 instance Bounded Inline where
 
     maxBound = Image (pure minBound) minBound $ Just ""
 
     minBound = Plain ""
-
-
-instance Bounded Path where
-
-    maxBound = Path (toEnum 1, pure "", toEnum 1)
-
-    minBound = Path (toEnum 0, pure "", toEnum 0)
-
-
-instance Bounded URI where
-
-    maxBound = URI $ Left  minBound
-
-    minBound = URI $ Right minBound
-
-
-instance Bounded URL where
-
-    maxBound = URL (minBound, Just $ pure "", Just "")
-
-    minBound = URL (minBound, Nothing, Nothing)
 
 
 instance Bounded TableRow where
@@ -217,67 +152,11 @@ instance Bounded TableRow where
     minBound = maxBound
 
 
-instance Enum Fragment where
-
-    toEnum   = const minBound
-
-    fromEnum = const 0
-
-
-instance Enum Host where
-
-    toEnum x
-      | even x    = minBound
-      | otherwise = maxBound
-
-    fromEnum (Host (Nothing, _, _)) = 0
-    fromEnum (Host (Just  _, _, _)) = 1
-
-
-instance Enum URI where
-
-    toEnum x
-      | even x    = minBound
-      | otherwise = maxBound
-
-    fromEnum (URI Left  {}) = 0
-    fromEnum (URI Right {}) = 1
-
-
 instance Enum TableRow where
 
     toEnum   = const maxBound
 
     fromEnum = const 0
-
-
-instance Enum URL where
-
-    toEnum x =
-      let txt = Just $ pure ""
-      in  case x `modulusOf` (undefined :: URL) of
-            0 -> minBound
-            1 -> URL (minBound, Nothing, Just "")
-            2 -> URL (minBound,     txt, Nothing)
-            _ -> maxBound
-
-    fromEnum (URL (_, Just _, Just  _)) = 3
-    fromEnum (URL (_, Just _, Nothing)) = 2
-    fromEnum (URL (_, Nothing, Just _)) = 1
-    fromEnum _                          = 0
-
-
-instance Enum Path where
-
-    toEnum x =
-      let txt = pure ""
-      in  case x `modulusOf` (undefined :: Path) of
-            0 -> minBound
-            1 -> Path (toEnum 0, txt, toEnum 1)
-            2 -> Path (toEnum 1, txt, toEnum 0)
-            _ -> maxBound
-
-    fromEnum (Path (x, _, y)) = fromEnum x + fromEnum y
 
 
 instance Enum Inline where
@@ -363,82 +242,6 @@ instance Enum Block where
         Table              {} -> 15
 
 
-{-
-instance HasSymbol (Block a) where
-
-    symbol = "BLOCK"
-
-
-instance HasSymbol CellAlign where
-
-    symbol = "CELLALIGN"
-
-
-instance HasSymbol Inline where
-
-    symbol = "INLINE"
-
-
-instance HasSymbol a => HasProductions (Block a) where
-
-    productions =
-        [ ThematicBreak
-        , (Heading1 a)
-        , (Heading2 a)
-        , (Heading3 a)
-        , (Heading4 a)
-        , (Heading5 a)
-        , (Heading6 a)
-        , (CodeBlock (Maybe Text) Text)
-        , (Naked a)
-        , (Paragraph a)
-        , (Blockquote [Block a])
-        , (OrderedList Word (NonEmpty [Block a])))
-        , (UnorderedList (NonEmpty [Block a]))
-        , (Table (NonEmpty CellAlign) (NonEmpty (NonEmpty a))
-        ]
-    productionRule ThematicBreak  = ['--', ]
-    productionRule ThematicBreakX = [['-', symbol ThematicBreakX], "-"]
-    productionRule (Heading1 a)
-    productionRule (Heading2 a)
-    productionRule (Heading3 a)
-    productionRule (Heading4 a)
-    productionRule (Heading5 a)
-    productionRule (Heading6 a)
-    productionRule (CodeBlock (Maybe Text) Text)
-    productionRule (Naked a)
-    productionRule (Paragraph a)
-    productionRule (Blockquote [Block a])
-    productionRule (OrderedList Word (NonEmpty [Block a])))
-    productionRule (UnorderedList (NonEmpty [Block a]))
-    productionRule (Table (NonEmpty CellAlign) (NonEmpty (NonEmpty a)))
--}
-
-
-{-
-instance HasNonTerminal a where
-
-    nonTerminal :: a -> NonTerminal
-
-
-instance HasNonTerminal a => HasProductions a where
-
-    productionRule :: a -> Production
-
-
-instance HasSuffixSymbol a where
-
-    suffix :: a -> Symbol
-
-
-instance IsGrammar a where
-
-    grammarBNF :: a -> GrammarBuilder
--}
-
-
-
-
 instance HasNonTerminal CellAlign where
 
     nonTerminal = mkNonTerminal "CellAlign"
@@ -468,159 +271,6 @@ instance HasSuffixSymbol CellAlign where
 
 
 instance IsGrammar CellAlign where
-
-    grammarBNF = enumerableGrammar
-
-
-instance HasNonTerminal Fragment where
-
-    nonTerminal = mkNonTerminal "Fragment"
-
-
-instance HasProductions Fragment where
-
-    productionRule g x = enumerableProductions g (nonTerminal x) x
-
-
-instance HasRuleByValue Fragment where
-
-    ruleOfValue g =
-      let wlog = minBound :: LoremIpsum
-      in  const $ ruleWithDeps g [ "#", note wlog ] [ wlog ]
-
-
-instance HasSuffixSymbol Fragment where
-
-    suffix = nonTerminal
-
-
-instance IsGrammar Fragment where
-
-    grammarBNF = enumerableGrammar
-
-
-instance HasNonTerminal Host where
-
-    nonTerminal = mkNonTerminal "Host"
-
-
-instance HasProductions Host where
-
-    productionRule g x = enumerableProductions g (nonTerminal x) x
-
-
-instance HasRuleByValue Host where
-
-    ruleOfValue g x =
-      let dom = minBound :: LoremIpsum
-          tld = minBound :: TopLevelDomain
-          sub = minBound :: LoremIpsum
-      in  case fromEnum x of
-            0 -> ruleWithDep2 g [ "https://",                note dom, ".", note tld ] (dom, tld)
-            _ -> ruleWithDep2 g [ "https://", note sub, ".", note dom, ".", note tld ] (dom, tld)
-
-
-instance HasSuffixSymbol Host where
-
-    suffix = nonTerminal
-
-
-instance IsGrammar Host where
-
-    grammarBNF = enumerableGrammar
-
-
-instance HasNonTerminal URL where
-
-    nonTerminal = mkNonTerminal "URL"
-
-
-instance HasProductions URL where
-
-    productionRule g x = enumerableProductions g (nonTerminal x) x
-
-
-instance HasRuleByValue URL where
-
-   ruleOfValue g x =
-      let host  = minBound :: Host
-          seg   = minBound :: LoremIpsum
-          frag  = minBound :: Fragment
-          dash  = "/" :: Terminal
-          route = seg `SepBy` dash
-      in  case fromEnum x of
-            0 -> ruleWithDeps g [ note host                             ] [host]
-            1 -> ruleWithDep2 g [ note host,                  note frag ] (host,        frag)
-            2 -> ruleWithDep2 g [ note host, "/", note route            ] (host, route      )
-            _ -> ruleWithDep3 g [ note host, "/", note route, note frag ] (host, route, frag)
-
-
-instance HasSuffixSymbol URL where
-
-    suffix = nonTerminal
-
-
-instance IsGrammar URL where
-
-    grammarBNF = enumerableGrammar
-
-
-instance HasNonTerminal Path where
-
-    nonTerminal = mkNonTerminal "Path"
-
-
-instance HasProductions Path where
-
-    productionRule g x = enumerableProductions g (nonTerminal x) x
-
-
-instance HasRuleByValue Path where
-
-    ruleOfValue g x =
-      let part = minBound :: LoremIpsum
-          dash = "/" :: Terminal
-          path = part `SepBy` dash
-          rule = case fromEnum x of
-                   0 -> [      note path      ]
-                   1 -> [      note path, "/" ]
-                   2 -> [ "/", note path      ]
-                   _ -> [ "/", note path, "/" ]
-      in  ruleWithDeps g rule [ path ]
-
-
-instance HasSuffixSymbol Path where
-
-    suffix = nonTerminal
-
-
-instance IsGrammar Path where
-
-    grammarBNF = enumerableGrammar
-
-
-instance HasNonTerminal URI where
-
-    nonTerminal = mkNonTerminal "URI"
-
-
-instance HasProductions URI where
-
-    productionRule g x = enumerableProductions g (nonTerminal x) x
-
-
-instance HasRuleByValue URI where
-
-    ruleOfValue g (URI (Left  x)) = ruleWithDeps g [ note x ] [ x ]
-    ruleOfValue g (URI (Right y)) = ruleWithDeps g [ note y ] [ y ]
-
-
-instance HasSuffixSymbol URI where
-
-    suffix = nonTerminal
-
-
-instance IsGrammar URI where
 
     grammarBNF = enumerableGrammar
 
@@ -769,18 +419,3 @@ instance HasSuffixSymbol Block where
 instance IsGrammar Block where
 
     grammarBNF = enumerableGrammar
-
-
-modulusOf
-  :: ( Bounded a
-     , Enum a
-     )
-  => Int
-  -> a
-  -> Word
-modulusOf n e =
-   let m = succ . fromEnum . last $ [e] <> [maxBound]
-   in  toEnum $ n `mod` m
-
-
-mkNonTerminal = const . fromString . fmap toUpper

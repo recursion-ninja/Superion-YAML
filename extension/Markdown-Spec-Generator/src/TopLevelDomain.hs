@@ -12,24 +12,15 @@ module TopLevelDomain
   , topLevelDomain
   ) where
 
---import Control.DeepSeq
---import Data.Aeson
 import Data.Coerce
-import Data.Data          (Data)
-import Data.Foldable      hiding (toList)
---import Data.Function (on)
-import Data.List.NonEmpty (NonEmpty(..))
-import Data.Map.Strict    (Map)
---import Data.Monoid hiding ((<>))
-import Data.String
-import Data.Text          (Text, unpack)
-import Data.Typeable      (Typeable)
-import Data.Vector        (Vector, (!))
+import Data.Data     (Data)
+import Data.Foldable hiding (toList)
+import Data.Text     (Text, unpack)
+import Data.Typeable (Typeable)
+import Data.Vector   (Vector, (!))
 import GHC.Exts
 import GHC.Generics
 import GHC.Ix
---import Lucid
---import Text.URI (URI (..))
 
 import BNF
 
@@ -84,14 +75,11 @@ instance Ix TopLevelDomain where
 
 instance Show TopLevelDomain where
 
-    show x =
-      let i = fromEnum x :: Int
-          strs =
-            [ "TLD='"
-            , unpack $ topLevelDomain x
-            , "'"
-            ] :: [String]
-      in  fold strs
+    show x = fold
+        ( [ "TLD='"
+          , unpack $ topLevelDomain x
+          , "'"
+          ] :: [String])
 
 
 instance HasNonTerminal TopLevelDomain where
@@ -1469,5 +1457,5 @@ corpus =
     , "zm"
     , "zone"
     , "zuerich"
-    , "ZW"
+    , "zw"
     ]
