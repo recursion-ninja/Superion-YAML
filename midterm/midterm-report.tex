@@ -106,19 +106,25 @@ Superion\cite{superion} is an fairly recent open source fuzzing tool created by 
 Superion currently generates valid JavaScript and XML inputs by taking a context free grammar and an input seed, then performing a series of "grammar-aware" mutations to create a sequence of validly structured inputs. The process is illustrated in the figure below.
 
 \begin{center}
-	\includegraphics[scale=0.4]{superionfig2.PNG}
+	\includegraphics[scale=0.4, trim={0 1cm 0 0}, clip]{superionfig.png}\\
+	\textbf{Figure 1.} Grammar-aware input generation process of Superion
 \end{center}
+\vspace{3mm}
 
+Based on the grammar, Superion parses each test input into an abstract syntax tree, an AST. Using ASTs, Superion introduces a grammar-aware trimming strategy that can effectively trim test inputs while keeping the input structure valid, then randomly chooses another input from AFL’s queue and also parses it into AST. A sub-tree of the target input can be replaced by another sub-tree, either from the target input itself or from a randomly chosen supplementary sample. Therefore, hundreds of new samples are generated and executed to find a new path in tested programs. The results of Superion show a great increase in fuzzing efficacy when targeting programs which expect structured input.
 
-The results of Superion show a great increase in fuzzing efficacy when targeting programs which expect structured input.
+\clearpage
 
 Gramatron\cite{srivastava2021gramatron} is a second, and even more recent, open source fuzzing tool designed to produce structured inputs.
 Released in 2021, Gramatron was designed with new mutation algorithms to increase the speed at which defects are discovered.
 It does this by reducing the number of mutation steps from the input seed to the trigger input, rather than simply optimizing the speed at which new inputs can be generated. There are two steps in which Gramatron modifies AFL++. First, in the preprocessing phase, the context-free grammar, CFG, is converted into Chomsky normal form, GNF/CNF, which is then turned into a finite state automata, FSA. This can be seen in the figure below.
 
+\vspace{-1cm}
 \begin{center}
-	\includegraphics[scale=0.4]{gramatronfig1.PNG}
+	\includegraphics[scale=0.4, trim={0 3cm 0 0}, clip]{gramatronfig.png}
+	\textbf{Figure 2.} Preprocessing phase of Gramatron
 \end{center}
+\vspace{6mm}
 
 In the second step, the fuzzing phase, Gramatron performs the mutations with the FSAs and operators. Gramatron currently generates structured PHP and JavaScript as inputs.
 
@@ -147,7 +153,7 @@ Although we have confined our extension targets to two cutting-edge fuzzers for 
 there are other modern fuzzers that can be tackled in future projects such as; CodeAlchemist\cite{CodeAlchemist1}\cite{CodeAlchemist2}, Hawkeye\cite{Hawkeye}, Angora\cite{Angora1}\cite{Angora2}, CollAFL\cite{CollAFL}, IoTFuzzer\cite{IoTFuzzer}, RedQueen\,\cite{redqueen}, Nautilus\,\cite{Nautilus1}\cite{Nautilus2}, Periscope\cite{PeriScope1}\cite{PeriScope2}, T-Fuzz\,\cite{TFuzz1}\cite{TFuzz2}, Chopper\cite{Chopper}, QSYM\cite{QSYM1}\cite{QSYM2}, DigFuzz\cite{DigFuzz}, and FairFuzz\cite{FairFuzz1}\cite{FairFuzz2}.
 All these tools are distinguished in their specialized scoped, but we have decided to work with Gramatron and Superion as these are open-sourced projects, and are specialized in generating structured inputs in a modular manner.
 
-
+\vspace{3mm}
 \section*{Approach}
 
 We will extend the functionality of Gramatron to generate mutable, structure-aware YAML, JSON, and Markdown output.
@@ -159,6 +165,8 @@ Qualitatively, we will compose a corpus of CVEs discovered from previous work.
 There are currently over 100 CVEs cataloged on MITRE\cite{MITRE} for each of our target languages.
 We will select a reproducible subset of these CVEs to use as our coverage test.
 The degree to which our extended fuzzing programs discover the known CVEs will be our qualitative metric of completeness.
+
+\clearpage
 
 Quantitatively, we will measure the execution time of each extended fuzzing program.
 We will perform a comparison between Gramatron, Superion, and Grimoire mutation strategies in terms of how quickly they discover the known CVEs.
@@ -181,6 +189,7 @@ Our project quantifying and qualifying the performance of these three modern fuz
 This is of academic interest as it will inform the direction of future fuzzing research.
 
 
+\vspace{4mm}
 \section*{Preliminary Results}
 \label{results}
 
@@ -188,7 +197,8 @@ For each target language, we have selected 10 CVEs to administer qualitative eva
 The table below is a corpus of CVEs that we choose to run our tests on.
 These are some of the most recent known defects on open-sourced applications with reference to our target languages.
 
-\vspace{3mm}
+\clearpage
+
 \begin{table}[h!]
 \centering
 \scalebox{0.8} {
@@ -286,12 +296,12 @@ These are some of the most recent known defects on open-sourced applications wit
 	\end{tabular}} \\ \hlineB{3}
 \end{tabular}
 }
-\vspace{3mm}\\ \textbf{Table 1.} Target CVEs for each languages
+\vspace{6mm}\\ \textbf{Table 1.} Target CVEs for each languages
 \end{table}
-\clearpage
-The names of open-sources application are showed at the bottom of each cell of the \textbf{Table 1.}, 
-and the numbers next to the name indicates the latest version that defect can be found. For example, 
-CVE-2021-42139 can be found in Deno if the version is equal or older than 0.107.0.
+\vspace{6mm}
+
+Selected CVEs and the defective applications are shown at the bottom of each cell of \textbf{Table 1}. The numbers next to the name indicate the latest version that the defect was fixed. For example, CVE-2021-42139 can be found in the Deno version prior to 0.107.0.
+
 
 We have administered two major tasks prior to extending the functionality of each fuzzers.
 First, we have set up Gramatron and Superion to run in the test environment.
@@ -299,13 +309,14 @@ The input generators for each fuzzer successfully constructed seed files \cite{s
 Configuring grammar-specific protocols and rules for extending each fuzzer was followed by the environment setup.
 This was done through the course of literature review and presentation preparation, and we have built the JSON grammar definition\cite{json-source.json} for extending Gramatron.
 
-\vspace{6mm}
+\vspace{12mm}
 \hrule height 0.4mm
 \begingroup \fontsize{12pt}{12pt} \selectfont \begin{alltt}
 \input{input.js}
 \end{alltt} \vspace{-6mm} \endgroup \hrule height 0.4mm
-\vspace{3mm}
+\vspace{6mm}
 \centerline{\textbf{Figure 3.} Input created from Grammar-aware input generators}
+\vspace{6mm}
 
 
 \section*{Discussion}
@@ -327,6 +338,9 @@ For the future work, Grimoire, Gramatron, Superion could be combined for large-s
 We can combine the structured inputs generated from Gramatron, Superion with Grimoire, since Grimoire generates input only based on the feedback.
 Lastly, we can keep extending the fuzzers to support more languages for generating the grammar aware inputs.
 
+
+\clearpage
+
 \section*{Division of Labor}
 
 Alex Washburn devised the main concept of the project.
@@ -338,8 +352,6 @@ Kyoungwoo Lee and Alex Washburn configured the fuzzing environment on AWS/DETER.
 Each member conducted fuzzing on the divided set of CVEs.
 Chuanyao Lin and Sabina Bhuiyan analyzed the project in comparison with Grimoire and authored the reports.
 
-
-\clearpage
 
 \section*{Timeline}
 
@@ -370,6 +382,6 @@ The team has collaboratively discussed and drafted a tentative timeline of the p
 \clearpage
 
 \bibliographystyle{acm}
-\bibliography{project-proposal}
+\bibliography{midterm-report}
 
 \end{document}
