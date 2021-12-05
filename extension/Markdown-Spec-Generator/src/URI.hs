@@ -8,14 +8,20 @@
 {-# LANGUAGE OverloadedLists            #-}
 {-# LANGUAGE OverloadedStrings          #-}
 
-module URI where
+module URI
+  ( URI(..)
+  , URL(..)
+  , Path(..)
+  , Host(..)
+  , Fragment(..)
+  , Slash(..)
+  ) where
 
 import Data.Data          (Data)
 import Data.List.NonEmpty (NonEmpty(..))
 import Data.String
 import Data.Text          (Text)
 import Data.Typeable      (Typeable)
-import GHC.Exts
 import GHC.Generics
 
 import Prelude            hiding (words)
@@ -217,16 +223,45 @@ instance HasProductions Host where
 
 instance HasProductions Path where
 
-    productionRule g x = enumerableProductions g (nonTerminal x) x
+    productionRule g x = -- enumerableProductions g (nonTerminal x) x
+      let part = minBound :: LoremIpsum
+          dash = "/" :: Terminal
+          path = part `SepBy` dash
+          (partRules, deps) = getRulesAndDeps g part
+          
+          rules = mconcat $
+                   [ appendSymbolsToSet ["/", note path      ] partRules
+                   , appendSymbolsToSet ["/", note path, "/" ] partRules
+                   , [[ "/", note path      ]]
+                   , [[ "/", note path, "/" ]]
+                   ]
+      in  (deps <>) <$> fromRulesWithDeps g (nonTerminal x) rules [ path ]
 
 
 instance HasProductions URI where
 
-    productionRule g x = enumerableProductions g (nonTerminal x) x
+    productionRule g x = -- enumerableProductions g (nonTerminal x) x
+      let url  = minBound :: URL
+          path = minBound :: URI
+          (Production (_,rules), deps) = productionRule g $ url :||: path
+      in  (Production (nonTerminal x, rules), deps)
+
 
 instance HasProductions URL where
 
-    productionRule g x = enumerableProductions g (nonTerminal x) x
+    productionRule g x = -- enumerableProductions g (nonTerminal x) x
+      let host  = minBound :: Host
+          seg   = minBound :: LoremIpsum
+          frag  = minBound :: Fragment
+          dash  = "/" :: Terminal
+          route = seg `SepBy` dash
+          (hostRules, hostDeps) = getRulesAndDeps g host
+          rules = mconcat $
+                    [ appendSymbolsToSet [ note frag ] hostRules
+                    , [[ "/", note route            ]]
+                    , [[ "/", note route, note frag ]]
+                    ]
+      in  (hostDeps <>) <$> fromRulesWithDeps2 g (nonTerminal x) rules (route, frag)
 
 
 
@@ -276,24 +311,28 @@ instance HasRuleByValue Host where
             _ -> ruleWithDep2 g [ "https://", note sub, ".", note dom, ".", note tld ] (dom, tld)
 
 
+{-
 instance HasRuleByValue Path where
 
     ruleOfValue g x =
       let part = minBound :: LoremIpsum
           dash = "/" :: Terminal
           path = part `SepBy` dash
+          (partRules, deps) = getRulesAndDeps g part
           rule = case fromEnum x of
-                   0 -> [      note path      ]
-                   1 -> [      note path, "/" ]
+                   0 -> appendSymbolsToSet ["/", note path      ] partRules
+                   1 -> appendSymbolsToSet ["/", note path, "/" ] partRules
                    2 -> [ "/", note path      ]
                    _ -> [ "/", note path, "/" ]
-      in  ruleWithDeps g rule [ path ]
+      in  (deps <>) <$> ruleWithDeps g rule [ path ]
 
 
 instance HasRuleByValue URI where
 
-    ruleOfValue g (URI (Left  x)) = ruleWithDeps g [ note x ] [ x ]
-    ruleOfValue g (URI (Right y)) = ruleWithDeps g [ note y ] [ y ]
+    ruleOfValue g =
+      let url  = minBound :: URL
+          path = minBound :: URI
+      in const $ getProduction g $ url :||: path
 
 
 instance HasRuleByValue URL where
@@ -304,8 +343,11 @@ instance HasRuleByValue URL where
           frag  = minBound :: Fragment
           dash  = "/" :: Terminal
           route = seg `SepBy` dash
+          r@(hostRules, hostDeps) = getRulesAndDeps g host
+          f = fmap (hostDeps <>)
       in  case fromEnum x of
-            0 -> ruleWithDeps g [ note host                             ] [host]
-            1 -> ruleWithDep2 g [ note host,                  note frag ] (host,        frag)
-            2 -> ruleWithDep2 g [ note host, "/", note route            ] (host, route      )
-            _ -> ruleWithDep3 g [ note host, "/", note route, note frag ] (host, route, frag)
+            1 -> f ruleWithDep2 g (appendSymbolsToSet [                  note frag ] hostRules) (       frag)
+            2 -> f ruleWithDep2 g (appendSymbolsToSet [ "/", note route            ] hostRules) (route      )
+            0 -> r
+            _ -> f ruleWithDep3 g (appendSymbolsToSet [ "/", note route, note frag ] hostRules) (route, frag)
+-}

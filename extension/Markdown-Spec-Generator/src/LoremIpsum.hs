@@ -11,25 +11,16 @@ module LoremIpsum
   ( LoremIpsum()
   ) where
 
---import Control.DeepSeq
---import Data.Aeson
 import Data.Coerce
 import Data.Data          (Data)
 import Data.Foldable      hiding (toList)
---import Data.Function (on)
-import Data.List.NonEmpty (NonEmpty(..))
-import Data.Map.Strict    (Map)
---import Data.Monoid hiding ((<>))
 import Data.Set           (Set)
-import Data.String
 import Data.Text          (Text, unpack)
 import Data.Typeable      (Typeable)
 import Data.Vector        (Vector, (!))
 import GHC.Exts
 import GHC.Generics
 import GHC.Ix
---import Lucid
---import Text.URI (URI (..))
 
 import BNF
 
@@ -103,7 +94,9 @@ instance HasNonTerminal LoremIpsum where
 
 instance HasProductions LoremIpsum where
 
-    productionRule g x = enumerableProductions g (nonTerminal x) x
+    productionRule g x =
+      let sym = nonTerminal x
+      in  enumerableProductions g sym x
 
 
 instance HasRuleByValue LoremIpsum where

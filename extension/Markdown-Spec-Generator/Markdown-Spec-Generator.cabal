@@ -50,6 +50,7 @@ executable Markdown-Spec-Generator
     default-language: Haskell2010
 
   ghc-options:
+    -fprof-auto -fprof-cafs
     -- Optimization flags
     -O2
     -threaded

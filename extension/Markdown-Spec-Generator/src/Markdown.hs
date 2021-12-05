@@ -7,36 +7,39 @@
 {-# LANGUAGE LambdaCase                 #-}
 {-# LANGUAGE OverloadedLists            #-}
 {-# LANGUAGE OverloadedStrings          #-}
+{-# LANGUAGE TypeOperators         #-}
 
 module Markdown
   ( grammarSeed
   , grammarName
   ) where
 
-import Data.Char
 import Data.Data          (Data)
 import Data.List.NonEmpty (NonEmpty(..))
-import Data.Map.Strict    (Map)
 import Data.String
 import Data.Text          (Text)
 import Data.Typeable      (Typeable)
 import GHC.Exts
 import GHC.Generics
 
-import Prelude            hiding (words)
-
 import BNF
 import LoremIpsum
-import TopLevelDomain
 import URI
 
+import Debug.Trace
 
-grammarSeed :: Block
+
+grammarSeed :: Program
 grammarSeed = minBound
 
 
 grammarName :: String
 grammarName = "markdown"
+
+
+newtype Program = Program ()
+  deriving newtype (Show, Bounded, Enum, Eq, Ord)
+  deriving stock   (Data, Typeable, Generic)
 
 
 -- | Options for cell alignment in tables.
@@ -178,7 +181,7 @@ instance Enum Inline where
             10 -> Link  nei minBound Nothing
             11 -> Link  nei minBound tlt
             12 -> Image nei minBound Nothing
-            13 -> Image nei minBound tlt
+            _  -> Image nei minBound tlt
 
     fromEnum =
       \case
@@ -203,7 +206,6 @@ instance Enum Block where
     toEnum x =
       let nei = pure minBound
           neb = pure minBound
-          tlt = Just ""
       in  case x `modulusOf` (undefined :: Block) of
             0  -> minBound
             1  -> ThematicBreak True
@@ -220,7 +222,7 @@ instance Enum Block where
             12 -> OrderedList   0     $ pure neb
             13 -> UnorderedList False $ pure neb
             14 -> UnorderedList True  $ pure neb
-            15 -> maxBound
+            _  -> maxBound
 
     fromEnum =
       \case
@@ -249,20 +251,19 @@ instance HasNonTerminal CellAlign where
 
 instance HasProductions CellAlign where
 
-    productionRule g x = enumerableProductions g (nonTerminal x) x
-
-
-instance HasRuleByValue CellAlign where
-
-    ruleOfValue g x =
-      let dashVal = ["-"] :: NonEmpty Terminal
-          dashes  = note dashVal
-          theRule = case x of
-                      CellAlignDefault -> [      dashes ]
-                      CellAlignLeft    -> [ ":", dashes ]
-                      CellAlignRight   -> [      dashes, ":" ]
-                      CellAlignCenter  -> [ ":", dashes, ":" ]
-      in  ruleWithDeps g theRule [ dashVal ]
+    productionRule g =
+      let label   = nonTerminal (minBound :: CellAlign)
+          dash    = "-" :: Terminal
+          colon   = ":" :: Terminal
+          end     = dash :||: colon
+          dashes  = [dash] :: NonEmpty Terminal
+      in  const $ fromRulesWithDeps2 g label
+              [ [ "-", note end ]
+              , [ "-", note dashes, note end ]
+              , [ ":-" ]
+              , [ ":", note dashes, note end ]
+              ]
+              (dashes, end)
 
 
 instance HasSuffixSymbol CellAlign where
@@ -287,20 +288,21 @@ instance HasProductions Inline where
 
 instance HasRuleByValue Inline where
 
+   ruleOfValue _ x | trace ("ruleOfValue $ " <> show x) False = undefined
    ruleOfValue g x =
-      let words  =  word `SepBy` space
+      let idiom  =  word `SepBy` space
           word   =  minBound  :: LoremIpsum
           parts  = [minBound] :: NonEmpty Inline
           uri    =  minBound  :: URI
           space  = " " :: Terminal
           spaces = space :| []
           quote  = "\'"
-          ref    = (g, nonTerminal x)
+          ref    = (g, Production (nonTerminal x, mempty))
           partsSurroundedBy :: [Symbol] -> (Rule, Dependencies)
           partsSurroundedBy y = ruleWithDeps ref (fromList $ y <> [ note parts ] <> y) [ parts ]
       in  case x of
-            Plain          {} -> ruleWithDeps ref [ " ", note words, " " ] [ words ]
-            LineBreak         -> ruleWithDeps ref [ tok space, note spaces, "\n" ] [ spaces ]
+            Plain          {} -> ruleWithDeps ref [ " ", note idiom, " " ] [ idiom ]
+            LineBreak         -> ruleWithDeps ref [ tok space, note spaces, "\\n" ] [ spaces ]
             Emphasis False  _ -> partsSurroundedBy [ "*" ]
             Emphasis True   _ -> partsSurroundedBy [ "_" ]
             Strong   False  _ -> partsSurroundedBy [ "*", "*" ]
@@ -308,23 +310,23 @@ instance HasRuleByValue Inline where
             Strikeout      {} -> partsSurroundedBy [ "~", "~" ]
             Subscript      {} -> partsSurroundedBy [ "~" ]
             Superscript    {} -> partsSurroundedBy [ "^" ]
-            CodeSpan       {} -> ruleWithDeps ref [ "`", note words, "`" ] [ words ]
+            CodeSpan       {} -> ruleWithDeps ref [ "`", note idiom, "`" ] [ idiom ]
             Link  _ _ Nothing -> ruleWithDep2 ref [ "[", note parts , "]"
                                                 , "(", note uri, ")"
                                                 ] (parts, uri)
             Link  _ _ _       -> ruleWithDep3 ref [ "[", note parts , "]"
                                                 , "(", note uri   , ")"
                                                 , note spaces
-                                                , quote, note words, quote
-                                                ] (parts, uri, words)
+                                                , quote, note idiom, quote
+                                                ] (parts, uri, idiom)
             Image _ _ Nothing -> ruleWithDep2 ref [ "!", "[", note parts, "]"
                                                 ,      "(", note uri  , ")"
                                                 ] (parts, uri)
             Image _ _ _       -> ruleWithDep3 ref [ "!", "[", note parts, "]"
                                                 ,      "(", note uri  , ")"
                                                 , note spaces
-                                                , quote, note words, quote
-                                                ] (parts, uri, words)
+                                                , quote, note idiom, quote
+                                                ] (parts, uri, idiom)
 
 
 instance HasSuffixSymbol Inline where
@@ -349,12 +351,8 @@ instance HasProductions TableRow where
 
 instance HasRuleByValue TableRow where
 
-    ruleOfValue g x =
-      let words = minBound `SepBy` " "  :: SepBy LoremIpsum Terminal
-          cells = cell     `SepBy` pipe :: SepBy (Padded (SepBy LoremIpsum Terminal)) Terminal
-          cell  = Padded words
-          pipe  = "|" :: Terminal
-      in  ruleWithDeps g [ term pipe, note cells, term pipe, "\n" ] [ cells ]
+    ruleOfValue g = const $
+        ruleWithDeps g [ "|", note tableRowCells, "|\\n" ] [ tableRowCells ]
 
 
 instance HasSuffixSymbol TableRow where
@@ -379,19 +377,19 @@ instance HasProductions Block where
 
 instance HasRuleByValue Block where
 
+    ruleOfValue _ x | trace ("ruleOfValue $ " <> show x) False = undefined
     ruleOfValue g x =
-      let words  = minBound `SepBy` space :: SepBy LoremIpsum Terminal
+      let idiom  = minBound `SepBy` space :: SepBy LoremIpsum Terminal
           parts  = Padded $ minBound `SepBy` space :: Padded (SepBy Inline Terminal)
-          uri    =  minBound  :: URI
-          eol    = "\n" :: Symbol
+          eol    = "\\n" :: Symbol
           space  = " "  :: Terminal
           spaces = space :| []
           header n =
             let prefix = fromString $ replicate n '#'
             in  ruleWithDeps g [ prefix, note parts, eol ] [ parts ]
-          underlined x =
-            let ne = [x] :: NonEmpty Terminal
-            in  ruleWithDeps g [ term x, term x, note ne, eol ] [ ne ]
+          underlined t =
+            let ne = [t] :: NonEmpty Terminal
+            in  ruleWithDeps g [ term t, term t, note ne, eol ] [ ne ]
       in  case x of
             ThematicBreak False   -> underlined "="
             ThematicBreak True    -> underlined "-"
@@ -401,14 +399,21 @@ instance HasRuleByValue Block where
             Heading4           {} -> header 4
             Heading5           {} -> header 5
             Heading6           {} -> header 6
-            CodeBlock          {} -> ruleWithDeps g [ "`", "`", "`", eol, note words, "`", "`", "`", eol ] [ words ]
-            Naked              {} -> ruleWithDeps g [ note parts, eol ] [ parts ]
-            Paragraph          {} -> ruleWithDeps g [ note parts, eol ] [ parts ]
+            CodeBlock          {} -> ruleWithDeps g [ "`", "`", "`", eol, note idiom, "`", "`", "`", eol ] [ idiom ]
+            Naked              {} -> ruleWithDeps g [ eol, note parts, eol ] [ parts ]
+            Paragraph          {} -> ruleWithDeps g [ eol, note parts, eol ] [ parts ]
             Blockquote         {} -> ruleWithDeps g [ ">", note parts, eol ] [ parts ]
-            OrderedList        {} -> ruleWithDep2 g [ note spaces, "1", ".", note parts, eol ] (spaces, parts)
-            UnorderedList False _ -> ruleWithDep2 g [ note spaces, "*", note parts, eol ] (spaces, parts)
-            UnorderedList True  _ -> ruleWithDep2 g [ note spaces, "-", note parts, eol ] (spaces, parts)
-            Table x y z           -> ruleWithDep3 g [ note x, note y, note z ] (x, y, z)
+            OrderedList        {} -> ruleWithDep2 g [ " ", note spaces, "1", ".", note parts, eol ] (spaces, parts)
+            UnorderedList False _ -> ruleWithDep2 g [ " ",note spaces, "*", note parts, eol ] (spaces, parts)
+            UnorderedList True  _ -> ruleWithDep2 g [ " ",  note spaces, "-", note parts, eol ] (spaces, parts)
+            Table _ as rs         ->
+              let pipe   = "|" :: Terminal
+                  end    = "\\n" :: Terminal
+                  cellAlign = minBound :: CellAlign
+                  aligns    = (pipe :<>: as) :|[]
+                  cellAligns = pipe :<>: (cellAlign :<>: (aligns :<>: end))
+                  rows       = [ "|" :<>: (tableRowCells :<>: "|\\n") ] :: NonEmpty (Terminal :<>: ((SepBy (Padded (SepBy LoremIpsum Terminal)) Terminal) :<>: Terminal))
+              in  ruleWithDep4 g [ "|", note tableRowCells, "|\\n", note cellAligns, note rows ] (cellAligns, rows, tableRowCells, rs)
 
 
 instance HasSuffixSymbol Block where
@@ -419,3 +424,40 @@ instance HasSuffixSymbol Block where
 instance IsGrammar Block where
 
     grammarBNF = enumerableGrammar
+
+
+tableRowCells :: SepBy (Padded (SepBy LoremIpsum Terminal)) Terminal
+tableRowCells = 
+    let cell  = Padded idiom
+        idiom = minBound `SepBy` " "  :: SepBy LoremIpsum Terminal
+    in  cell `SepBy` "|"
+
+
+instance HasNonTerminal Program where
+
+    nonTerminal = mkNonTerminal "FILE"
+
+
+instance HasProductions Program where
+
+    productionRule g x =
+      let space  = [" " :||: "\\n"] :: NonEmpty (Terminal :||: Terminal)
+          block  = minBound :: Block
+          blocks = (block :||: (block :<>: space)) :|[]
+          rules  =
+            [ [ " "  , note space, note blocks ]
+            , [ "\\n", note space, note blocks ]
+            ]   
+      in  fromRulesWithDeps2 g (nonTerminal x) rules (space, block)
+
+
+instance HasSuffixSymbol Program where
+
+    suffix = nonTerminal
+
+
+instance IsGrammar Program where
+
+    grammarBNF = enumerableGrammar
+
+

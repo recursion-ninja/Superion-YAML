@@ -89,7 +89,9 @@ instance HasNonTerminal TopLevelDomain where
 
 instance HasProductions TopLevelDomain where
 
-    productionRule g x = enumerableProductions g (nonTerminal x) x
+    productionRule g x =
+      let sym = nonTerminal x
+      in  enumerableProductions g sym x
 
 
 instance HasRuleByValue TopLevelDomain where

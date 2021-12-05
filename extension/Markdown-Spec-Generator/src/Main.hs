@@ -1,8 +1,13 @@
-module Main where
+{-# LANGUAGE OverloadedStrings #-}
 
-import           BNF                      (finalizeGrammar, grammarBNF)
+module Main
+  ( main
+  ) where
+
+import           BNF                      (IsGrammar, toG4, finalizeGrammar, grammarBNF)
 import           Data.Aeson.Encode.Pretty (encodePretty)
-import           Data.ByteString.Lazy     (writeFile)
+import qualified Data.ByteString.Lazy     as BS 
+import qualified Data.Text.IO as TX
 import qualified Markdown                 as Markdown (grammarName, grammarSeed)
 import           Prelude                  hiding (writeFile)
 import           System.Directory         (createDirectoryIfMissing)
@@ -12,10 +17,13 @@ main :: IO ()
 main = writeOutGrammarFormats Markdown.grammarSeed Markdown.grammarName
 
 
+writeOutGrammarFormats :: IsGrammar p => p -> FilePath -> IO ()
 writeOutGrammarFormats seed name =
-    let file = "source.json"
-        path = name </> file
+    let file1 = "source.json"
+        file2 = "source.g4"
         lang = finalizeGrammar $ grammarBNF seed
         json = encodePretty lang
+        g4   = toG4 "Markdown" lang
     in  do  createDirectoryIfMissing True name
-            writeFile path json
+            BS.writeFile (name </> file1) json
+            TX.writeFile (name </> file2) g4
