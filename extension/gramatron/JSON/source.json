@@ -3,16 +3,16 @@
 		"ELEMENT"
 	],
 	"VALUE": [
-		"OBJECT",
-		"ARRAY",
-		"STRING",
-		"NUMBER",
 		"'true'",
 		"'false'",
 		"'null'",
+		"OBJECT",
+		"ARRAY",
+		"STRING",
+		"NUMBER"
 	],
 	"OBJECT": [
-		"'{' WS '}'",
+		"'{' WSS '}'",
 		"'{' MEMBERS '}'"
 	],
 	"MEMBERS": [
@@ -20,10 +20,11 @@
 		"MEMBER ',' MEMBERS"
 	],
 	"MEMBER": [
-		"WS STRING WS ':' ELEMENT"
+		"WSS STRING WSS ':' ELEMENT"
 	],
 	"ARRAY": [
-		"'[' WS ']'",
+		"'[' ']'",
+		"'[' WSS ']'",
 		"'[' ELEMENTS ']'"
 	],
 	"ELEMENTS": [
@@ -31,75 +32,38 @@
 		"ELEMENT ',' ELEMENTS"
 	],
 	"ELEMENT": [
-		"WS VALUE WS"
+		"VALUE",
+		"WSS VALUE WSS"
 	],
 	"STRING": [
 		"'\"' CHARACTERS '\"'"
 	],
 	"CHARACTERS": [
-		"CHARACTER CHARACTERS",
-		"\"\""
-	],
-	"CHARACTER": [
-		"'0020' . '10FFFF' - '\"' - '\\'",
-		"'\\' ESCAPE"
-	],
-	"ESCAPE": [
-		"'\"'",
-		"'\\'",
-		"'/'",
-		"'b'",
-		"'f'",
-		"'n'",
-		"'r'",
-		"'t'",
-		"'u' HEX HEX HEX HEX"
-	],
-	"HEX": [
-		"DIGIT",
-		"'A' . 'F'",
-		"'a' . 'f'"
-	],
+		"'q'", "'Y'", "'eWN'", "'NqQHK'", "'mVkHH'", "'oClLxQ'", "'MaeGILv'", 
+		"'UG'", "'VZpC'", "'ALDzEwF'", "'txlEbL'", "'lG'", "'gn'", "'X'", "'OI'", 
+		"'y'", "'Mby'", "'BspHYobF'", "'BqEqOiy'", "'XO\u0034IzX'", "'XScrclPCxx'", 
+		"'TLQFXCsmR'", "'U'", "'CO'", "'ps'", "'ZEkPuFb'", "'GzxvBRX'", "'cHij'",
+		"'VJo\u0073'", "'MsvnEh'", "'PD'", "'uD\u0010XnlZEr'", "'Wsdu'", "'C'",
+		"'AUZi'", "'URyP'", "'bssYNWRCEz'", "'KZl'", "'I'", "'dez'", "'yRbDUJ'",
+		"'RaE'", "'YniBNJX'", "'eTnjmTMkF'", "'wipTX'", "'WWE'", "'FFMwWFPSC'",
+		"'YRqtbd'", "'hnwyWrJKoj'", "'GjfwAsZEl'", "'JzudTSJ'", "'indWS'", "'gvE'",
+		"'v\u0052IETGz'", "'ue'", "'nYp'", "'y920323'", "'UwO98S&^'",
+		"'owiOW:EF'", "'/SR.mB'", "'MZZ%$!g'", "'evZqyL\u0045VJs'", "'OB'"
+		],
 	"NUMBER": [
-		"INTEGER FRACTION EXPONENT"
-	],
-	"INTEGER": [
-		"DIGIT",
-		"ONENINE DIGITS",
-		"'-' DIGIT",
-		"'-' ONENINE DIGITS"
-	],
-	"DIGITS": [
-		"DIGIT",
-		"DIGIT DIGITS"
-	],
-
-	"DIGIT": [
-		"'0'",
-		"ONENINE"
-	],
-	"ONENINE": [
-		"'1' . '9'"
-	],
-	"FRACTION": [
-		"\"\"",
-		"'.' DIGITS"
-	],
-	"EXPONENT": [
-		"\"\"",
-		"'E' SIGN DIGITS",
-		"'e' SIGN DIGITS"
-	],
-	"SIGN": [
-		"\"\"",
-		"'+'",
-		"'-'"
+		"'0'", "'9'", "'65'", "'43'", "'1396'", "'1'", "'5'", "'434'",
+		"'5370'","'4'", "'96'", "'234'", "'7243'", "'7'", "'1/2'", "'1E2'",
+		"'1E02'", "'1E+02'", "'-1'", "'-1.00'", "'-1/2'", "'-1E2'", "'-1E02'",
+		"'-1E+02'", "'1/0'", "'0/0'", "'-2147483648/-1'",
+		"'-9223372036854775808/-1'", "'-0'", "'-0.0'", "'+0'"
 	],
 	"WS": [
-		"\"\"",
-		"'0020' WS",
-		"'000A' WS",
-		"'000D' WS",
-		"'0009' WS"
+		"'\u0020'",
+		"'\u000D'",
+		"'\u0009'"
+	],
+	"WSS": [
+		"WS",
+		"WS WSS"
 	]
 }
