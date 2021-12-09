@@ -242,7 +242,7 @@ Instead the Superion documentation suggests defining the new grammar as a CFG in
 The generated C++ code can then be placed on the compilation path and the new language will be added to the compilation targets of Superion when rebuilt.
 
 Our extension of Superion to support JSON, Markdown, and YAML, encountered different technical complications.
-While locating a pre-defined G4 definitions of JSON and Markdown was simple, each existing G4 definition of Markdown we found came tainted with some "flavored extension" outside of Markdown's specified definition
+While locating a pre-defined G4 definitions of JSON and Markdown was simple, each existing G4 definition of Markdown we found came tainted with some "flavored extension" outside of Markdown's specified definition.
 Removing the extraneous portions from the Markdown G4 files we discovered proved more difficult than authoring a direct translation from the specification to the G4 format.
 Once we had sufficient G4 files, we added the output from ANTLR onto Superion's compilation path.
 However, we could not get the newly built Superion emit the new grammar fuzzing inputs.
@@ -255,13 +255,10 @@ Ultimately Superion promises high fidelity linguistic coverage in it's structure
 
 \subsection*{Grimoire}
 
-Grimoire is build upon Redqueen, an alternative to taint checking that exploits input-to-state correspondence and overcomes fuzzing setbacks.
-Redqueen must be implemented to set up Grimoire. However, several issues arose when doing so.
-Redqueen has many dependent packages which did not reliably run on our machines.
-Despite multiple attempts of installation and manually setting up our test platform again so that it would be compatible with Redqueen, we failed to successfully build the fuzzer in a working state.
-Debugging these errors did not suffice, and due to lack of documentation regarding the encountered configuration defects, we decided to move on to AFL++ to fuzz the target programs.
-AFL++ has a significantly smaller dependency footprint compared to Grimoire, and proved to be both more portable and usable. 
-
+Grimoire is build upon Redqueen, an alternative to taint checking that exploits input-to-state correspondence and overcomes fuzzing setbacks. 
+Redqueen must be implemented to set up Grimoire. However, several issues arose when doing so. Redqueen had many dependency packages that did not run on our machine. 
+Despite multiple attempts of installation and manually setting up our machine again so that it would be compatible with Redqueen, we failed to successfully implement the fuzzer. Debugging these errors did not suffice, and due to lack of documentation regarding these bugs, we decided to move on to AFL++ to fuzz the target programs. 
+AFL++ did not have many dependencies like Grimoire did, and was much easier to implement and use. 
 
 \subsection*{Selected CVEs}
 
@@ -401,9 +398,7 @@ AFL++ completed more total paths than AFL did when fuzzing both yaml-cpp and mar
 
 
 \section*{Future Experimentation}
-For the future work, Grimoire, Gramatron, Superion could be combined for large-scale testing to explore the new CVEs. 
-We can combine the structured inputs generated from Gramatron, Superion with Grimoire, since Grimoire generates input only based on the feedback.
-Lastly, we can keep extending the fuzzers to support more languages for generating the grammar aware inputs.
+For the future work, we would like to investigate the similarities between the crashes we found and the CVEs known for each target language. We think that either writing a function to parse all the crashes, or implementing another program, address sanitizers, with fuzzing would help us. Address sanitizers are used to detect bugs when fuzzing a target program. Using this modifier would aid us in investigating the crashes further.
 
 
 \clearpage
