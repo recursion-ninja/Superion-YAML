@@ -1,0 +1,10 @@
+{!!str,r,
+ 0,str 0 !!st00,str 00,tr,
+
+ TAGstr :YAML,
+  !!str : 
+ 000,tr,
+  !!str 00,tr,
+ 0,str 0 !!st00,str 00,tr,
+  !!str : 00
+}

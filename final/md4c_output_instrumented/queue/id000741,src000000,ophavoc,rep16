@@ -1,0 +1,34 @@
+
+# h1
+## h2
+#link](/u# G6
+
+h1
+==
+
+h2
+--
+
+--------------------
+
+    icode
+
+```
+fen_ed code
+```
+
+<tag attr='val' atto2="val2">
+
+> ƒuote
+
+* list _empitem
+1. lis  : /url
+
+parag#1234; &#xabcd;
+`code`           
+Qph* **strong** ***mph***
+_emph_ __strong__ ___strong emph___
+[ref] [ref]] [link](/url)
+![ref] ![ref][@ ![img](/url)
+<http://example.com> <doe@example.com>
+\\ \* \. \` \

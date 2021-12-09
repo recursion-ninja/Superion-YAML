@@ -1,0 +1,25 @@
+start_time     : 1638921526
+last_update    : 1638932326
+fuzzer_pid     : 5111
+cycles_done    : 1
+execs_done     : 14323828
+execs_per_sec  : 622.70
+paths_total    : 1928
+paths_favored  : 241
+paths_found    : 1842
+paths_imported : 0
+max_depth      : 6
+cur_path       : 1908
+pending_favs   : 3
+pending_total  : 1588
+variable_paths : 0
+bitmap_cvg     : 9.39%
+unique_crashes : 116
+unique_hangs   : 125
+last_path      : 1638932310
+last_crash     : 1638931879
+last_hang      : 1638931718
+exec_timeout   : 20
+afl_banner     : parse
+afl_version    : 1.96b
+command_line   : afl-fuzz -i /home/chuanyao17/min_testcases/ -o /home/chuanyao17/yaml_cpp_3hours/ -- ./parse
