@@ -364,7 +364,7 @@ The input generators for each fuzzer successfully constructed seed files \cite{s
 Configuring grammar-specific protocols and rules for extending each fuzzer was followed by the environment setup.
 This was done through the course of literature review and presentation preparation, and we have built the JSON grammar definition\cite{json-source.json} for extending Gramatron.
 
-\vspace{12mm}
+\vspace{22mm}
 \hrule height 0.4mm
 \begingroup \fontsize{12pt}{12pt} \selectfont \begin{alltt}
 \input{input.js}
@@ -386,51 +386,9 @@ Since the AFL mutator will keep mutating the input file as we mentioned before, 
 
 For analyzing the results of MD4C, The message we can only get is the segmentation fault for testing different the crash files. So, if we want to know what’s different between them, we’ll need another tool to sanitize them.
 In short, we assume that if the fuzzing time gets longer, after the fuzzer searching the target program deeply, the generated crash files might be in different pattern. Moreover, we’ll need another tool or method to know the detail reasons while the program crashed.
+
+Figures in the appendix show example crashes induced by AFL++.
  
-
-Below is the output of AFL++ when fuzzed on yaml-cpp as a target program for 3 hours.
-
-\begin{center}
-    \includegraphics[scale=0.4, trim={0 3cm 0 0}, clip]{yamlfuzzer.png}
-    \textbf{Figure 3.} Fuzzing yaml-cpp with AFL++
-\end{center}
-
-Some of the sample crashes are shown below.
-
-\begin{center}
-    \includegraphics[scale=0.4, trim={0 3cm 0 0}, clip]{yaml sample crashes.png}
-    \textbf{Figure 4.} yaml-cpp Crashes 
-\end{center}
-
-The content of one crash is shown below.
-
-\begin{center}
-    \includegraphics[scale=0.4, trim={0 3cm 0 0}, clip]{yamlsamplecrashcat.png}
-    \textbf{Figure 5.} Content of a Sample yaml-cpp Crash
-\end{center}
-
-Below is the output of AFL++ when fuzzed on markdown as a target program for 3 hours.
-
-\begin{center}
-    \includegraphics[scale=0.4, trim={0 3cm 0 0}, clip]{markdownfuzzer.png}
-    \textbf{Figure 6.} Fuzzing markdown with AFL++
-\end{center}
-
-Some of the sample crashes are shown below.
-
-\begin{center}
-    \includegraphics[scale=0.4, trim={0 3cm 0 0}, clip]{markdowncrashes.png}
-    \textbf{Figure 7.} markdown Crashes
-\end{center}
-
-The content of one crash is shown below.
-
-\begin{center}
-    \includegraphics[scale=0.4, trim={0 3cm 0 0}, clip]{markdownsamplecatcrash.png}
-    \textbf{Figure 8.} Content of a Sample markdown Crash
-\end{center}
-
-
 
 \begin{table}[h!]
 \centering
@@ -538,6 +496,45 @@ The following is a rough accounting of the project development:
 	\item \texttt{2021-12-12:} \textbf{Final project reports due 5:35 pm}
 \end{enumerate}
 
+
+\clearpage
+
+\begin{figure}
+	\centering
+	\includegraphics[scale=1.0, trim={0 3cm 0 0}, clip]{yamlfuzzer.png}
+	\caption{Fuzzing yaml-cpp with AFL++}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[scale=1.0, trim={0 3cm 0 0}, clip]{yaml-sample-crashes.png}
+	\caption{yaml-cpp crashes}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[scale=1.0, trim={0 3cm 0 0}, clip]{yamlsamplecrashcat.png}
+	\caption{Content of a Sample yaml-cpp crash}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[scale=1.0, trim={0 3cm 0 0}, clip]{markdownfuzzer.png}
+	\caption{Fuzzing markdown with AFL++ for 3 hours.}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[scale=1.0, trim={0 3cm 0 0}, clip]{markdowncrashes.png}
+	\caption{Markdown Crashes}
+\end{figure}
+
+
+\begin{figure}
+	\centering
+	\includegraphics[scale=1.0, trim={0 3cm 0 0}, clip]{markdownsamplecatcrash.png}
+    \caption{Content of a Sample markdown crash}
+\end{figure}
 
 \clearpage
 
