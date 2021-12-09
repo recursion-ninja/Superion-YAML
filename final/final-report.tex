@@ -155,15 +155,17 @@ All these tools are distinguished in their specialized scoped, but we have decid
 \vspace{3mm}
 \section*{Approach}
 
-We will extend the functionality of Gramatron to generate mutable, structure-aware YAML, JSON, and Markdown output.
-Additionally, we will extend the functionality of Superion to generate mutable, structure-aware outputs in the same three target languages.
-Both projects are open source and are modular in their design for incorporating new grammars.
-These extensions, which are valuable to the wider fuzzing community, ought not to be too onerous.
+We attempted to extend the functionality of Gramatron to generate mutable, structure-aware YAML, JSON, and Markdown output.
+Additionally, we attempted to extend the functionality of Superion to generate mutable, structure-aware outputs in the same three target languages.
+While both projects are open source and are modular in their design for incorporating new grammars, the ease of this incorporation was misguided.
+Neither extension was fully successful.
+However, there the extension attempts did provide insightful results.
 
-Qualitatively, we will compose a corpus of CVEs discovered from previous work.
-There are currently over 100 CVEs cataloged on MITRE\cite{MITRE} for each of our target languages.
-We will select a reproducible subset of these CVEs to use as our coverage test.
-The degree to which our extended fuzzing programs discover the known CVEs will be our qualitative metric of completeness.
+Qualitatively, we have composed a corpus of CVEs discovered from previous work.
+At the time of writing, we found over 100 CVEs cataloged on MITRE\cite{MITRE} for each of target languages mentioned above.
+We selected a reproducible subset of these CVEs to use as our coverage test.
+Unfortunately, do to the inability to extend Gramatron and Superion, we could not use test these extensions' ability to discover the selected CVEs.
+Instead we used the efficacy of AFL and AFL++ as a comparative metric.
 
 \clearpage
 
