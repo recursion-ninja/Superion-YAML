@@ -50,16 +50,17 @@
 %   NO citations in the abstract!   %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-For our project, we propose exploring the efficiency of grey-box fuzzing programs with structured inputs compared to generically mutated random-like inputs.
-The assessment will be adapted to test three major file formats: YAML, JSON, and Markdown.
+For our project, we explored the efficiency of grey-box fuzzing programs with structured inputs compared to generically mutated random-like inputs.
+The assessment addresses testing three major file formats: JSON, Markdown, and YAML.
 Of all the ubiquitous file formats, these three are currently the most popular languages that are consumed as input by a wide array of programs and have enough CVEs that we can gauge the efficacy.
 
 There are some state-of-the-art fuzzers that accentuate their effectiveness with structured input such as Gramatron, Superion, and Mayhem.
 Excluding Mayhem, a commercial project for which we don't have access to its source code, we take two open-sourced projects; Gramatron and Superion as our extension target.
 Grimoire is a fuzzer that, without structured inputs, can perform grammar awareness fuzzing by itself.
 
-In the course of this project, we will extend the functionality of these two fuzzers and scrutinize the fuzzing capabilities of these extensions compared to other fuzzers like Grimoire against a corpus of CVEs of our three target file formats.
-Our comparative metric will be both qualitative and quantitative; measuring coverage of CVEs and execution time to obtain coverage.
+Over the course of this project, we have attempted to extend the functionality of these two fuzzers with the intention of scrutinizing their fuzzing capabilities compared to other fuzzers like Grimoire against a corpus of CVEs of our three target file formats.
+Extension and comparison of these tools proved too difficult within the time of our study.
+We will discuss the difficulties presented by each tool, our attempt adapt our methodology to address these difficulties, along with the CVE replication which was achievable.
 
 \clearpage
 
@@ -137,9 +138,6 @@ Grimoire\cite{GRIMOIRE} is a structured input fuzzer which does not require an e
 Instead, Grimoire deduces the required input structure via feedback from the program.
 Initial research suggests that this form of structure-inferring fuzz technique may be more effective than explicitly defined structured input fuzzing as Grimoire can probe corner cases which are excluded from formal grammars.
 
-We propose extending the capabilities of Gramatron and Superion to support generating three structured inputs: YAML\cite{YAMLdraft}, JSON and Markdown.
-We will compare the efficacy of our extended versions of Gramatron and Superion to both Grimoire and previous work targeted at fuzzing these three file formats.
-
 Aside from the fact that there is room for these formats on extending our target fuzzers, we have numerous reasons for selecting YAML, JSON, and Markdown as our extension language.
 First, it has a well-defined formal grammar, allowing it to be quickly and reliably integrated into the two fuzzers.
 Second, these file formats are ubiquitous input formats.
@@ -148,32 +146,34 @@ Lastly, to a proper assessment of its performances, languages that have a suffic
 These languages have a decent amount CVEs that we can work with.
 There are 108(YAML), 664(JSON), and 103(Markdown) CVEs on MITRE\cite{MITRE}.
 
-The goal of this project is to extend the capabilities of both Gramatron and Superion, then compare their performance along with Grimoire towards replicated selected CVEs.
-If the novel defect(s) are discovered and notable, we will consider the ancillary goal of publishing new CVE(s).
-
+The goal of this project is to extend the capabilities of both Gramatron and 
+Superion, then compare their performance along with Grimoire towards replicated selected CVEs.
+We attempt extending the capabilities of Gramatron and Superion to support generating the three structured inputs: YAML\cite{YAMLdraft}, JSON and Markdown.
+We plan to compare the efficacy of our extended versions of Gramatron and Superion to both Grimoire and previous work targeted at fuzzing these three file formats.
 By utilizing the three fuzzers- Gramatron, Superion, and Grimoire- we hope to draw a rich comparison of modern fuzzing techniques.
-After taking the cybersecurity course and learning about the fuzzing software, we hope to be well-equipped in determining whether these tools might be utilized as an automated method of finding software exploits in other domains.
 
-Although we have confined our extension targets to two cutting-edge fuzzers for various reasons, 
-there are other modern fuzzers that can be tackled in future projects such as; CodeAlchemist\cite{CodeAlchemist1}\cite{CodeAlchemist2}, Hawkeye\cite{Hawkeye}, Angora\cite{Angora1}\cite{Angora2}, CollAFL\cite{CollAFL}, IoTFuzzer\cite{IoTFuzzer}, RedQueen\,\cite{redqueen}, Nautilus\,\cite{Nautilus1}\cite{Nautilus2}, Periscope\cite{PeriScope1}\cite{PeriScope2}, T-Fuzz\,\cite{TFuzz1}\cite{TFuzz2}, Chopper\cite{Chopper}, QSYM\cite{QSYM1}\cite{QSYM2}, DigFuzz\cite{DigFuzz}, and FairFuzz\cite{FairFuzz1}\cite{FairFuzz2}.
-All these tools are distinguished in their specialized scoped, but we have decided to work with Gramatron and Superion as these are open-sourced projects, and are specialized in generating structured inputs in a modular manner.
+Although we have confined our extension targets to two cutting-edge fuzzers for various reasons, there are other modern fuzzers which could have been a suitable choice, such as; CodeAlchemist\cite{CodeAlchemist1}\cite{CodeAlchemist2}, Hawkeye\cite{Hawkeye}, Angora\cite{Angora1}\cite{Angora2}, CollAFL\cite{CollAFL}, IoTFuzzer\cite{IoTFuzzer}, RedQueen\,\cite{redqueen}, Nautilus\,\cite{Nautilus1}\cite{Nautilus2}, Periscope\cite{PeriScope1}\cite{PeriScope2}, T-Fuzz\,\cite{TFuzz1}\cite{TFuzz2}, Chopper\cite{Chopper}, QSYM\cite{QSYM1}\cite{QSYM2}, DigFuzz\cite{DigFuzz}, and FairFuzz\cite{FairFuzz1}\cite{FairFuzz2}.
+All these tools are distinguished in their specialized scoped, but we have decided to work with Gramatron and Superion as these are open-sourced projects, and appear the most adaptable in generating new structured inputs.
+
 
 \vspace{3mm}
 \section*{Approach}
 
 We attempted to extend the functionality of Gramatron to generate mutable, structure-aware YAML, JSON, and Markdown output.
 Additionally, we attempted to extend the functionality of Superion to generate mutable, structure-aware outputs in the same three target languages.
-While both projects are open source and are modular in their design for incorporating new grammars, the ease of this incorporation was misguided.
+While both projects are open source and are modular in their design for incorporating new grammars, the assessed ease of this incorporation was misguided.
 Neither extension was fully successful.
-However, there the extension attempts did provide insightful results.
+However, the extension attempts did provide insightful results regarding each tool.
+
+The usage of Grimoire as a baseline for measuring the results of Gramatron and Superion against was also unsuccessful.
+There were no binaries of Grimoire available for usage and building Grimoire from source repeatedly failed due to multiple dependency issues and platform specific requirements.
+With the Grimoire inaccessible as a baseline metric, we substituted ALF and AFL++\cite{fioraldi2020afl++} to be used as our baseline metrics in anticipation of later success extending Gramatron and Superion.
 
 Qualitatively, we have composed a corpus of CVEs discovered from previous work.
 At the time of writing, we found over 100 CVEs cataloged on MITRE\cite{MITRE} for each of target languages mentioned above.
 We selected a reproducible subset of these CVEs to use as our coverage test.
 Unfortunately, do to the inability to extend Gramatron and Superion, we could not use test these extensions' ability to discover the selected CVEs.
 Instead we used the efficacy of AFL and AFL++ as a comparative metric.
-
-\clearpage
 
 Quantitatively, we will measure the execution time of each extended fuzzing program.
 We will perform a comparison between Gramatron, Superion, and Grimoire mutation strategies in terms of how quickly they discover the known CVEs.
@@ -196,7 +196,7 @@ Our project quantifying and qualifying the performance of these three modern fuz
 This is of academic interest as it will inform the direction of future fuzzing research.
 
 
-\vspace{4mm}
+%\vspace{4mm}
 \section*{Findings}
 \label{results}
 
@@ -439,9 +439,9 @@ The team has collaboratively discussed and drafted a tentative timeline of the p
 	\item \texttt{2021-09-26:} Background research \& revise \/ resubmit proposal
 	\item \texttt{2021-10-03:} Finalize proposal, Collect and finalize CVEs corpus
 	\item \texttt{2021-10-10:} \textbf{Midterm project presentations due}
-	\item \texttt{2021-10-17:} \textbf{Midterm project reports due} \hfill (Tune fuzzing instrumentation)
-	\item \texttt{2021-10-24:} Begin modifying Superion \& Gramatron
-	\item \texttt{2021-10-31:} Complete modified Gramatron \& Superion generating
+	\item \texttt{2021-10-17:} \textbf{Midterm project reports due}
+	\item \texttt{2021-10-24:} Initial Superion \& Gramatron extension; Grimoire setup
+	\item \texttt{2021-10-31:} 
 	\item \texttt{2021-11-07:} Tune 3 fuzzers instrumentation with programs under test
 	\item \texttt{2021-11-14:} Replicate CVEs and document performance
 	\item \texttt{2021-11-21:} Parallelize fuzzing \hfill (DETER/AWS)
