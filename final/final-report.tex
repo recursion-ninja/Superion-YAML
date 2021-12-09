@@ -193,11 +193,8 @@ This is of academic interest as it will inform the direction of future fuzzing r
 \section*{Preliminary Results}
 \label{results}
 
-For each target language, we have selected 10 CVEs to administer qualitative evaluation of our extended fuzzers.
+For each target language, we’ve selected the target programs which have already contained multiple CVEs. There are certain criteria that we decide what target programs would be useful and efficient to get started with on fuzzing.  First, we’re looking for the open source code implemented by C or C++ as the target programs.  AFL works best on C or C++ applications. When source code is available, instrumentation can be injected by a companion tool that works as a drop-in replacement for gcc or clang in any standard build process for third-party code. For example, for C++ programs, we could set CXX=/path/to/afl/afl-g++ before we compile the code. Although AFL does support instrumenting black-box binaries on the fly with QEMU, but this tends to have poor performance. Second, we’ll need an executable or write a simple program that reads data from stdin or from a file to fuzz the target program. Lastly, the target program has some functions to deal with the target language. For example, one of our target programs is YAML-CPP which is a YAML parser and emitter in C++. Finally, we choose YAML-CPP as the YAML target and MD4C as the Markdown target.
 The table below is a corpus of CVEs that we choose to run our tests on.
-These are some of the most recent known defects on open-sourced applications with reference to our target languages.
-
-\clearpage
 
 \begin{table}[h!]
 \centering
@@ -205,34 +202,34 @@ These are some of the most recent known defects on open-sourced applications wit
 \begin{tabular}{V{4}l|l|lV{4}} \hlineB{3}
 	\multicolumn{1}{V{4}c|}{YAML} & \multicolumn{1}{c|}{JSON} & \multicolumn{1}{cV{4}}{Markdown}  \\ \hline
 	\multicolumn{1}{V{4}c|}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2021-42139\cite{CVE-2021-42139}} \vspace{-2mm} \\ \footnotesize Deno < v0.107.0
+		\texttt{CVE-2019-6292\cite{CVE-2021-42139}} \vspace{-2mm} \\ \footnotesize YAML-CPP < v0.6.2
 	\end{tabular}} & 
 	\multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2021-41106\cite{CVE-2021-41106}} \vspace{-2mm} \\ \footnotesize JWT < v3.4.6
+		\texttt{CVE-2019-6285\cite{CVE-2021-41106}} \vspace{-2mm} \\ \footnotesize JWT < v3.4.6
 	\end{tabular}} &
 	\multicolumn{1}{cV{4}}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2021-39887\cite{CVE-2021-39887}} \vspace{-2mm} \\ \footnotesize GitLab CE/EE > v8.4 
+		\texttt{CVE-2021-30027\cite{CVE-2021-30027}} \vspace{-2mm} \\ \footnotesize MD4C < 0.4.7 
 	\end{tabular}} \\ \hline
 	\multicolumn{1}{V{4}c|}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2021-39194\cite{CVE-2021-39194}} \vspace{-2mm} \\ \footnotesize kaml < v0.35.3
+		\texttt{CVE-2019-6285\cite{CVE-2019-6285}} \vspace{-2mm} \\ \footnotesize YAML-CPP < v0.6.2
 	\end{tabular}} & 
 	\multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}
 		\texttt{CVE-2021-39215\cite{CVE-2021-39215}} \vspace{-2mm} \\ \footnotesize Jitsi Meet < v2.0.5963
 	\end{tabular}} &
 	\multicolumn{1}{cV{4}}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2021-39199\cite{CVE-2021-39199}} \vspace{-2mm} \\ \footnotesize remark-html < v13.0.2
+		\texttt{CVE-2020-26148\cite{CVE-2020-26148}} \vspace{-2mm} \\ \footnotesize MD4C < 0.4.5
 	\end{tabular}} \\ \hline
 	\multicolumn{1}{V{4}c|}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2021-39132\cite{CVE-2021-39132}} \vspace{-2mm} \\ \footnotesize Rundeck < v3.3.14
+		\texttt{CVE-2018-20574\cite{CVE-2018-20574}} \vspace{-2mm} \\ \footnotesize YAML-CPP < v0.6.2
 	\end{tabular}} & 
 	\multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}
 		\texttt{CVE-2021-39205\cite{CVE-2021-39205}} \vspace{-2mm} \\ \footnotesize Jitsi Meet < v2.0.6173
 	\end{tabular}} &
 	\multicolumn{1}{cV{4}}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2021-39175\cite{CVE-2021-39175}} \vspace{-2mm} \\ \footnotesize HedgeDoc < v1.9.0
+		\texttt{CVE-2018-12112\cite{CVE-2018-12112}} \vspace{-2mm} \\ \footnotesize MD4C < 0.2.6
 	\end{tabular}} \\ \hline
 	\multicolumn{1}{V{4}c|}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2021-36793\cite{CVE-2021-36793}} \vspace{-2mm} \\ \footnotesize Routes extension for TYPO3 < v2.1.1 
+		\texttt{CVE-2018-20573\cite{CVE-2018-20573}} \vspace{-2mm} \\ \footnotesize YAML-CPP < v0.6.2 
 	\end{tabular}} & 
 	\multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}
 		\texttt{CVE-2021-32781\cite{CVE-2021-32781}} \vspace{-2mm} \\ \footnotesize Envoy < v1.16.5
@@ -241,7 +238,7 @@ These are some of the most recent known defects on open-sourced applications wit
 		\texttt{CVE-2021-37700\cite{CVE-2021-37700}} \vspace{-2mm} \\ \footnotesize @github/paste-markdown < v0.3.4
 	\end{tabular}} \\ \hline
 	\multicolumn{1}{V{4}c|}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2021-36162\cite{CVE-2021-36162}} \vspace{-2mm} \\ \footnotesize Apache Dubbo < v2.7.13
+		\texttt{CVE-2017-5950\cite{CVE-2017-5950}} \vspace{-2mm} \\ \footnotesize YAML-CPP < v0.5.3
 	\end{tabular}} & 
 	\multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}
 		\texttt{CVE-2021-32677\cite{CVE-2021-32677}} \vspace{-2mm} \\ \footnotesize FastAPI < v0.65.2
@@ -250,7 +247,7 @@ These are some of the most recent known defects on open-sourced applications wit
 		\texttt{CVE-2021-29503\cite{CVE-2021-29503}} \vspace{-2mm} \\ \footnotesize HedgeDoc < v1.8.2
 	\end{tabular}} \\ \hline
 	\multicolumn{1}{V{4}c|}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2021-30180\cite{CVE-2021-30180}} \vspace{-2mm} \\ \footnotesize Apache Dubbo < v2.7.9
+		\texttt{CVE-2017-11692\cite{CVE-2017-11692}} \vspace{-2mm} \\ \footnotesize YAML-CPP < v0.5.3
 	\end{tabular}} & 
 	\multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}
 		\texttt{CVE-2021-31618\cite{CVE-2021-31618}} \vspace{-2mm} \\ \footnotesize Apache HTTP Server mod\_http2 v1.15.17
