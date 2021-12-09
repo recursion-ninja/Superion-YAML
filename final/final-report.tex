@@ -189,8 +189,61 @@ This is of academic interest as it will inform the direction of future fuzzing r
 
 
 \vspace{4mm}
-\section*{Preliminary Results}
+\section*{Findings}
 \label{results}
+
+\subsection*{Gramatron}
+
+The fuzzing tool Gramatron was designed to produce structured fuzzing inputs for a defined grammar at extremely fast speed.
+To achieve this, Gramatron constructs a grammar mutation deterministic finite automata (DFA).
+Given a well-formed fuzzing input for the desired grammar, Gramatron uses the DFA to mutate the input into another well-formed input simply by move through transition sates of the DFA.
+Given the compact and efficient nature of DFAs, each step through the transition space is constant time, and the resulting input mutation reduces to an informed string substitution.
+This approach of iterative, sound mutations through a transition space is how Gramatron achieves it's exceptional speed while maintaining the desired structured fuzzing inputs.
+
+However, this approach to fuzzing is not without it's limitations.
+Because the mutation mechanism is a DFA, Grmatron can only produce coverage for grammars which are regular languages.
+For any grammar which is more complex than a regular language, Gramatron can only produce a structured set of strings which represent a small sub-set of the entire grammar's set of acceptable strings.
+This lack of expressiveness can leave large gaps in Gramatron's coverage.
+For example, some recursive, or even context-free, production rules of a grammar will need to be modified or omitted for them to be convertible to a mutation DFA.
+Since Gramatron's advertised usage is on context-sensitive and Turing-complete languages, careful inspection must be taken to understand what linguistic sacrifices were made and what subset of the language Gramatron produces coverage for.
+
+The mechanism by which Gramatron takes a grammar specification and converts it into a DFA is through a pipeline of multiple grammar conversion.
+First a grammar of production rules in either JSON or G4 format is converted to a new set of production rules Greibach Normal Form (GNF).
+This conversion is not decidable.
+Theoretically, if the largest production rule has $N$ non-terminals, then the GNF grammar can be represented by a push-down autamata (PDA) which, if it halts, will always halt with a stack depth of at most $N$.
+However, if a GNF gramar has a recursive definition, it too is undecidable.
+To be decidable, no non-terminal can transitively produce itself, i.e one must forbid productions of the (general) form $A \to B \to A$.
+Once a the grammar is in GNF form, Gramatron \emph{assumes} that it is decidable and equivalent to the stack-limited, decidable PDA.
+This assumption is not always sound.
+Symbols are recursively substituted with their definitions.
+After recursive substitution of depth $N$, all productions are in GNF form \emph{and} have at most one non-terminal per right-hand-side of a rule.
+In this form, the grammar stack-limited PDA has had the potential state-space of the stack expanded out explicitly into a DFA.
+This DFA is used as the mutator for Gramatron.
+
+During our extension of Gramatron to support JSON and Markdown, we encountered numerous problems arising from the theoretical limitations above.
+First, both JSON and Markdown are context free grammars with recursive definitions, and hence they cannot be directly converted to a DFA.
+The conversion process from CFG to GNF for both grammars was fraught with infinite loops.
+We dedicated substantial time to manually pre-defined both grammars in GNF to avoid the undecidability of general CFG to GNF conversion.
+Subsequently, each grammar had to have it's transitive recursive form broken so that it could be converted into a DFA.
+This process was also labor intensive as it require manual inspection of the grammars and elucidation as to which parts can be elided while still producing coverage for our selected CVEs.
+Additionally, as part of Gramatron's internal conversion process from CFG to DFA, it disallows some characters which it considers to be special from existing within terminals and the label of non-terminals.
+There is no escaping mechanism for these special characters provided by Gramatron.
+One such character was the pipe (\texttt{'|'}) character, which is a required component of terminals in Markdown's definition of tables.
+When special characters exist within the grammar definition, Gramatron does not provide any informative warning(s) to the user, rather it simply halts with a generic failure message.
+Discovering the existence and circumvention of these special character took nearly a week of debugging Gramatron's source code.
+
+Once Gramatron had successfully accepted our carefully tailored new grammar definitions and converted then to DFAs, we experienced a final and fatal complication.
+Instead of producing structured output of either JSON or Markdown, instead Gramatron produced binary output of an indiscernible structure.
+Each of the aforementioned complications depleted our available man-hours for this project and not enough time remained to begin again th arduous process of debugging Gramatron's source code.
+
+The results of our attempted extension of Gramatron is the assessment that Gramatron manifests a powerful and novel technique in mutation-based, structure-aware fuzzing by utilizing tenets of formal language theory to convert a CFG structure to a DFA.
+However, this assessment carries with it strong disclaimers.
+Currently, Gramatron is in a prototype state and not amiable for general use. 
+The engineering effort required to craft a new grammar for your specific fuzzing application is almost certainly greater than the effort require to use a less structured but more refined tool, such as AFL or AFL++.
+We recommend monitoring the development and applications of Gramatron over the next few years to determine if the novel mutation-based technique it exemplifies is refined and expanded into a more usable construction or incorporated into other tools.
+
+\subsection*{Selected CVEs}
+
 
 For each target language, we’ve selected the target programs which have already contained multiple CVEs. There are certain criteria that we decide what target programs would be useful and efficient to get started with on fuzzing.  First, we’re looking for the open source code implemented by C or C++ as the target programs.  AFL works best on C or C++ applications. When source code is available, instrumentation can be injected by a companion tool that works as a drop-in replacement for gcc or clang in any standard build process for third-party code. For example, for C++ programs, we could set CXX=/path/to/afl/afl-g++ before we compile the code. Although AFL does support instrumenting black-box binaries on the fly with QEMU, but this tends to have poor performance. Second, we’ll need an executable or write a simple program that reads data from stdin or from a file to fuzz the target program. Lastly, the target program has some functions to deal with the target language. For example, one of our target programs is YAML-CPP which is a YAML parser and emitter in C++. Finally, we choose YAML-CPP as the YAML target and MD4C as the Markdown target.
 The table below is a corpus of CVEs that we choose to run our tests on.
