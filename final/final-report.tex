@@ -169,34 +169,15 @@ The usage of Grimoire as a baseline for measuring the results of Gramatron and S
 There were no binaries of Grimoire available for usage and building Grimoire from source repeatedly failed due to multiple dependency issues and platform specific requirements.
 With the Grimoire inaccessible as a baseline metric, we substituted ALF and AFL++\cite{fioraldi2020afl++} to be used as our baseline metrics in anticipation of later success extending Gramatron and Superion.
 
-Qualitatively, we have composed a corpus of CVEs discovered from previous work.
+We have composed a corpus of CVEs discovered from previous work.
 At the time of writing, we found over 100 CVEs cataloged on MITRE\cite{MITRE} for each of target languages mentioned above.
 We selected a reproducible subset of these CVEs to use as our coverage test.
 Unfortunately, do to the inability to extend Gramatron and Superion, we could not use test these extensions' ability to discover the selected CVEs.
 Instead we used the efficacy of AFL and AFL++ as a comparative metric.
+Quantitatively, we measured the execution time of ALF and ALF++ and compare their inputs generated per second.
+The motivation of this metric is to compare the computational efficiency of each tool, i.e. clock-cycles per attempt.
+Qualitatively, we compare how many of the selected CVEs were rediscovered by each tool, as a determination of their general efficacy.
 
-Quantitatively, we will measure the execution time of each extended fuzzing program.
-We will perform a comparison between Gramatron, Superion, and Grimoire mutation strategies in terms of how quickly they discover the known CVEs.
-Where possible, we will also compare the performance of Gramatron, Superion, and Grimoire to previously published work which provides execution metrics.
-
-We will generate a series of ``seed inputs'' for our three fuzzers which are accepted by the programs under test and generate expected behavior.
-We will then allow these fuzzing programs to mutate the seed inputs\cite{Seed} according to their unique internal algorithms in order to probe for the CVE defects.
-During the initial calibration of the fuzzers, we will manually monitor progress and adapt the seeds as needed to ensure that they are effectively probing the target programs.
-Our programs under test will be those cataloged from the selected CVEs corpus.
-
-The process of comparing these fuzzers opens the possibility of discovering novel defects outside the pre-selected CVEs.
-While investigating these novel defects are outside the scope of this course project, we will take care to preserve the triggering inputs for future work.
-
-The team expects to use their personal, commodity computer hardware to carry out this project.
-However, should hardware constraints be discovered or it is determined to be beneficial for the project, the team members will have access to the DETER computing cluster at Hunter College.
-Additionally, we can attempt to use Hunter's research credits on AWS.
-Either way, we hope to reach a point of automation in the project where parallelization on a cluster is achievable, but can cope with commodity hardware.
-
-Our project quantifying and qualifying the performance of these three modern fuzzers will lend valuable insight into the efficacy between these programs' internal algorithms, and how they compare to previous work.
-This is of academic interest as it will inform the direction of future fuzzing research.
-
-
-%\vspace{4mm}
 \section*{Findings}
 \label{results}
 
