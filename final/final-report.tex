@@ -431,6 +431,53 @@ The content of one crash is shown below.
 
 
 
+\begin{table}[h!]
+\centering
+\scalebox{1} {
+\begin{tabular}{V{4}l|l|lV{4}} \hlineB{3}
+	\multicolumn{1}{V{4}c|}{} & \multicolumn{1}{c|}{AFL} & \multicolumn{1}{cV{4}}{AFL++}  \\ \hline
+	\multicolumn{1}{V{4}c|}{yaml-cpp} & 
+	\multicolumn{1}{c|}{116} &
+	\multicolumn{1}{cV{4}}{166} \\ \hline
+	\multicolumn{1}{V{4}c|}{md4c} & 
+	\multicolumn{1}{c|}{175} &
+	\multicolumn{1}{cV{4}}{535} \\ \hlineB{3}
+\end{tabular}
+}
+\vspace{6mm}\\ \textbf{Table 2. }Number of Crashes Found 
+\end{table}
+\begin{table}[h!]
+\centering
+\scalebox{1} {
+\begin{tabular}{V{4}l|l|lV{4}} \hlineB{3}
+	\multicolumn{1}{V{4}c|}{} & \multicolumn{1}{c|}{AFL} & \multicolumn{1}{cV{4}}{AFL++}  \\ \hline
+	\multicolumn{1}{V{4}c|}{yaml-cpp} & 
+	\multicolumn{1}{c|}{1298/sec 1cycle} &
+	\multicolumn{1}{cV{4}}{2191/sec 1cycle} \\ \hline
+	\multicolumn{1}{V{4}c|}{md4c} & 
+	\multicolumn{1}{c|}{2855/sec 0cycle} &
+	\multicolumn{1}{cV{4}}{2198/sec 2cycle} \\ \hlineB{3}
+\end{tabular}
+}
+\vspace{6mm}\\ \textbf{Table 3. }Execution Speed 
+\end{table}
+\begin{table}[h!]
+\centering
+\scalebox{1} {
+\begin{tabular}{V{4}l|l|lV{4}} \hlineB{3}
+	\multicolumn{1}{V{4}c|}{} & \multicolumn{1}{c|}{AFL} & \multicolumn{1}{cV{4}}{AFL++}  \\ \hline
+	\multicolumn{1}{V{4}c|}{yaml-cpp} & 
+	\multicolumn{1}{c|}{1928} &
+	\multicolumn{1}{cV{4}}{2382} \\ \hline
+	\multicolumn{1}{V{4}c|}{md4c} & 
+	\multicolumn{1}{c|}{3230} &
+	\multicolumn{1}{cV{4}}{5404} \\ \hlineB{3}
+\end{tabular}
+}
+\vspace{6mm}\\ \textbf{Table 4. }Total Paths 
+\end{table}
+\vspace{6mm}
+
 
 
 \section*{Discussion}
