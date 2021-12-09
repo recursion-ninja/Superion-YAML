@@ -96,6 +96,7 @@ We will be making use of this second role in our project.
 
 
 \section*{Motivation}
+\label{Motivation}
 
 We are aware of the topic "Going Beyond Coverage-Guided Fuzzing with Structured Fuzzing" by Jonathan Metzman in the Black Hat USA 2019\cite{blackhat2019}.
 In the talk, the speaker presented structured fuzzing and how to improve the fuzzer by adding structure awareness to it. 
@@ -112,11 +113,12 @@ Superion currently generates valid JavaScript and XML inputs by taking a context
 
 Based on the grammar, Superion parses each test input into an abstract syntax tree, an AST. Using ASTs, Superion introduces a grammar-aware trimming strategy that can effectively trim test inputs while keeping the input structure valid, then randomly chooses another input from AFL’s queue and also parses it into AST. A sub-tree of the target input can be replaced by another sub-tree, either from the target input itself or from a randomly chosen supplementary sample. Therefore, hundreds of new samples are generated and executed to find a new path in tested programs. The results of Superion show a great increase in fuzzing efficacy when targeting programs which expect structured input.
 
+
 \clearpage
 
 Gramatron\cite{srivastava2021gramatron} is a second, and even more recent, open source fuzzing tool designed to produce structured inputs.
 Released in 2021, Gramatron was designed with new mutation algorithms to increase the speed at which defects are discovered.
-It does this by reducing the number of mutation steps from the input seed to the trigger input, rather than simply optimizing the speed at which new inputs can be generated. There are two steps in which Gramatron modifies AFL++. First, in the preprocessing phase, the context-free grammar, CFG, is converted into Chomsky normal form, GNF/CNF, which is then turned into a finite state automata, FSA. This can be seen in the figure below.
+It does this by reducing the number of mutation steps from the input seed to the trigger input, rather than simply optimizing the speed at which new inputs can be generated. There are two steps in which Gramatron modifies AFL++. First, in the preprocessing phase, the context-free grammar, CFG, is converted into Greibach normal form (GNF) \cite{greibach1965new}, which is then turned into a finite state automata (FSA). This can be seen in the figure below.
 
 \vspace{-1cm}
 \begin{center}
@@ -125,7 +127,11 @@ It does this by reducing the number of mutation steps from the input seed to the
 \end{center}
 \vspace{6mm}
 
-In the second step, the fuzzing phase, Gramatron performs the mutations with the FSAs and operators. Gramatron currently generates structured PHP and JavaScript as inputs.
+In the second step, the fuzzing phase, Gramatron uses the FSA to mutate the input into another well-formed input simply by move through transition sates of the FSA.
+Given the compact and efficient nature of FSAs, each step through the transition space is constant time, and the resulting input mutation reduces to an informed string substitution.
+This approach of iterative, sound mutations through a transition space is how Gramatron achieves it's exceptional speed while maintaining the desired structured fuzzing inputs.
+Gramatron currently generates structured PHP and JavaScript as inputs.
+
 
 Grimoire\cite{GRIMOIRE} is a structured input fuzzer which does not require an explicit structural definition to effectively generate fuzzing inputs.
 Instead, Grimoire deduces the required input structure via feedback from the program.
@@ -196,22 +202,16 @@ This is of academic interest as it will inform the direction of future fuzzing r
 
 \subsection*{Gramatron}
 
-The fuzzing tool Gramatron was designed to produce structured fuzzing inputs for a defined grammar at extremely fast speed.
-To achieve this, Gramatron constructs a grammar mutation deterministic finite automata (DFA).
-Given a well-formed fuzzing input for the desired grammar, Gramatron uses the DFA to mutate the input into another well-formed input simply by move through transition sates of the DFA.
-Given the compact and efficient nature of DFAs, each step through the transition space is constant time, and the resulting input mutation reduces to an informed string substitution.
-This approach of iterative, sound mutations through a transition space is how Gramatron achieves it's exceptional speed while maintaining the desired structured fuzzing inputs.
-
-However, this approach to fuzzing is not without it's limitations.
-Because the mutation mechanism is a DFA, Grmatron can only produce coverage for grammars which are regular languages.
+Gramatron's approach to fuzzing described above in \emph{Motivation}, while novel and efficient is not without it's limitations.
+Because the mutation mechanism is a FSA, Gramatron can only produce coverage for grammars which are regular languages.
 For any grammar which is more complex than a regular language, Gramatron can only produce a structured set of strings which represent a small sub-set of the entire grammar's set of acceptable strings.
 This lack of expressiveness can leave large gaps in Gramatron's coverage.
-For example, some recursive, or even context-free, production rules of a grammar will need to be modified or omitted for them to be convertible to a mutation DFA.
+For example, some recursive, or even context-free, production rules of a grammar will need to be modified or omitted for them to be convertible to a mutation FSA.
 Since Gramatron's advertised usage is on context-sensitive and Turing-complete languages, careful inspection must be taken to understand what linguistic sacrifices were made and what subset of the language Gramatron produces coverage for.
 
-The mechanism by which Gramatron takes a grammar specification and converts it into a DFA is through a pipeline of multiple grammar conversion.
-First a grammar of production rules in either JSON or G4 format is converted to a new set of production rules Greibach Normal Form (GNF).
-This conversion is not decidable.
+The mechanism by which Gramatron takes a grammar specification and converts it into a FSA is through a pipeline of multiple grammar conversion.
+First a grammar of production rules in either JSON or G4\cite{parr2013definitive} format is converted to a new set of production rules Greibach Normal Form.
+This conversion is not decidable \cite{yu1997regular}.
 Theoretically, if the largest production rule has $N$ non-terminals, then the GNF grammar can be represented by a push-down autamata (PDA) which, if it halts, will always halt with a stack depth of at most $N$.
 However, if a GNF gramar has a recursive definition, it too is undecidable.
 To be decidable, no non-terminal can transitively produce itself, i.e one must forbid productions of the (general) form $A \to B \to A$.
@@ -219,30 +219,51 @@ Once a the grammar is in GNF form, Gramatron \emph{assumes} that it is decidable
 This assumption is not always sound.
 Symbols are recursively substituted with their definitions.
 After recursive substitution of depth $N$, all productions are in GNF form \emph{and} have at most one non-terminal per right-hand-side of a rule.
-In this form, the grammar stack-limited PDA has had the potential state-space of the stack expanded out explicitly into a DFA.
-This DFA is used as the mutator for Gramatron.
+In this form, the grammar stack-limited PDA has had the potential state-space of the stack expanded out explicitly into a FSA.
+This FSA is used as the mutator for Gramatron.
 
-During our extension of Gramatron to support JSON and Markdown, we encountered numerous problems arising from the theoretical limitations above.
-First, both JSON and Markdown are context free grammars with recursive definitions, and hence they cannot be directly converted to a DFA.
+During our extension of Gramatron to support JSON, Markdown, and YAML; we encountered numerous problems arising from the theoretical limitations above.
+First, all three of JSON, Markdown, and YAML are context free grammars with recursive definitions, and hence they cannot be directly converted to a FSA.
 The conversion process from CFG to GNF for both grammars was fraught with infinite loops.
 We dedicated substantial time to manually pre-defined both grammars in GNF to avoid the undecidability of general CFG to GNF conversion.
-Subsequently, each grammar had to have it's transitive recursive form broken so that it could be converted into a DFA.
+Subsequently, each grammar had to have it's transitive recursive form broken so that it could be converted into a FSA.
 This process was also labor intensive as it require manual inspection of the grammars and elucidation as to which parts can be elided while still producing coverage for our selected CVEs.
-Additionally, as part of Gramatron's internal conversion process from CFG to DFA, it disallows some characters which it considers to be special from existing within terminals and the label of non-terminals.
+Additionally, as part of Gramatron's internal conversion process from CFG to FSA, it disallows some characters which it considers to be special from existing within terminals and the label of non-terminals.
 There is no escaping mechanism for these special characters provided by Gramatron.
 One such character was the pipe (\texttt{'|'}) character, which is a required component of terminals in Markdown's definition of tables.
 When special characters exist within the grammar definition, Gramatron does not provide any informative warning(s) to the user, rather it simply halts with a generic failure message.
 Discovering the existence and circumvention of these special character took nearly a week of debugging Gramatron's source code.
 
-Once Gramatron had successfully accepted our carefully tailored new grammar definitions and converted then to DFAs, we experienced a final and fatal complication.
-Instead of producing structured output of either JSON or Markdown, instead Gramatron produced binary output of an indiscernible structure.
+Once Gramatron had successfully accepted our carefully tailored new grammar definitions and converted then to FSAs, we experienced a final and fatal complication.
+Instead of producing structured output of either JSON, Markdown, or YAML, instead Gramatron produced binary output of an indiscernible structure.
 Each of the aforementioned complications depleted our available man-hours for this project and not enough time remained to begin again th arduous process of debugging Gramatron's source code.
 
-The results of our attempted extension of Gramatron is the assessment that Gramatron manifests a powerful and novel technique in mutation-based, structure-aware fuzzing by utilizing tenets of formal language theory to convert a CFG structure to a DFA.
+The results of our attempted extension of Gramatron is the assessment that Gramatron manifests a powerful and novel technique in mutation-based, structure-aware fuzzing by utilizing tenets of formal language theory to convert a CFG structure to a FSA.
 However, this assessment carries with it strong disclaimers.
 Currently, Gramatron is in a prototype state and not amiable for general use. 
 The engineering effort required to craft a new grammar for your specific fuzzing application is almost certainly greater than the effort require to use a less structured but more refined tool, such as AFL or AFL++.
 We recommend monitoring the development and applications of Gramatron over the next few years to determine if the novel mutation-based technique it exemplifies is refined and expanded into a more usable construction or incorporated into other tools.
+
+\subsection*{Superion}
+
+Superion is built with a specific set of supported languages at compile time.
+To add a supported language to Superion, you must add a C++ lexer and parser for the desired language.
+Superion will accept any lexer and parser with the appropriate interface (template), but manually writing these components in C++ is not preferable.
+Instead the Superion documentation suggests defining the new grammar as a CFG in G4 format and using ANTLR\cite{parr2013definitive} to convert transpile the G4 code to C++.
+The generated C++ code can then be placed on the compilation path and the new language will be added to the compilation targets of Superion when rebuilt.
+
+Our extension of Superion to support JSON, Markdown, and YAML, encountered different technical complications.
+While locating a pre-defined G4 definitions of JSON and Markdown was simple, each existing G4 definition of Markdown we found came tainted with some "flavored extension" outside of Markdown's specified definition
+Removing the extraneous portions from the Markdown G4 files we discovered proved more difficult than authoring a direct translation from the specification to the G4 format.
+Once we had sufficient G4 files, we added the output from ANTLR onto Superion's compilation path.
+However, we could not get the newly built Superion emit the new grammar fuzzing inputs.
+We conducted a debugging effort of Superion's source code to diagnose the problem, but our effects were unsuccessful within the time limits of the semester.
+
+Our assessment of Superion is limited, as we were not able to successfully extend it's support for any of the attempted grammars.
+The process of extension relies on the external tool ANTLR which added complexity to the extension process that could have been mitigated by a robust makefile.
+Furthermore, the lack of new grammar output and feedback on correcting the behavior leaves much to be desired in terms of usability.
+Ultimately Superion promises high fidelity linguistic coverage in it's structure-aware fuzzing, but we were unable to successful extend and measure these promises.
+
 
 \subsection*{Selected CVEs}
 
