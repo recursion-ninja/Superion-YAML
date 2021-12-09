@@ -116,9 +116,20 @@ terminus = length corpus - 1
 topLevelDomain :: TopLevelDomain -> Text
 topLevelDomain = (corpus !) . coerce
 
-
 corpus :: Vector Text
 corpus =
+    [ "com"
+    , "edu"
+    , "gov"
+    , "int"
+    , "mil"
+    , "net"
+    , "org"
+    ]
+
+{-
+corpusHuge :: Vector Text
+corpusHuge =
     [ "aaa"
     , "aarp"
     , "abarth"
@@ -1461,3 +1472,4 @@ corpus =
     , "zuerich"
     , "zw"
     ]
+-}

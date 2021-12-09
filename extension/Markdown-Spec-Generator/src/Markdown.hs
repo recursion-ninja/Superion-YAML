@@ -122,6 +122,7 @@ data Block
     OrderedList   Word (NonEmpty [Block])
   | -- | Unordered list, container block
     UnorderedList Bool (NonEmpty [Block])
+{-
   | -- | Table, first (NonEmpty Inline)rgument is the (NonEmpty Inline)lignment options, then we have (NonEmpty Inline)
     -- 'NonEmpty' list of rows, where every row is (NonEmpty Inline) 'NonEmpty' list of
     -- cells, where every cell is (NonEmpty Inline)n @a@ thing.
@@ -131,12 +132,14 @@ data Block
     --
     -- @since 0.0.4.0
     Table TableRow (NonEmpty CellAlign) (NonEmpty TableRow)
+-}
   deriving stock (Show, Eq, Ord, Data, Typeable, Generic)
 
 
 instance Bounded Block where
 
-    maxBound = Table minBound (pure minBound) $ pure minBound
+--    maxBound = Table minBound (pure minBound) $ pure minBound
+    maxBound = UnorderedList True $ [minBound]:|[]
 
     minBound = ThematicBreak False
 
@@ -221,8 +224,9 @@ instance Enum Block where
             11 -> Blockquote neb
             12 -> OrderedList   0     $ pure neb
             13 -> UnorderedList False $ pure neb
-            14 -> UnorderedList True  $ pure neb
-            _  -> maxBound
+            _  -> UnorderedList True  $ pure neb
+--            14 -> UnorderedList True  $ pure neb
+--            _  -> maxBound
 
     fromEnum =
       \case
@@ -241,7 +245,7 @@ instance Enum Block where
         OrderedList        {} -> 12
         UnorderedList False _ -> 13
         UnorderedList True  _ -> 14
-        Table              {} -> 15
+--        Table              {} -> 15
 
 
 instance HasNonTerminal CellAlign where
@@ -406,6 +410,7 @@ instance HasRuleByValue Block where
             OrderedList        {} -> ruleWithDep2 g [ " ", note spaces, "1", ".", note parts, eol ] (spaces, parts)
             UnorderedList False _ -> ruleWithDep2 g [ " ",note spaces, "*", note parts, eol ] (spaces, parts)
             UnorderedList True  _ -> ruleWithDep2 g [ " ",  note spaces, "-", note parts, eol ] (spaces, parts)
+{-
             Table _ as rs         ->
               let pipe   = "|" :: Terminal
                   end    = "\\n" :: Terminal
@@ -414,6 +419,7 @@ instance HasRuleByValue Block where
                   cellAligns = pipe :<>: (cellAlign :<>: (aligns :<>: end))
                   rows       = [ "|" :<>: (tableRowCells :<>: "|\\n") ] :: NonEmpty (Terminal :<>: ((SepBy (Padded (SepBy LoremIpsum Terminal)) Terminal) :<>: Terminal))
               in  ruleWithDep4 g [ "|", note tableRowCells, "|\\n", note cellAligns, note rows ] (cellAligns, rows, tableRowCells, rs)
+-}
 
 
 instance HasSuffixSymbol Block where
@@ -435,7 +441,7 @@ tableRowCells =
 
 instance HasNonTerminal Program where
 
-    nonTerminal = mkNonTerminal "FILE"
+    nonTerminal = const $ NonTerminal "FILE"
 
 
 instance HasProductions Program where

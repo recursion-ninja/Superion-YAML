@@ -18,6 +18,7 @@ module BNF
   , HasTerminal(..)
   , HasProductions(..)
   , ToG4(..)
+  , getGrammarPairs
   , modulusOf
   , mkNonTerminal
   , enumerableGrammar
@@ -56,7 +57,7 @@ module BNF
 
 import Data.Aeson.Types
 import Data.Bifunctor
-import Data.Char          (toUpper)
+import Data.Char
 import Data.Coerce
 import Data.Foldable      hiding (toList)
 import Data.List.NonEmpty (NonEmpty(..))
@@ -75,6 +76,9 @@ import Debug.Trace
 
 
 newtype Grammar = Grammar (Map NonTerminal (Set Rule))
+
+getGrammarPairs :: Grammar -> [(NonTerminal, [Rule])]
+getGrammarPairs (Grammar m) = fmap (fmap toList) $ toList m
 
 
 newtype GrammarBuilder = GB { builder :: Grammar -> Grammar }
@@ -100,7 +104,7 @@ newtype Terminal = Terminal (Either Char Text)
 
 
 newtype NonTerminal = NonTerminal Text
-    deriving newtype (Eq, IsString, Ord)
+    deriving newtype (Eq, Ord)
 
 
 newtype Padded a = Padded a
@@ -259,7 +263,7 @@ newtype G4Rule = G4R Text
 
 instance ToG4 Grammar where
 
-    toG4 title = foldMap (renderG4 . productionToG4) . toList
+    toG4 _title = foldMap (renderG4 . productionToG4) . toList
       where
         -- addTitle x = "grammar " <> title <> ";\n\n" <> x
         productionToG4 :: Production -> G4Production
@@ -288,7 +292,7 @@ instance ToG4 Grammar where
 
         renderG4 (G4P (sym, rules)) =
           let (rule1, others) = Set.deleteFindMin rules
-              indent = ("    " <>)
+--              indent = ("    " <>)
               pipe   = (" | " <>)
               colon  = (": " <>)
               text1  = (sym<>) . colon $ coerce rule1
@@ -377,27 +381,27 @@ instance Semigroup Rule where
 
 instance HasSuffixSymbol a => HasNonTerminal (NonEmpty a) where
 
-    nonTerminal (x:|_) = "ONEORMORE" `appendSuffix` x
+    nonTerminal (x:|_) = NonTerminal "ONEORMORE" `appendSuffix` x
 
 
 instance HasSuffixSymbol a  => HasNonTerminal (Padded a) where
 
-    nonTerminal (Padded a) = "PADDED" `appendSuffix` a
+    nonTerminal (Padded a) = NonTerminal "PADDED" `appendSuffix` a
 
 
 instance (HasSuffixSymbol a, HasSuffixSymbol b)  => HasNonTerminal (SepBy a b) where
 
-    nonTerminal (a `SepBy` b) = ("SEPBY" `appendSuffix` a) `appendSuffix` b
+    nonTerminal (a `SepBy` b) = (NonTerminal "SEPBY" `appendSuffix` a) `appendSuffix` b
 
 
 instance (HasSuffixSymbol a, HasSuffixSymbol b)  => HasNonTerminal (a :<>: b) where
 
-    nonTerminal (a :<>: b) = ("PAIRED" `appendSuffix` a) `appendSuffix` b
+    nonTerminal (a :<>: b) = (NonTerminal "PAIRED" `appendSuffix` a) `appendSuffix` b
 
 
 instance (HasSuffixSymbol a, HasSuffixSymbol b)  => HasNonTerminal (a :||: b) where
 
-    nonTerminal (a :||: b) = ("EITHER" `appendSuffix` a) `appendSuffix` b
+    nonTerminal (a :||: b) = (NonTerminal "EITHER" `appendSuffix` a) `appendSuffix` b
 
 
 instance HasNonTerminal NonTerminal where
@@ -604,8 +608,8 @@ instance HasSuffixSymbol Terminal where
 
     suffix (Terminal e) =
       let suff = case e of
-                   Left  c   -> fromString $ "C_" <> (toUpper <$> showHex (fromEnum c) "")
-                   Right txt -> "TERM_" <> txt
+                   Left  c   -> fromString $ "CHAR" <> escapeChar c
+                   Right txt -> "TERM" <> txt
       in  NonTerminal suff
 
 
@@ -619,10 +623,31 @@ instance HasTerminal Terminal where
     terminal = id
 
 
+escapeTerm :: IsString s => String -> s
+escapeTerm = fromString . foldMap escapeChar
 
 
-
-
+escapeChar :: Char -> String
+escapeChar = fmap (toUpper . advance) . flip showHex "" . fromEnum
+  where
+    advance =
+      \case
+        '0' -> 'A'
+        '1' -> 'B'
+        '2' -> 'C'
+        '3' -> 'D'
+        '4' -> 'E'
+        '5' -> 'F'
+        '6' -> 'G'
+        '7' -> 'H'
+        '8' -> 'I'
+        '9' -> 'J'
+        'A' -> 'K'
+        'B' -> 'L'
+        'C' -> 'M'
+        'D' -> 'N'
+        'E' -> 'O'
+        _   -> 'P'
 
 
 instance IsList Grammar where
@@ -655,11 +680,15 @@ appendSymbolsToSet :: Seq Symbol -> Set Rule -> Set Rule
 appendSymbolsToSet xs = Set.map (appendSymbols xs)
 
 
+instance IsString NonTerminal where
+
+    fromString = NonTerminal . escapeTerm
+
+
 instance IsString Terminal where
 
     fromString  [] = Terminal $ Right ""
-    fromString [x] = Terminal $ Left x
-    fromString  xs = Terminal . Right $ fromString xs
+    fromString  xs = Terminal . Right $ escapeTerm xs
 
 
 instance IsString Symbol where
@@ -689,7 +718,7 @@ instance Semigroup GrammarBuilder where
 
 instance Semigroup NonTerminal where
 
-    (<>) (NonTerminal x) (NonTerminal y) = NonTerminal $ x <> "_" <> y
+    (<>) (NonTerminal x) (NonTerminal y) = NonTerminal $ x <> "VVV" <> y
 
 
 instance (HasSuffixSymbol a, HasProductions a) => IsGrammar (NonEmpty a) where
@@ -909,7 +938,10 @@ definitionsRemovedFrom grammar =
 
 
 mkNonTerminal :: IsString s => [Char] -> b -> s
-mkNonTerminal = const . fromString . fmap toUpper
+mkNonTerminal = const . fromString . fmap toUpper . foldMap f
+  where
+    f c | not $ isAlpha c = escapeChar c
+        | otherwise       = [c]
 
 
 modulusOf
