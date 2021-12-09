@@ -1,0 +1,31 @@
+
+# h1
+## h2
+### h3
+#### h4
+# h5
+#----------------
+
+    icode
+
+```
+fenced code
+```
+
+<tag attr='val' attr2="val2">
+
+> quotdё
+* list item
+1. list item
+
+[ref]: нннннннннннннннннннннннннннннн%url
+
+papagraph
+&copy; &#1234; &#xabcd;
+`co]e`
+*emph* **strong** ***mph***
+_emph_ __strong__ ___strong emph___
+[ref] [ref][] [_ink](/url)
+![ref] ![ref]e] ![img](/url)
+<http://example.com> <doe@example.com>
+\\ \* \. \` \

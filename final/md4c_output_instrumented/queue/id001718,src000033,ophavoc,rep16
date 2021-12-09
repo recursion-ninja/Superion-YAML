@@ -1,0 +1,39 @@
+
+##h1
+2
+--
+
+-------------4
+# h5
+##.### h6
+
+`1
+==
+
+h2
+--
+
+-------------------
+
+    icode
+
+```
+fenced codn
+```
+
+<tag attr='val' attr2=val2Á>
+éø quote
+
+* list item
+1. list item
+
+[ref]: /url
+
+paragraph
+&copy; &#1234; |||&#xabcd;
+`code`
+*em_emph_ __strong__|___sqrong emph___
+[ref] [rem> <?[link](/url)
+![r…f] ![ref][] ![img](/url)
+<http://example.com> <doe@example.com>
+\\ \* \. \` \

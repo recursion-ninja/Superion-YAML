@@ -1,0 +1,25 @@
+start_time     : 1638967652
+last_update    : 1638978452
+fuzzer_pid     : 90
+cycles_done    : 0
+execs_done     : 27153631
+execs_per_sec  : 2462.48
+paths_total    : 3230
+paths_favored  : 234
+paths_found    : 3222
+paths_imported : 0
+max_depth      : 6
+cur_path       : 3159
+pending_favs   : 25
+pending_total  : 2886
+variable_paths : 0
+bitmap_cvg     : 4.75%
+unique_crashes : 175
+unique_hangs   : 244
+last_path      : 1638978446
+last_crash     : 1638977696
+last_hang      : 1638978348
+exec_timeout   : 20
+afl_banner     : md2html
+afl_version    : 1.96b
+command_line   : afl-fuzz -i /home/chuanyao17/fuzz-input_md4c -o /home/chuanyao17/md4c_output_instrumented/ -- ./md2html

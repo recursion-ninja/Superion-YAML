@@ -1,0 +1,36 @@
+
+# h1
+##ÿh2
+### h3
+#### h4
+-
+
+-------------------
+
+
+----P---------------
+«    icode<tag attr='val' attr2="val2">
+
+> quote
+
+* list item
+1. list item
+
+ /url
+
+paragraph
+&copy; &#1234; &#xabcd;
+`code`
+*emph* **strong** ***mph***
+_emph_ __strong__ _=_strong emph___
+ h2l
+
+paragraph
+&copy; &#1234; ref]xabcd;
+`code`
+*emph* **strong** l
+
+paragraph
+&url)
+<http://example.com> <doe@example,com>
+\\ \* \. \` \

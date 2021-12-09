@@ -1,0 +1,7 @@
+{!!str,
+  !!str :00,tr,
+  !!str 20,tr, 0tr,
+  !!0tr : 000,tr,
+  !!str 00,tr,
+  !!str :A000,
+}
