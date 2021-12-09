@@ -138,13 +138,20 @@ Grimoire\cite{GRIMOIRE} is a structured input fuzzer which does not require an e
 Instead, Grimoire deduces the required input structure via feedback from the program.
 Initial research suggests that this form of structure-inferring fuzz technique may be more effective than explicitly defined structured input fuzzing as Grimoire can probe corner cases which are excluded from formal grammars.
 
+For a decade, AFL has been upheld as the de-facto basis of comparison for all other fuzzing techniques.
+However, AFL++\cite{fioraldi2020afl++} was released as a foundational reconstruction of AFL.
+AFL++ boasts integrating multiple modern fuzzing techniques, including low-frequency path prioritization previously introduced by AFLFast\cite{bohme2017coverage}, improved mutation scheduling described by MOpt\cite{lyu2019mopt}, hard byte comparison mitigation improved by LAF-Intel \cite{intel2016circumventing} and KAFL \cite{schumilo2017kafl}, as well as structured-input mutation techniques exemplified by AFLSmart \cite{pham2019smart}.
+These technical improvement come with the addition of improved tool usability and robustness.
+However, most notably, AFL++ has been designed with extensiblity as a primary goal which is exposed vias it's \emph{Custom Mutator API}.
+While AFL++ was not initially included in our project, it's remarkable combination extensiblity, usability, and reliability proved a truly valuable, mid-project substitution.
+
 Aside from the fact that there is room for these formats on extending our target fuzzers, we have numerous reasons for selecting YAML, JSON, and Markdown as our extension language.
 First, it has a well-defined formal grammar, allowing it to be quickly and reliably integrated into the two fuzzers.
 Second, these file formats are ubiquitous input formats.
 This ubiquity makes our target languages a well-motivated language to extend these fuzzers to support.
 Lastly, to a proper assessment of its performances, languages that have a sufficient corpus of CVEs are required. 
 These languages have a decent amount CVEs that we can work with.
-There are 108(YAML), 664(JSON), and 103(Markdown) CVEs on MITRE\cite{MITRE}.
+There are 108 (YAML), 664 (JSON), and 103 (Markdown) CVEs on MITRE\cite{MITRE}.
 
 The goal of this project is to extend the capabilities of both Gramatron and 
 Superion, then compare their performance along with Grimoire towards replicated selected CVEs.
