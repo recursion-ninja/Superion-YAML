@@ -260,11 +260,16 @@ Redqueen must be implemented to set up Grimoire. However, several issues arose w
 Despite multiple attempts of installation and manually setting up our machine again so that it would be compatible with Redqueen, we failed to successfully implement the fuzzer. Debugging these errors did not suffice, and due to lack of documentation regarding these bugs, we decided to move on to AFL++ to fuzz the target programs. 
 AFL++ did not have many dependencies like Grimoire did, and was much easier to implement and use. 
 
-\subsection*{Selected CVEs}
+\subsection*{Selected target programs}
 
 
-For each target language, we’ve selected the target programs which have already contained multiple CVEs. There are certain criteria that we decide what target programs would be useful and efficient to get started with on fuzzing.  First, we’re looking for the open source code implemented by C or C++ as the target programs.  AFL works best on C or C++ applications. When source code is available, instrumentation can be injected by a companion tool that works as a drop-in replacement for gcc or clang in any standard build process for third-party code. For example, for C++ programs, we could set CXX=/path/to/afl/afl-g++ before we compile the code. Although AFL does support instrumenting black-box binaries on the fly with QEMU, but this tends to have poor performance. Second, we’ll need an executable or write a simple program that reads data from stdin or from a file to fuzz the target program. Lastly, the target program has some functions to deal with the target language. For example, one of our target programs is YAML-CPP which is a YAML parser and emitter in C++. Finally, we choose YAML-CPP as the YAML target and MD4C as the Markdown target.
-The table below is a corpus of CVEs that we choose to run our tests on.
+For each target language, we’ve selected the target programs which have already contained multiple CVEs. There are certain criteria that we decide what target programs would be useful and efficient to get started with on fuzzing.  
+First, we’re looking for the open source code implemented by C or C++ as the target programs.  AFL works best on C or C++ applications. When source code is available, instrumentation can be injected by a companion tool that works as a drop-in replacement for gcc or clang in any standard build process for third-party code. For example, for C++ programs, we could set CXX=/path/to/afl/afl-g++ before we compile the code. Although AFL does support instrumenting black-box binaries on the fly with QEMU, but this tends to have poor performance. 
+Second, since we need a lot of time to fuzz a program, so we prefer the old version which has contained multiple CVEs. 
+Third, we’ll need an executable or write a simple program that reads data from stdin or from a file to fuzz the target program.  This also reflects that we need to understand the usage of the target program. Although we can fuzz the target program brute-forcedly, once we can’t find any crashes, we may wonder if there are really no bugs, or we’re just simply not able to pass the input seeds to the target program. 
+Lastly, the target program has some functions to deal with the target language. For example, one of our target programs is YAML-CPP\cite{YAML-CPP} which is a YAML parser and emitter in C++. Finally, we choose YAML-CPP as the YAML target, MD4C\cite{MD4C} as the Markdown target, and cJSON\cite{cJSON} as the Jason target.  
+
+The table below is a corpus of CVEs from the chosen target programs.
 
 \begin{table}[h!]
 \centering
@@ -272,10 +277,10 @@ The table below is a corpus of CVEs that we choose to run our tests on.
 \begin{tabular}{V{4}l|l|lV{4}} \hlineB{3}
 	\multicolumn{1}{V{4}c|}{YAML} & \multicolumn{1}{c|}{JSON} & \multicolumn{1}{cV{4}}{Markdown}  \\ \hline
 	\multicolumn{1}{V{4}c|}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2019-6292\cite{CVE-2021-42139}} \vspace{-2mm} \\ \footnotesize YAML-CPP < v0.6.2
+		\texttt{CVE-2019-6292\cite{CVE-2019-6292}} \vspace{-2mm} \\ \footnotesize YAML-CPP < v0.6.2
 	\end{tabular}} & 
 	\multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2019-6285\cite{CVE-2021-41106}} \vspace{-2mm} \\ \footnotesize JWT < v3.4.6
+		\texttt{CVE-2019-118355\cite{CVE-2019-11835}} \vspace{-2mm} \\ \footnotesize cJSON < v1.7.11
 	\end{tabular}} &
 	\multicolumn{1}{cV{4}}{\begin{tabular}[c]{@{}c@{}}
 		\texttt{CVE-2021-30027\cite{CVE-2021-30027}} \vspace{-2mm} \\ \footnotesize MD4C < 0.4.7 
@@ -284,7 +289,7 @@ The table below is a corpus of CVEs that we choose to run our tests on.
 		\texttt{CVE-2019-6285\cite{CVE-2019-6285}} \vspace{-2mm} \\ \footnotesize YAML-CPP < v0.6.2
 	\end{tabular}} & 
 	\multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2021-39215\cite{CVE-2021-39215}} \vspace{-2mm} \\ \footnotesize Jitsi Meet < v2.0.5963
+		\texttt{CVE-2019-11834\cite{CVE-2019-11834}} \vspace{-2mm} \\ \footnotesize cJSON < v1.7.11
 	\end{tabular}} &
 	\multicolumn{1}{cV{4}}{\begin{tabular}[c]{@{}c@{}}
 		\texttt{CVE-2020-26148\cite{CVE-2020-26148}} \vspace{-2mm} \\ \footnotesize MD4C < 0.4.5
@@ -293,7 +298,7 @@ The table below is a corpus of CVEs that we choose to run our tests on.
 		\texttt{CVE-2018-20574\cite{CVE-2018-20574}} \vspace{-2mm} \\ \footnotesize YAML-CPP < v0.6.2
 	\end{tabular}} & 
 	\multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2021-39205\cite{CVE-2021-39205}} \vspace{-2mm} \\ \footnotesize Jitsi Meet < v2.0.6173
+		\texttt{CVE-2019-1010239\cite{CVE-2019-1010239}} \vspace{-2mm} \\ \footnotesize cJSON < v1.7.8
 	\end{tabular}} &
 	\multicolumn{1}{cV{4}}{\begin{tabular}[c]{@{}c@{}}
 		\texttt{CVE-2018-12112\cite{CVE-2018-12112}} \vspace{-2mm} \\ \footnotesize MD4C < 0.2.6
@@ -302,72 +307,55 @@ The table below is a corpus of CVEs that we choose to run our tests on.
 		\texttt{CVE-2018-20573\cite{CVE-2018-20573}} \vspace{-2mm} \\ \footnotesize YAML-CPP < v0.6.2 
 	\end{tabular}} & 
 	\multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2021-32781\cite{CVE-2021-32781}} \vspace{-2mm} \\ \footnotesize Envoy < v1.16.5
+		\texttt{CVE-2018-1000217\cite{CVE-2018-1000217}} \vspace{-2mm} \\ \footnotesize cJSON < v1.7.3
 	\end{tabular}} &
 	\multicolumn{1}{cV{4}}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2021-37700\cite{CVE-2021-37700}} \vspace{-2mm} \\ \footnotesize @github/paste-markdown < v0.3.4
+		\texttt{CVE-2018-12102\cite{CVE-2018-12102}} \vspace{-2mm} \\ \footnotesize MD4C < 0.2.6
 	\end{tabular}} \\ \hline
 	\multicolumn{1}{V{4}c|}{\begin{tabular}[c]{@{}c@{}}
 		\texttt{CVE-2017-5950\cite{CVE-2017-5950}} \vspace{-2mm} \\ \footnotesize YAML-CPP < v0.5.3
 	\end{tabular}} & 
 	\multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2021-32677\cite{CVE-2021-32677}} \vspace{-2mm} \\ \footnotesize FastAPI < v0.65.2
+		\texttt{CVE-2018-1000216\cite{CVE-2018-1000216}} \vspace{-2mm} \\ \footnotesize cJSON < v1.7.3
 	\end{tabular}} &
 	\multicolumn{1}{cV{4}}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2021-29503\cite{CVE-2021-29503}} \vspace{-2mm} \\ \footnotesize HedgeDoc < v1.8.2
+		\texttt{CVE-2018-11547\cite{CVE-2018-11547}} \vspace{-2mm} \\ \footnotesize MD4C < 0.2.5
 	\end{tabular}} \\ \hline
 	\multicolumn{1}{V{4}c|}{\begin{tabular}[c]{@{}c@{}}
 		\texttt{CVE-2017-11692\cite{CVE-2017-11692}} \vspace{-2mm} \\ \footnotesize YAML-CPP < v0.5.3
 	\end{tabular}} & 
 	\multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2021-31618\cite{CVE-2021-31618}} \vspace{-2mm} \\ \footnotesize Apache HTTP Server mod\_http2 v1.15.17
+		\texttt{CVE-2018-1000215\cite{CVE-2018-1000215}} \vspace{-2mm} \\ \footnotesize cJSON < v1.7.6
 	\end{tabular}} &
 	\multicolumn{1}{cV{4}}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2021-29475\cite{CVE-2021-29475}} \vspace{-2mm} \\ \footnotesize HedgeDoc < v1.5.0
+		\texttt{CVE-2018-11546\cite{CVE-2018-11546}} \vspace{-2mm} \\ \footnotesize MD4C < 0.2.5
 	\end{tabular}} \\ \hline
 	\multicolumn{1}{V{4}c|}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2021-22557\cite{CVE-2021-22557}} \vspace{-2mm} \\ \footnotesize SLO generator < v2.0.0
+		\texttt{} \vspace{-2mm} \\ \footnotesize 
 	\end{tabular}} & 
 	\multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2021-30641\cite{CVE-2021-30641}} \vspace{-2mm} \\ \footnotesize Apache HTTP Server v2.4.39-v2.4.46
+		\texttt{CVE-2016-4303\cite{CVE-2016-4303}} \vspace{-2mm} \\ \footnotesize cJSON
 	\end{tabular}} &
 	\multicolumn{1}{cV{4}}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2021-29474\cite{CVE-2021-29474}} \vspace{-2mm} \\ \footnotesize HedgeDoc < v1.8.0
+		\texttt{CVE-2018-11545\cite{CVE-2018-11545}} \vspace{-2mm} \\ \footnotesize MD4C < 0.2.5
 	\end{tabular}} \\ \hline
 	\multicolumn{1}{V{4}c|}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2021-21250\cite{CVE-2021-21250}} \vspace{-2mm} \\ \footnotesize OneDev < v4.0.3
+		\texttt{} \vspace{-2mm} \\ \footnotesize 
 	\end{tabular}} & 
 	\multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2021-30179\cite{CVE-2021-30179}} \vspace{-2mm} \\ \footnotesize Apache Dubbo < v2.6.9
+		\texttt{CVE-2016-10749\cite{CVE-2016-10749}} \vspace{-2mm} \\ \footnotesize cJSON
 	\end{tabular}} &
 	\multicolumn{1}{cV{4}}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2021-27907\cite{CVE-2021-27907}} \vspace{-2mm} \\ \footnotesize Apache Superset $\leq$ v0.38.0
+		\texttt{CVE-2018-11536\cite{CVE-2018-11536}} \vspace{-2mm} \\ \footnotesize MD4C < 0.2.5
 	\end{tabular}} \\ \hline
-	\multicolumn{1}{V{4}c|}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2021-21249\cite{CVE-2021-21249}} \vspace{-2mm} \\ \footnotesize OneDev < v4.0.3
-	\end{tabular}} & 
-	\multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2021-26691\cite{CVE-2021-26691}} \vspace{-2mm} \\ \footnotesize Apache HTTP Server v2.4.0-v2.4.46
-	\end{tabular}} &
-	\multicolumn{1}{cV{4}}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2021-27578\cite{CVE-2021-27578}} \vspace{-2mm} \\ \footnotesize Apache Zeppelin < v0.9.0
-	\end{tabular}} \\ \hline
-	\multicolumn{1}{V{4}c|}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2020-7729\cite{CVE-2020-7729}} \vspace{-2mm} \\ \footnotesize Grunt < v1.3.0
-	\end{tabular}} & 
-	\multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2021-26690\cite{CVE-2021-26690}} \vspace{-2mm} \\ \footnotesize Apache HTTP Server v2.4.0-v2.4.46
-	\end{tabular}} & 
-	\multicolumn{1}{cV{4}}{\begin{tabular}[c]{@{}c@{}}
-		\texttt{CVE-2021-22242\cite{CVE-2021-22242}} \vspace{-2mm} \\ \footnotesize GitLab CE/EE > v11.4
-	\end{tabular}} \\ \hlineB{3}
+	
 \end{tabular}
 }
 \vspace{6mm}\\ \textbf{Table 1.} Target CVEs for each languages
 \end{table}
 \vspace{6mm}
 
-Selected CVEs and the defective applications are shown at the bottom of each cell of \textbf{Table 1}. The numbers next to the name indicate the latest version that the defect was fixed. For example, CVE-2021-42139 can be found in the Deno version prior to 0.107.0.
+Selected CVEs and the defective applications are shown at the bottom of each cell of \textbf{Table 1}. The numbers next to the name indicate the latest version that the defect was fixed. For example, CVE-2019-6292 can be found in the YAML-CPP version prior to 0.6.2.
 
 
 We have administered two major tasks prior to extending the functionality of each fuzzers.
@@ -385,7 +373,20 @@ This was done through the course of literature review and presentation preparati
 \centerline{\textbf{Figure 3.} Input created from Grammar-aware input generators}
 \vspace{6mm}
 
-After failing to build Superion, Gramatron due to their fragile nature, we decided to fuzz AFL and AFL++ on yaml-cpp and markdown as target programs. We implemented older versions of these two targets so that we were more likely to find crashes. We decided to run each fuzzer on each target program for 3 hours, to make the results as consistent as possible. 
+\subsection*{Results from AFL and AFL++}
+We have used AFL and AFL++ on yaml-cpp and markdown as target programs. We implemented older versions of these two targets so that we were more likely to find crashes. We decided to run each fuzzer on each target program for 3 hours, to make the results as consistent as possible.
+Mostly, the repository of the target program has provided some test cases, so we can take these as input seeds for the fuzzers.
+After fuzzing the target program in a period of time, it has generated over 100 uniq crashes in both YAMLL-CPP and MD4C. 
+
+In order to analysis these crashes files, we’ve tried to reproduce the known CVEs by understanding how the specific CVE is found from those discover.
+For example, CVE-2017-11692, the description of this CVE shows string”!2” can crash the program.
+So, we also found the same crash result when we pipe our crash files to the target program.
+After that, we have piped different crash files into the target program, we still get same crash messages.
+Since the AFL mutator will keep mutating the input file as we mentioned before, so it’s reasonable that, even these crash files are unique, but the pattern might not be too much different. That’s why we’ll keep getting same crash message.
+
+For analyzing the results of MD4C, The message we can only get is the segmentation fault for testing different the crash files. So, if we want to know what’s different between them, we’ll need another tool to sanitize them.
+In short, we assume that if the fuzzing time gets longer, after the fuzzer searching the target program deeply, the generated crash files might be in different pattern. Moreover, we’ll need another tool or method to know the detail reasons while the program crashed.
+ 
 
 Below is the output of AFL++ when fuzzed on yaml-cpp as a target program for 3 hours.
 
