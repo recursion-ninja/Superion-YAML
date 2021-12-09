@@ -52,15 +52,14 @@
 
 For our project, we propose exploring the efficiency of grey-box fuzzing programs with structured inputs compared to generically mutated random-like inputs.
 The assessment will be adapted to test three major file formats: YAML, JSON, and Markdown.
-Of all the ubiquitous file formats, these three are currently the most popular that both, are consumed as input by a wide array of programs, and have enough CVEs that we can gauge the efficacy with.
+Of all the ubiquitous file formats, these three are currently the most popular languages that are consumed as input by a wide array of programs and have enough CVEs that we can gauge the efficacy.
 
 There are some state-of-the-art fuzzers that accentuate their effectiveness with structured input such as Gramatron, Superion, and Mayhem.
-We take Gramatron and Superion as extension targets that can generate our test file formats, as they are both open sources but Mayhem is not.
+Excluding Mayhem, a commercial project for which we don't have access to its source code, we take two open-sourced projects; Gramatron and Superion as our extension target.
 Grimoire is a fuzzer that, without structured inputs, can perform grammar awareness fuzzing by itself.
 
-In the course of this project, we will extend the functionality of these two fuzzers and scrutinize the fuzzing capabilities of these extensions compared to Grimoire against a corpus of CVEs of our three target file formats.
+In the course of this project, we will extend the functionality of these two fuzzers and scrutinize the fuzzing capabilities of these extensions compared to other fuzzers like Grimoire against a corpus of CVEs of our three target file formats.
 Our comparative metric will be both qualitative and quantitative; measuring coverage of CVEs and execution time to obtain coverage.
-
 
 \clearpage
 
