@@ -43,7 +43,7 @@
 
 \maketitle % Print the title section
 
-\vspace{1cm}
+\vspace{2cm}
 \section*{Abstract}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -60,8 +60,7 @@ Grimoire is a fuzzer that, without structured inputs, can perform grammar awaren
 
 Over the course of this project, we have attempted to extend the functionality of these two fuzzers with the intention of scrutinizing their fuzzing capabilities compared to other fuzzers like Grimoire against a corpus of CVEs of our three target file formats.
 Extension and comparison of these tools proved too difficult within the time of our study.
-Instead the same methodology was applied to compare substitute tools, ALF and AFL++.
-We will discuss the difficulties presented by each initial tool, our efforts to address these difficulties, as well as the refocusing of our methodology to new fuzzing tools and the comparative efficacy of these tools with respect to the CVE corpus replication.
+We will discuss the difficulties presented by each tool, our attempt adapt our methodology to address these difficulties, along with the CVE replication which was achievable.
 
 \clearpage
 
@@ -385,6 +384,51 @@ This was done through the course of literature review and presentation preparati
 \vspace{6mm}
 \centerline{\textbf{Figure 3.} Input created from Grammar-aware input generators}
 \vspace{6mm}
+
+Below is the output of AFL++ when fuzzed on yaml-cpp as a target program for 3 hours.
+
+\begin{center}
+    \includegraphics[scale=0.4, trim={0 3cm 0 0}, clip]{yamlfuzzer.png}
+    \textbf{Figure 3.} Fuzzing yaml-cpp with AFL++
+\end{center}
+
+Some of the sample crashes are shown below.
+
+\begin{center}
+    \includegraphics[scale=0.4, trim={0 3cm 0 0}, clip]{yaml sample crashes.png}
+    \textbf{Figure 4.} yaml-cpp Crashes 
+\end{center}
+
+The content of one crash is shown below.
+
+\begin{center}
+    \includegraphics[scale=0.4, trim={0 3cm 0 0}, clip]{yamlsamplecrashcat.png}
+    \textbf{Figure 5.} Content of a Sample yaml-cpp Crash
+\end{center}
+
+Below is the output of AFL++ when fuzzed on markdown as a target program for 3 hours.
+
+\begin{center}
+    \includegraphics[scale=0.4, trim={0 3cm 0 0}, clip]{markdownfuzzer.png}
+    \textbf{Figure 6.} Fuzzing markdown with AFL++
+\end{center}
+
+Some of the sample crashes are shown below.
+
+\begin{center}
+    \includegraphics[scale=0.4, trim={0 3cm 0 0}, clip]{markdowncrashes.png}
+    \textbf{Figure 7.} markdown Crashes
+\end{center}
+
+The content of one crash is shown below.
+
+\begin{center}
+    \includegraphics[scale=0.4, trim={0 3cm 0 0}, clip]{markdownsamplecatcrash.png}
+    \textbf{Figure 8.} Content of a Sample markdown Crash
+\end{center}
+
+
+
 
 
 \section*{Discussion}
