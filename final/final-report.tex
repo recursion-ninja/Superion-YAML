@@ -183,7 +183,7 @@ Qualitatively, we compare how many of the selected CVEs were rediscovered by eac
 
 \subsection*{Gramatron}
 
-Gramatron's approach to fuzzing described above in \emph{Motivation}, while novel and efficient is not without it's limitations.
+Gramatron's approach to fuzzing described above in \emph{Motivation}, while novel and efficient, is not without it's limitations.
 Because the mutation mechanism is a FSA, Gramatron can only produce coverage for grammars which are regular languages.
 For any grammar which is more complex than a regular language, Gramatron can only produce a structured set of strings which represent a small sub-set of the entire grammar's set of acceptable strings.
 This lack of expressiveness can leave large gaps in Gramatron's coverage.
@@ -203,7 +203,7 @@ After recursive substitution of depth $N$, all productions are in GNF form \emph
 In this form, the grammar stack-limited PDA has had the potential state-space of the stack expanded out explicitly into a FSA.
 This FSA is used as the mutator for Gramatron.
 
-During our extension of Gramatron to support JSON, Markdown, and YAML; we encountered numerous problems arising from the theoretical limitations above.
+During our extension of Gramatron to support JSON, Markdown, and YAML, we encountered numerous problems arising from the theoretical limitations above.
 First, all three of JSON, Markdown, and YAML are context free grammars with recursive definitions, and hence they cannot be directly converted to a FSA.
 The conversion process from CFG to GNF for both grammars was fraught with infinite loops.
 We dedicated substantial time to manually pre-defined both grammars in GNF to avoid the undecidability of general CFG to GNF conversion.
@@ -245,6 +245,9 @@ The process of extension relies on the external tool ANTLR which added complexit
 Furthermore, the lack of new grammar output and feedback on correcting the behavior leaves much to be desired in terms of usability.
 Ultimately Superion promises high fidelity linguistic coverage in it's structure-aware fuzzing, but we were unable to successful extend and measure these promises.
 
+\subsection*{Grimoire}
+
+Grimoire is build upon Redqueen, an alternative to taint checking that exploits input-to-state correspondence and overcomes fuzzing setbacks. Redqueen must be implemented to set up Grimoire. However, several issues arose when doing so. Redqueen had many dependency packages that did not run on our machine. Despite multiple attempts of installation and manually setting up our machine again so that it would be compatible with Redqueen, we failed to successfully implement the fuzzer. Debugging these errors did not suffice, and due to lack of documentation regarding these bugs, we decided to move on to AFL++ to fuzz the target programs. AFL++ did not have many dependencies like Grimoire did, and was much easier to implement and use. 
 
 \subsection*{Selected CVEs}
 
