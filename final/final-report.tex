@@ -254,7 +254,13 @@ Ultimately Superion promises high fidelity linguistic coverage in it's structure
 
 \subsection*{Grimoire}
 
-Grimoire is build upon Redqueen, an alternative to taint checking that exploits input-to-state correspondence and overcomes fuzzing setbacks. Redqueen must be implemented to set up Grimoire. However, several issues arose when doing so. Redqueen had many dependency packages that did not run on our machine. Despite multiple attempts of installation and manually setting up our machine again so that it would be compatible with Redqueen, we failed to successfully implement the fuzzer. Debugging these errors did not suffice, and due to lack of documentation regarding these bugs, we decided to move on to AFL++ to fuzz the target programs. AFL++ did not have many dependencies like Grimoire did, and was much easier to implement and use. 
+Grimoire is build upon Redqueen, an alternative to taint checking that exploits input-to-state correspondence and overcomes fuzzing setbacks.
+Redqueen must be implemented to set up Grimoire. However, several issues arose when doing so.
+Redqueen has many dependent packages which did not reliably run on our machines.
+Despite multiple attempts of installation and manually setting up our test platform again so that it would be compatible with Redqueen, we failed to successfully build the fuzzer in a working state.
+Debugging these errors did not suffice, and due to lack of documentation regarding the encountered configuration defects, we decided to move on to AFL++ to fuzz the target programs.
+AFL++ has a significantly smaller dependency footprint compared to Grimoire, and proved to be both more portable and usable. 
+
 
 \subsection*{Selected CVEs}
 
