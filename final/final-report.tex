@@ -190,7 +190,7 @@ Qualitatively, we compare how many of the selected CVEs were rediscovered by eac
 
 \subsection*{Gramatron}
 
-Gramatron's approach to fuzzing described above in \emph{Motivation}, while novel and efficient is not without it's limitations.
+Gramatron's approach to fuzzing described above in \emph{Motivation}, while novel and efficient, is not without it's limitations.
 Because the mutation mechanism is a FSA, Gramatron can only produce coverage for grammars which are regular languages.
 For any grammar which is more complex than a regular language, Gramatron can only produce a structured set of strings which represent a small sub-set of the entire grammar's set of acceptable strings.
 This lack of expressiveness can leave large gaps in Gramatron's coverage.
@@ -210,7 +210,7 @@ After recursive substitution of depth $N$, all productions are in GNF form \emph
 In this form, the grammar stack-limited PDA has had the potential state-space of the stack expanded out explicitly into a FSA.
 This FSA is used as the mutator for Gramatron.
 
-During our extension of Gramatron to support JSON, Markdown, and YAML; we encountered numerous problems arising from the theoretical limitations above.
+During our extension of Gramatron to support JSON, Markdown, and YAML, we encountered numerous problems arising from the theoretical limitations above.
 First, all three of JSON, Markdown, and YAML are context free grammars with recursive definitions, and hence they cannot be directly converted to a FSA.
 The conversion process from CFG to GNF for both grammars was fraught with infinite loops.
 We dedicated substantial time to manually pre-defined both grammars in GNF to avoid the undecidability of general CFG to GNF conversion.
@@ -252,6 +252,9 @@ The process of extension relies on the external tool ANTLR which added complexit
 Furthermore, the lack of new grammar output and feedback on correcting the behavior leaves much to be desired in terms of usability.
 Ultimately Superion promises high fidelity linguistic coverage in it's structure-aware fuzzing, but we were unable to successful extend and measure these promises.
 
+\subsection*{Grimoire}
+
+Grimoire is build upon Redqueen, an alternative to taint checking that exploits input-to-state correspondence and overcomes fuzzing setbacks. Redqueen must be implemented to set up Grimoire. However, several issues arose when doing so. Redqueen had many dependency packages that did not run on our machine. Despite multiple attempts of installation and manually setting up our machine again so that it would be compatible with Redqueen, we failed to successfully implement the fuzzer. Debugging these errors did not suffice, and due to lack of documentation regarding these bugs, we decided to move on to AFL++ to fuzz the target programs. AFL++ did not have many dependencies like Grimoire did, and was much easier to implement and use. 
 
 \subsection*{Selected CVEs}
 
@@ -381,17 +384,14 @@ This was done through the course of literature review and presentation preparati
 
 \section*{Discussion}
 
-Based on the fuzzing tests conducted on the selected CVEs, we found that our extension of Superion and Gramatron were feasible. 
+Based on the fuzzing tests conducted on the selected CVEs, we found that AFL++ was much more efficient than AFL. 
 
-Superion generated an input that resembled human-written javascript, by taking a context free grammar and an input seed,
-then performing a series of "grammar-aware" mutations to create a sequence of validly structured inputs.
-Superion created an input that was similar to what we were looking for. 
+When fuzzing yaml-cpp with AFL, there were a total of 116 crashes found. With AFL++, 166 crashes were found. When fuzzing markdown, AFL found a total of 175 crashes, while AFL++ found 535 crashes. For both target programs, AFL++ found more crashes than AFL. The higher number of crashes found with AFL++ indicate that the fuzzer provided more randomized inputs and found more test cases to cause a crash.
 
-Meanwhile, Gramatron was harder to read.
-This may be because Gramatron reduces the number of mutation steps from the input seed to the trigger input. 
+When analyzing execution speed, AFL was slower than AFL++ when fuzzing yaml-cpp, although both managed to complete one cycle, the time the fuzzer takes to pass through all the test cases in the queue. When fuzzing markdown, although AFL had a higher execution speed, AFL++ managed to complete one full cycle, while AFL did not complete any.
 
-We hope to show that our tests on the extensions of Superion and Gramatron will be more performant than those conducted on Grimoire since Superion and Gramatron directly produce the inputs,
-while Grimoire creates the input from feedback, rather than a defined structure.
+AFL++ completed more total paths than AFL did when fuzzing both yaml-cpp and markdown. This indicates that AFL++ explored more paths, and generated more input to reach these paths.
+
 
 \section*{Future Experimentation}
 For the future work, Grimoire, Gramatron, Superion could be combined for large-scale testing to explore the new CVEs. 
