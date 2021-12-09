@@ -1,4 +1,0 @@
-# environment variables:
-AFL_KILL_SIGNAL=9
-# command line:
-'afl-fuzz' '-i' '/home/sabin/fuzzer/AFLplusplus/md4c/test/mk-in' '-o' '/home/sabin/fuzzer/AFLplusplus/md4c/test/mk-out' '--' './md2html' '@@'
