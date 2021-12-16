@@ -238,7 +238,7 @@ This FSA is used as the mutator for Gramatron.
 \vspace{6mm}
 
 During our extension of Gramatron to support JSON, Markdown, and YAML, we encountered numerous problems arising from the theoretical limitations above.
-First, all three of JSON, Markdown, and YAML are context free grammars with recursive definitions, and hence they cannot be directly converted to a FSA.
+First, not all three of JSON, Markdown, and YAML are context free grammars with recursive definitions, and hence they cannot be directly converted to a GNF form, hence not to the FSA.
 The conversion process from CFG to GNF for both grammars was fraught with infinite loops.
 We dedicated substantial time to manually pre-defined both grammars in GNF to avoid the undecidability of general CFG to GNF conversion.
 Subsequently, each grammar had to have it's transitive recursive form broken so that it could be converted into a FSA.
@@ -437,7 +437,7 @@ For the crashes files we've found, we assume that if the fuzzing time gets longe
 
 Figures in the appendix show example crashes induced by AFL++.
  
-
+\vspace{3mm}
 \begin{table}[h!]
 \centering
 \scalebox{1} {
@@ -483,9 +483,6 @@ Figures in the appendix show example crashes induced by AFL++.
 }
 \vspace{6mm}\\ \textbf{Table 4. }Total Paths 
 \end{table}
-\vspace{6mm}
-
-
 
 \section*{Discussion}
 
@@ -500,9 +497,6 @@ AFL++ completed more total paths than AFL did when fuzzing both yaml-cpp and mar
 
 \section*{Future Experimentation}
 For the future work, we would like to investigate the similarities between the crashes we found and the CVEs known for each target language. We think that either writing a function to parse all the crashes, or implementing another program, address sanitizers, with fuzzing would help us. Address sanitizers are used to detect bugs when fuzzing a target program. Using this modifier would aid us in investigating the crashes further.
-
-
-\clearpage
 
 \section*{Division of Labor}
 
@@ -519,7 +513,7 @@ Chuanyao Lin and Sabina Bhuiyan analyzed the fuzzing results of AFL and AFL++.
 Kyoungwoo Lee designed and assembled the project poster.
 All members authored this project report.
 
-
+\clearpage
 \section*{Timeline}
 
 The project timeline is partially defined by the course syllabus where deadlines are concerned and partially team defined where the syllabus does not give guidance.
@@ -547,42 +541,31 @@ The following is a rough accounting of the project development:
 
 \clearpage
 
-\begin{figure}
-	\centering
-	\includegraphics[scale=1.0, trim={0 3cm 0 0}, clip]{yamlfuzzer.png}
-	\caption{Fuzzing yaml-cpp with AFL++}
-\end{figure}
-
-\begin{figure}
-	\centering
-	\includegraphics[scale=1.0, trim={0 3cm 0 0}, clip]{yaml-sample-crashes.png}
-	\caption{yaml-cpp crashes}
-\end{figure}
-
-\begin{figure}
-	\centering
-	\includegraphics[scale=1.0, trim={0 3cm 0 0}, clip]{yamlsamplecrashcat.png}
-	\caption{Content of a Sample yaml-cpp crash}
-\end{figure}
-
-\begin{figure}
-	\centering
-	\includegraphics[scale=1.0, trim={0 3cm 0 0}, clip]{markdownfuzzer.png}
-	\caption{Fuzzing markdown with AFL++ for 3 hours.}
-\end{figure}
-
-\begin{figure}
-	\centering
-	\includegraphics[scale=1.0, trim={0 3cm 0 0}, clip]{markdowncrashes.png}
-	\caption{Markdown Crashes}
-\end{figure}
+\vspace{-6mm}
+\begin{center}
+	\includegraphics[scale=1.0, trim={0 0 7mm 0}, clip]{yamlfuzzer.png}\\
+	\textbf{Figure 2.} Fuzzing yaml-cpp with AFL++\\
+\vspace{6mm}
+	\includegraphics[scale=0.45, trim={0 3cm 0 0}, clip]{yaml_cpp_crashes.jpg}\\
+	\textbf{Figure 2.} yaml-cpp crashes\\
+\vspace{6mm}
+	\includegraphics[scale=1.0]{yamlsamplecrashcat.png}\\
+	\textbf{Figure 2.} Content of a Sample yaml-cpp crash\\
+\vspace{6mm}
+	\includegraphics[scale=0.7, trim={0 0 1.5cm 0}, clip]{markdownfuzzer.png}\\
+	\textbf{Figure 2.} Fuzzing markdown with AFL++ for 3 hours.\\
+\end{center}
+\vspace{6mm}
 
 
-\begin{figure}
-	\centering
-	\includegraphics[scale=1.0, trim={0 3cm 0 0}, clip]{markdownsamplecatcrash.png}
-    \caption{Content of a Sample markdown crash}
-\end{figure}
+\begin{center}
+	\includegraphics[scale=1.0]{markdowncrashes.png}\\
+	\textbf{Figure 2.} Markdown Crashes\\
+\vspace{6mm}	
+	\includegraphics[scale=1.0]{markdownsamplecatcrash.png}\\
+	\textbf{Figure 2.} Content of a Sample markdown crash\\
+\end{center}
+\vspace{6mm}
 
 \clearpage
 
