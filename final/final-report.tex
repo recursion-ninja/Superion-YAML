@@ -120,8 +120,6 @@ Superion currently generates valid JavaScript and XML inputs by taking a context
 Based on the context-free grammar, Superion parses each test input into an abstract syntax tree, an AST. Using ASTs, Superion introduces a grammar-aware trimming strategy that can effectively trim test inputs while keeping the input structure valid, then randomly chooses another input from AFL's queue and also parses it into AST. A sub-tree of the target input can be replaced by another sub-tree, either from the target input itself or from a randomly chosen supplementary sample. Therefore, hundreds of new samples are generated and executed to find a new path in tested programs. The results of Superion show a great increase in fuzzing efficacy when targeting programs which expect structured input.
 
 
-\clearpage
-
 Gramatron\cite{srivastava2021gramatron} is a second, and even more recent, open-source fuzzing tool designed to produce structured inputs that we decided to extend.
 Released in 2021, Gramatron was designed with new mutation algorithms to increase the speed at which defects are discovered.
 It does this by reducing the number of mutation steps from the input seed to trigger input mutations, rather than simply optimizing the speed at which new inputs can be generated. There are two steps in which Gramatron modifies AFL++. First, in the preprocessing phase, the context-free grammar, CFG, is converted into Greibach normal form (GNF) \cite{greibach1965new}, which is then turned into a finite state automata (FSA). This can be seen in the figure below.
@@ -237,10 +235,11 @@ This FSA is used as the mutator for Gramatron.
 \hrule height 0.4mm
 \begingroup \fontsize{10pt}{10pt} \selectfont 
 \verbatiminput{JSONsource_automata.json}
-\vspace{-6mm} \endgroup \hrule
-\vspace{6mm}
+\vspace{2mm}
+\endgroup \hrule height 0.4mm
+\vspace{3mm}
 \centerline{\textbf{Figure 4.} FSA specification for JSON extension}
-\vspace{6mm}
+\vspace{3mm}
 
 During our extension of Gramatron to support JSON, Markdown, and YAML, we encountered numerous problems arising from the theoretical limitations above.
 First, not all three of JSON, Markdown, and YAML are context free grammars with recursive definitions, and hence they cannot be directly converted to a GNF form, hence not to the FSA.
@@ -281,13 +280,13 @@ We conducted a debugging effort of Superion's source code to diagnose the proble
 
 \vspace{10mm}
 \hrule height 0.4mm
-\begingroup \fontsize{10pt}{10pt} \selectfont 
+\begingroup \fontsize{11pt}{11pt} \selectfont 
 \begin{alltt}
 \verbatiminput{MarkdownParser.g4}
 \end{alltt} \vspace{-6mm} \endgroup \hrule height 0.4mm
-\vspace{6mm}
+\vspace{10mm}
 \centerline{\textbf{Figure 5.} Excerpts of Markdown grammar in \texttt{.g4} format}
-\vspace{6mm}
+\vspace{10mm}
 
 Our assessment of Superion is limited, as we were not able to successfully extend its support for any of the attempted grammars.
 The process of extension relies on the external tool ANTLR which added complexity to the extension process that could have been mitigated by a robust makefile.
@@ -327,6 +326,8 @@ For example, one of our target programs is YAML-CPP\cite{YAML-CPP} which is both
 Finally, we choose YAML-CPP as the YAML target, MD4C\cite{MD4C} as the Markdown target, and cJSON\cite{cJSON} as the Jason target.  
 
 The table below is a corpus of CVEs from the chosen target programs. Selected CVEs and the defective applications are shown at the bottom of each cell of \textbf{Table 1}. The numbers next to the name indicate the latest version that the defect was fixed. For example, CVE-2019-6292 can be found in the YAML-CPP version prior to 0.6.2.
+
+
 \vspace{6mm}
 \begin{table}[h!]
 \centering
@@ -351,6 +352,18 @@ The table below is a corpus of CVEs from the chosen target programs. Selected CV
 	\multicolumn{1}{cV{4}}{\begin{tabular}[c]{@{}c@{}}
 		\texttt{CVE-2020-26148\cite{CVE-2020-26148}} \vspace{-2mm} \\ \footnotesize MD4C < 0.4.5
 	\end{tabular}} \\ \hline
+	
+\end{tabular}
+}
+\end{table}
+
+
+\vspace{6mm}
+\begin{table}[h!]
+\centering
+\scalebox{1} {
+\begin{tabular}{V{4}l|l|lV{4}} \hlineB{3}
+	\multicolumn{1}{V{4}c|}{YAML} & \multicolumn{1}{c|}{JSON} & \multicolumn{1}{cV{4}}{Markdown}  \\ \hline
 	\multicolumn{1}{V{4}c|}{\begin{tabular}[c]{@{}c@{}}
 		\texttt{CVE-2018-20574\cite{CVE-2018-20574}} \vspace{-2mm} \\ \footnotesize YAML-CPP < v0.6.2
 	\end{tabular}} & 
@@ -411,6 +424,7 @@ The table below is a corpus of CVEs from the chosen target programs. Selected CV
 \vspace{6mm}\\ \textbf{Table 1.} Target CVEs for each languages
 \end{table}
 
+
 We have administered two major tasks prior to extending the functionality of each fuzzers.
 First, we have set up Gramatron and Superion to run in the test environment.
 The input generators for each fuzzer successfully constructed seed files \cite{superion-example}\cite{gramatron-example}that conform to the grammatic constraints of Javascript.
@@ -441,21 +455,15 @@ Mostly, the repository of the target program has provided some test cases, so we
 After fuzzing the target program in a period of time, it has generated over 100 uniq crashes in both YAMLL-CPP and MD4C but no crashes found in cJSON. 
 \vspace{1mm}
 \begin{center}
-	\includegraphics[scale=0.55, trim={0 0 7mm 0}, clip]{afl_yaml_cpp_3hrs.jpg}\\
+	\includegraphics[scale=0.5, trim={0 0 7mm 0}, clip]{afl_yaml_cpp_3hrs.jpg}\\
 	\textbf{Figure 8.} Fuzzing yaml-cpp with AFL\\
 \vspace{1mm}
 	\includegraphics[scale=0.55, trim={0 0 5mm 0}, clip]{afl_m2d4_3hrs.jpg}\\
 	\textbf{Figure 9.} Fuzzing MD4C with AFL\\
-\end{center}
-\vspace{6mm}
-
-\vspace{-6mm}
-\begin{center}
-	\includegraphics[scale=1.0, trim={0 0 7mm 0}, clip]{yamlfuzzer.png}\\
+\vspace{1mm}
+	\includegraphics[scale=0.7, trim={0 0 7mm 0}, clip]{yamlfuzzer.png}\\
 	\textbf{Figure 10.} Fuzzing \texttt{yaml-cpp} with AFL++\\
 \end{center}
-
-
 
 \vspace{6mm}
 \begin{center}
@@ -464,28 +472,23 @@ After fuzzing the target program in a period of time, it has generated over 100 
 \end{center}
 \vspace{6mm}
 
-
-
-
 In order to analyze these crashes files, we've tried to reproduce the known CVEs by understanding how the specific CVE is found from those discoveries.
 For example, CVE-2017-11692\cite{CVE-2017-11692}, the description of this CVE shows string”!2” can crash the program.
 So, we also found the same crash result when we pipe our crash files to the target program.
 After that, we have piped different crash files into the target program, we still get same crash messages.
 Since the AFL mutator will keep mutating the input file as we mentioned before, so it's reasonable that, even these crash files are unique, but the pattern might not be too much different. That's why we'll keep getting same crash message.
 
-\vspace{6mm}
+\vspace{3mm}
 \begin{center}
-	\includegraphics[scale=0.45, trim={0 3cm 0 0}, clip]{yaml_cpp_crashes.png}\\
+	\includegraphics[scale=1, trim={0 0 0 0}, clip]{yaml-sample-crashes.png}\\
 	\textbf{Figure 12.} Crashes testing for YAML-CPP with AFL
 \end{center}
-
 \vspace{3mm}
+
 \begin{center}
-	\includegraphics[scale=0.45, trim={0 0 0 0}, clip]{yaml-sample-crashes.png}\\
+	\includegraphics[scale=0.35, trim={0 3cm 0 0}, clip]{yaml_cpp_crashes.png}\\
 	\textbf{Figure 13.} Crashes testing for YAML-CPP with AFL++
 \end{center}
-\vspace{3mm}
-
 
 For analyzing the results of MD4C, The message we can only get is the segmentation fault for testing different the crash files. So, if we want to know what's different between them, we'll need another tool to sanitize them.
 
@@ -562,6 +565,8 @@ Figures in the appendix show example crashes induced by AFL++.
 \vspace{6mm}\\ \textbf{Table 4. }Total Paths 
 \end{table}
 
+\newpage 
+
 \section*{Discussion}
 
 Based on the fuzzing tests conducted on the selected CVEs, we found that AFL++ was much more efficient than AFL. 
@@ -584,10 +589,6 @@ AFL++ completed more total paths than AFL did when fuzzing both \texttt{yaml-cpp
 This indicates that AFL++ explored more paths, and generated more input to reach these paths.
 
 
-\section*{Future Experimentation}
-For the future work, we would like to investigate the similarities between the crashes we found and the CVEs known for each target language. We think that either writing a function to parse all the crashes, or implementing another program, address sanitizers, with fuzzing would help us. Address sanitizers are used to detect bugs when fuzzing a target program. Using this modifier would aid us in investigating the crashes further.
-
-\clearpage
 \section*{Division of Labor}
 
 Alex Washburn devised the main concept of the project.
@@ -627,35 +628,6 @@ The following is a rough accounting of the project development:
 	\item \texttt{2021-12-12:} \textbf{Final project reports due 5:35 pm}
 \end{enumerate}
 
-
-\clearpage
-
-\vspace{-6mm}
-\begin{center}
-	\includegraphics[scale=1.0, trim={0 0 7mm 0}, clip]{yamlfuzzer.png}\\
-	\textbf{Figure 10.} Fuzzing \texttt{yaml-cpp} with AFL++\\
-\vspace{6mm}
-	\includegraphics[scale=0.45, trim={0 3cm 0 0}, clip]{yaml_cpp_crashes.png}\\
-	\textbf{Figure 11.} \texttt{yaml-cpp} crashes\\
-\vspace{6mm}
-	\includegraphics[scale=1.0]{yamlsamplecrashcat.png}\\
-	\textbf{Figure 12.} Content of a Sample \texttt{yaml-cpp} crash\\
-\vspace{6mm}
-	\includegraphics[scale=0.7, trim={0 0 1.5cm 0}, clip]{markdownfuzzer.png}\\
-	\textbf{Figure 13.} Fuzzing markdown with AFL++ for 3 hours.\\
-\end{center}
-\vspace{6mm}
-
-
-\begin{center}
-	\includegraphics[scale=1.0]{markdowncrashes.png}\\
-	\textbf{Figure 14.} Markdown Crashes\\
-\vspace{6mm}	
-	\includegraphics[scale=1.0]{markdownsamplecatcrash.png}\\
-	\textbf{Figure 15.} Content of a Sample markdown crash\\
-\end{center}
-
-\clearpage
 
 \bibliographystyle{ieeetr}
 \bibliography{final-report}
