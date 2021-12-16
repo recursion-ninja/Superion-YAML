@@ -230,12 +230,12 @@ instance HasProductions Path where
           (partRules, deps) = getRulesAndDeps g part
           
           rules = mconcat $
-                   [ appendSymbolsToSet ["/", note path      ] partRules
-                   , appendSymbolsToSet ["/", note path, "/" ] partRules
+--                   [ appendSymbolsToSet ["/", note path      ] partRules
+                   [ appendSymbolsToSet ["/"] partRules
                    , [[ "/", note path      ]]
                    , [[ "/", note path, "/" ]]
                    ]
-      in  (deps <>) <$> fromRulesWithDeps g (nonTerminal x) rules [ path ]
+      in  (deps <>) <$> fromRulesWithDeps2 g (nonTerminal x) rules ( path, part )
 
 
 instance HasProductions URI where
@@ -257,9 +257,9 @@ instance HasProductions URL where
           route = seg `SepBy` dash
           (hostRules, hostDeps) = getRulesAndDeps g host
           rules = mconcat $
-                    [ appendSymbolsToSet [ note frag ] hostRules
-                    , [[ "/", note route            ]]
-                    , [[ "/", note route, note frag ]]
+                    [ appendSymbolsToSet [ note route] hostRules
+--                    , [[ "/", note route            ]]
+--                    , [[ "/", note route, note frag ]]
                     ]
       in  (hostDeps <>) <$> fromRulesWithDeps2 g (nonTerminal x) rules (route, frag)
 

@@ -419,7 +419,7 @@ instance {-# OVERLAPPABLE #-} (HasProductions a, HasSuffixSymbol a) => HasProduc
     productionRule _ x | trace (show (suffix x)) False = undefined
     productionRule g ne@(a:|_) =
       let (rulesA, depsA) = getRulesAndDeps g a
-          latter = Set.map (appendSymbols [note ne]) rulesA
+          latter = Set.map (appendSymbols [note a]) rulesA
       in  (Production (nonTerminal ne, rulesA <> latter), depsA)
 
 
@@ -428,7 +428,7 @@ instance {-# OVERLAPPING #-} HasProductions (NonEmpty Terminal) where
     productionRule _ x | trace (show (suffix x)) False = undefined
     productionRule _ ne@(x:|_) = fromRulesAndNoDeps (nonTerminal ne)
             [ [ term x ]
-            , [ term x, note ne ]
+            , [ term x, term x ]
             ]
 
 
@@ -468,8 +468,8 @@ instance {-# OVERLAPPABLE #-} (HasProductions a, HasProductions b, HasSuffixSymb
     productionRule _ x | trace (show (suffix x)) False = undefined
     productionRule g s@(a `SepBy` b) =
       let (rulesA, depsA) = getRulesAndDeps g a
-          latter = Set.map (appendSymbols [note b, note s ]) rulesA
-      in  (depsA <>) <$> fromRulesWithDeps g (nonTerminal s) (rulesA <> latter) [b]
+          latter = Set.map (appendSymbols [note b, note a ]) rulesA
+      in  (depsA <>) <$> fromRulesWithDeps2 g (nonTerminal s) (rulesA <> latter) (a,b)
 
 
 instance {-# OVERLAPPING #-} (HasProductions b, HasSuffixSymbol b) => HasProductions (SepBy Terminal b) where
@@ -477,7 +477,7 @@ instance {-# OVERLAPPING #-} (HasProductions b, HasSuffixSymbol b) => HasProduct
     productionRule _ x | trace (show (suffix x)) False = undefined
     productionRule g s@(t `SepBy` b) = fromRulesWithDeps g (nonTerminal s)
             [ [ term t ]
-            , [ term t, note b, note s]
+            , [ term t, note b, term t ]
             ]
             [ b ]
 
@@ -487,7 +487,7 @@ instance {-# OVERLAPPING #-} (HasProductions a, HasSuffixSymbol a) => HasProduct
     productionRule _ x | trace (show (suffix x)) False = undefined
     productionRule g s@(a `SepBy` t) =
       let (rulesA, depsA) = getRulesAndDeps g a
-          tThenA = Set.map (\r -> flip appendSymbols ([term t] <> r) [note s]) rulesA
+          tThenA = Set.map (\r -> flip appendSymbols ([term t] <> r) [note a]) rulesA
       in  (Production (nonTerminal s, rulesA <> tThenA), depsA)
 
 
@@ -497,7 +497,7 @@ instance {-# OVERLAPPING #-} HasProductions (SepBy Terminal Terminal) where
     productionRule _ s@(t1 `SepBy` t2) =
       fromRulesAndNoDeps (nonTerminal s)
             [ [ term t1  ]
-            , [ term t1, term t2, note s ]
+            , [ term t1, term t2, term t1 ]
             ]
 
 
