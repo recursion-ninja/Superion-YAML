@@ -439,7 +439,16 @@ While using AFL and AFL++ on our target programs. We implemented older versions 
 \vspace{6mm}
 
 Mostly, the repository of the target program has provided some test cases, so we can take these as input seeds for the fuzzers.
-After fuzzing the target program in a period of time, it has generated over 100 uniq crashes in both YAMLL-CPP and MD4C. 
+After fuzzing the target program in a period of time, it has generated over 100 uniq crashes in both YAMLL-CPP and MD4C but no crashes found in cJSON. 
+\vspace{1mm}
+\begin{center}
+	\includegraphics[scale=0.55, trim={0 0 7mm 0}, clip]{afl_yaml_cpp_3hrs.jpg}\\
+	\textbf{Figure 8.} Fuzzing yaml-cpp with AFL\\
+\vspace{1mm}
+	\includegraphics[scale=0.55, trim={0 0 5mm 0}, clip]{afl_m2d4_3hrs.jpg}\\
+	\textbf{Figure 9.} Fuzzing MD4C with AFL\\
+\end{center}
+\vspace{6mm}
 
 
 In order to analysis these crashes files, we've tried to reproduce the known CVEs by understanding how the specific CVE is found from those discover.
