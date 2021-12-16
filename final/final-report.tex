@@ -113,7 +113,7 @@ Superion currently generates valid JavaScript and XML inputs by taking a context
 \end{center}
 \vspace{3mm}
 
-Based on the context-free grammar, Superion parses each test input into an abstract syntax tree, an AST. Using ASTs, Superion introduces a grammar-aware trimming strategy that can effectively trim test inputs while keeping the input structure valid, then randomly chooses another input from AFL’s queue and also parses it into AST. A sub-tree of the target input can be replaced by another sub-tree, either from the target input itself or from a randomly chosen supplementary sample. Therefore, hundreds of new samples are generated and executed to find a new path in tested programs. The results of Superion show a great increase in fuzzing efficacy when targeting programs which expect structured input.
+Based on the context-free grammar, Superion parses each test input into an abstract syntax tree, an AST. Using ASTs, Superion introduces a grammar-aware trimming strategy that can effectively trim test inputs while keeping the input structure valid, then randomly chooses another input from AFL's queue and also parses it into AST. A sub-tree of the target input can be replaced by another sub-tree, either from the target input itself or from a randomly chosen supplementary sample. Therefore, hundreds of new samples are generated and executed to find a new path in tested programs. The results of Superion show a great increase in fuzzing efficacy when targeting programs which expect structured input.
 
 
 \clearpage
@@ -289,10 +289,10 @@ AFL++ did not have many dependencies like Grimoire did, and was much easier to i
 \subsection*{Selected target programs}
 
 
-For each target language, we’ve selected the target programs which have already contained multiple CVEs. There are certain criteria that we decide what target programs would be useful and efficient to get started with on fuzzing.  
-First, we’re looking for the open source code implemented by C or C++ as the target programs.  AFL works best on C or C++ applications. When source code is available, instrumentation can be injected by a companion tool that works as a drop-in replacement for gcc or clang in any standard build process for third-party code. For example, for C++ programs, we could set CXX=/path/to/afl/afl-g++ before we compile the code. Although AFL does support instrumenting black-box binaries on the fly with QEMU, but this tends to have poor performance. 
+For each target language, we've selected the target programs which have already contained multiple CVEs. There are certain criteria that we decide what target programs would be useful and efficient to get started with on fuzzing.  
+First, we're looking for the open source code implemented by C or C++ as the target programs.  AFL works best on C or C++ applications. When source code is available, instrumentation can be injected by a companion tool that works as a drop-in replacement for gcc or clang in any standard build process for third-party code. For example, for C++ programs, we could set CXX=/path/to/afl/afl-g++ before we compile the code. Although AFL does support instrumenting black-box binaries on the fly with QEMU, but this tends to have poor performance. 
 Second, since we need a lot of time to fuzz a program, so we prefer the old version which has contained multiple CVEs. 
-Third, we’ll need an executable or write a simple program that reads data from stdin or from a file to fuzz the target program.  This also reflects that we need to understand the usage of the target program. Although we can fuzz the target program brute-forcedly, once we can’t find any crashes, we may wonder if there are really no bugs, or we’re just simply not able to pass the input seeds to the target program. 
+Third, we'll need an executable or write a simple program that reads data from stdin or from a file to fuzz the target program.  This also reflects that we need to understand the usage of the target program. Although we can fuzz the target program brute-forcedly, once we can't find any crashes, we may wonder if there are really no bugs, or we're just simply not able to pass the input seeds to the target program. 
 Lastly, the target program has some functions to deal with the target language. For example, one of our target programs is YAML-CPP\cite{YAML-CPP} which is a YAML parser and emitter in C++. Finally, we choose YAML-CPP as the YAML target, MD4C\cite{MD4C} as the Markdown target, and cJSON\cite{cJSON} as the Jason target.  
 
 The table below is a corpus of CVEs from the chosen target programs. Selected CVEs and the defective applications are shown at the bottom of each cell of \textbf{Table 1}. The numbers next to the name indicate the latest version that the defect was fixed. For example, CVE-2019-6292 can be found in the YAML-CPP version prior to 0.6.2.
@@ -410,11 +410,11 @@ Mostly, the repository of the target program has provided some test cases, so we
 After fuzzing the target program in a period of time, it has generated over 100 uniq crashes in both YAMLL-CPP and MD4C. 
 
 
-In order to analysis these crashes files, we’ve tried to reproduce the known CVEs by understanding how the specific CVE is found from those discover.
+In order to analysis these crashes files, we've tried to reproduce the known CVEs by understanding how the specific CVE is found from those discover.
 For example, CVE-2017-11692\cite{CVE-2017-11692}, the description of this CVE shows string”!2” can crash the program.
 So, we also found the same crash result when we pipe our crash files to the target program.
 After that, we have piped different crash files into the target program, we still get same crash messages.
-Since the AFL mutator will keep mutating the input file as we mentioned before, so it’s reasonable that, even these crash files are unique, but the pattern might not be too much different. That’s why we’ll keep getting same crash message.
+Since the AFL mutator will keep mutating the input file as we mentioned before, so it's reasonable that, even these crash files are unique, but the pattern might not be too much different. That's why we'll keep getting same crash message.
 
 \vspace{3mm}
 \begin{center}
@@ -423,7 +423,7 @@ Since the AFL mutator will keep mutating the input file as we mentioned before, 
 \end{center}
 \vspace{3mm}
 
-For analyzing the results of MD4C, The message we can only get is the segmentation fault for testing different the crash files. So, if we want to know what’s different between them, we’ll need another tool to sanitize them.
+For analyzing the results of MD4C, The message we can only get is the segmentation fault for testing different the crash files. So, if we want to know what's different between them, we'll need another tool to sanitize them.
 
 \vspace{6mm}
 \begin{center}
@@ -433,7 +433,7 @@ For analyzing the results of MD4C, The message we can only get is the segmentati
 \vspace{3mm}
 
 So far, these crashes are just existing flaws for the old version of the target program. We've also fuzzed the latest version of the target program, but no crashes have been found.
-For the crashes files we've found, we assume that if the fuzzing time gets longer, after the fuzzer searching the target program deeply, the generated crash files might be in different pattern. Moreover, in order to specify the unique differences among them, we’ll need another tool or method to know the detail reasons for how these files crash the program.
+For the crashes files we've found, we assume that if the fuzzing time gets longer, after the fuzzer searching the target program deeply, the generated crash files might be in different pattern. Moreover, in order to specify the unique differences among them, we'll need another tool or method to know the detail reasons for how these files crash the program.
 
 Figures in the appendix show example crashes induced by AFL++.
  
