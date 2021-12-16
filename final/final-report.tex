@@ -251,7 +251,7 @@ Discovering the existence and circumvention of these special character took near
 
 Once Gramatron had successfully accepted our carefully tailored new grammar definitions and converted then to FSAs, we experienced a final and fatal complication.
 Instead of producing structured output of either JSON, Markdown, or YAML, instead Gramatron produced binary output of an indiscernible structure.
-Each of the aforementioned complications depleted our available man-hours for this project and not enough time remained to begin again th arduous process of debugging Gramatron's source code.
+Each of the aforementioned complications depleted our available man-hours for this project and not enough time remained to begin again the arduous process of debugging Gramatron's source code.
 
 The results of our attempted extension of Gramatron is the assessment that Gramatron manifests a powerful and novel technique in mutation-based, structure-aware fuzzing by utilizing tenets of formal language theory to convert a CFG structure to a FSA.
 However, this assessment carries with it strong disclaimers.
@@ -462,18 +462,21 @@ For the crashes files we've found, we assume that if the fuzzing time gets longe
 
 Figures in the appendix show example crashes induced by AFL++.
  
-\vspace{3mm}
+ \vspace{3mm}
 \begin{table}[h!]
 \centering
 \scalebox{1} {
 \begin{tabular}{V{4}l|l|lV{4}} \hlineB{3}
-	\multicolumn{1}{V{4}c|}{} & \multicolumn{1}{c|}{AFL} & \multicolumn{1}{cV{4}}{AFL++}  \\ \hline
+	\multicolumn{1}{V{4}c|}{} & \multicolumn{1}{c|}{\ \ \ \ \ \ \ \ \ \ \ AFL\ \ \ \ \ \ \ \ \ \ \ } & \multicolumn{1}{cV{4}}{\ \ \ \ \ \ \ \ AFL++\ \ \ \ \ \ \ \ \ }  \\ \hline
 	\multicolumn{1}{V{4}c|}{yaml-cpp} & 
 	\multicolumn{1}{c|}{116} &
 	\multicolumn{1}{cV{4}}{166} \\ \hline
 	\multicolumn{1}{V{4}c|}{md4c} & 
 	\multicolumn{1}{c|}{175} &
-	\multicolumn{1}{cV{4}}{535} \\ \hlineB{3}
+	\multicolumn{1}{cV{4}}{535} \\ \hline
+	\multicolumn{1}{V{4}c|}{fuzzgoat} & 
+	\multicolumn{1}{c|}{38} &
+	\multicolumn{1}{cV{4}}{20} \\ \hlineB{3}
 \end{tabular}
 }
 \vspace{6mm}\\ \textbf{Table 2. }Number of Crashes Found 
@@ -488,7 +491,10 @@ Figures in the appendix show example crashes induced by AFL++.
 	\multicolumn{1}{cV{4}}{2191/sec 1cycle} \\ \hline
 	\multicolumn{1}{V{4}c|}{md4c} & 
 	\multicolumn{1}{c|}{2855/sec 0cycle} &
-	\multicolumn{1}{cV{4}}{2198/sec 2cycle} \\ \hlineB{3}
+	\multicolumn{1}{cV{4}}{2198/sec 2cycle} \\ \hline
+	\multicolumn{1}{V{4}c|}{fuzzgoat} & 
+	\multicolumn{1}{c|}{2169/sec 7cycle} &
+	\multicolumn{1}{cV{4}}{347.8/sec 3cycle} \\ \hlineB{3}
 \end{tabular}
 }
 \vspace{6mm}\\ \textbf{Table 3. }Execution Speed 
@@ -497,13 +503,16 @@ Figures in the appendix show example crashes induced by AFL++.
 \centering
 \scalebox{1} {
 \begin{tabular}{V{4}l|l|lV{4}} \hlineB{3}
-	\multicolumn{1}{V{4}c|}{} & \multicolumn{1}{c|}{AFL} & \multicolumn{1}{cV{4}}{AFL++}  \\ \hline
+	\multicolumn{1}{V{4}c|}{} & \multicolumn{1}{c|}{\ \ \ \ \ \ \ \ \ \ \ AFL\ \ \ \ \ \ \ \ \ \ \ } & \multicolumn{1}{cV{4}}{\ \ \ \ \ \ \ \ AFL++\ \ \ \ \ \ \ \ \ }  \\ \hline
 	\multicolumn{1}{V{4}c|}{yaml-cpp} & 
 	\multicolumn{1}{c|}{1928} &
 	\multicolumn{1}{cV{4}}{2382} \\ \hline
 	\multicolumn{1}{V{4}c|}{md4c} & 
 	\multicolumn{1}{c|}{3230} &
-	\multicolumn{1}{cV{4}}{5404} \\ \hlineB{3}
+	\multicolumn{1}{cV{4}}{5404} \\ \hline
+	\multicolumn{1}{V{4}c|}{fuzzgoat} & 
+	\multicolumn{1}{c|}{651} &
+	\multicolumn{1}{cV{4}}{564} \\ \hlineB{3}
 \end{tabular}
 }
 \vspace{6mm}\\ \textbf{Table 4. }Total Paths 
