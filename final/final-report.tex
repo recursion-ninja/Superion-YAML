@@ -458,6 +458,7 @@ After fuzzing the target program in a period of time, it has generated over 100 
 
 
 \vspace{6mm}
+\begin{center}
 	\includegraphics[scale=0.7, trim={0 0 1.5cm 0}, clip]{markdownfuzzer.png}\\
 	\textbf{Figure 11.} Fuzzing markdown with AFL++\\
 \end{center}
@@ -480,7 +481,8 @@ Since the AFL mutator will keep mutating the input file as we mentioned before, 
 \vspace{3mm}
 
 \vspace{6mm}
-	\includegraphics[scale=0.45, trim={0 3cm 0 0}, clip]{yaml_cpp_crashes.jpg}\\
+\begin{center}
+	\includegraphics[scale=0.45, trim={0 3cm 0 0}, clip]{yaml_cpp_crashes.png}\\
 	\textbf{Figure 13.} Crashes testing for YAML-CPP with AFL++
 \end{center}
 
@@ -544,13 +546,8 @@ Figures in the appendix show example crashes induced by AFL++.
 \centering
 \scalebox{1} {
 \begin{tabular}{V{4}l|l|lV{4}} \hlineB{3}
-<<<<<<< HEAD
-	\multicolumn{1}{V{4}c|}{} & \multicolumn{1}{c|}{AFL} & \multicolumn{1}{cV{4}}{AFL++}  \\ \hline
-	\multicolumn{1}{V{4}c|}{\texttt{yaml-cpp}} & 
-=======
 	\multicolumn{1}{V{4}c|}{} & \multicolumn{1}{c|}{\ \ \ \ \ \ \ \ \ \ \ AFL\ \ \ \ \ \ \ \ \ \ \ } & \multicolumn{1}{cV{4}}{\ \ \ \ \ \ \ \ AFL++\ \ \ \ \ \ \ \ \ }  \\ \hline
 	\multicolumn{1}{V{4}c|}{yaml-cpp} & 
->>>>>>> 0a8724d07f75fa5eb7e1de51178c8a518f839756
 	\multicolumn{1}{c|}{1928} &
 	\multicolumn{1}{cV{4}}{2382} \\ \hline
 	\multicolumn{1}{V{4}c|}{md4c} & 
@@ -637,7 +634,7 @@ The following is a rough accounting of the project development:
 	\includegraphics[scale=1.0, trim={0 0 7mm 0}, clip]{yamlfuzzer.png}\\
 	\textbf{Figure 10.} Fuzzing \texttt{yaml-cpp} with AFL++\\
 \vspace{6mm}
-	\includegraphics[scale=0.45, trim={0 3cm 0 0}, clip]{yaml_cpp_crashes.jpg}\\
+	\includegraphics[scale=0.45, trim={0 3cm 0 0}, clip]{yaml_cpp_crashes.png}\\
 	\textbf{Figure 11.} \texttt{yaml-cpp} crashes\\
 \vspace{6mm}
 	\includegraphics[scale=1.0]{yamlsamplecrashcat.png}\\
