@@ -154,7 +154,7 @@ We attempt extending the capabilities of Gramatron and Superion to support gener
 We plan to compare the efficacy of our extended versions of Gramatron and Superion to both Grimoire and previous work targeted at fuzzing these three file formats.
 By utilizing the three fuzzers- Gramatron, Superion, and Grimoire- we hope to draw a rich comparison of modern fuzzing techniques.
 
-Aside from the fact that there is room for these formats on extending our target fuzzers, we have numerous reasons for selecting YAML, JSON, and Markdown as our extension language.
+As per the target grammar selection, aside from the fact that there is room for these formats on extending our target fuzzers, we have numerous reasons for selecting YAML, JSON, and Markdown as our extension language.
 First, it has a well-defined formal grammar that allows it to be quickly and reliably integrated into the two fuzzers.
 Second, these file formats are ubiquitous input formats.
 This ubiquity makes our target languages a well-motivated language to extend these fuzzers to support.
@@ -176,18 +176,25 @@ Neither extension was fully successful.
 However, the extension attempts did provide insightful results regarding each tool.
 
 The usage of Grimoire as a baseline for measuring the results of Gramatron and Superion against was also unsuccessful.
-There were no binaries of Grimoire available for usage and building Grimoire from source repeatedly failed due to multiple dependency issues and platform specific requirements.
+There were no binaries of Grimoire available for usage and building Grimoire from source repeatedly failed due to multiple chain of dependency issues and platform specific requirements.
 With the Grimoire inaccessible as a baseline metric, we substituted ALF and AFL++ to be used as our baseline metrics in anticipation of later success extending Gramatron and Superion.
 When extension of Gramatron and Superion became exceedingly improbable within our time constraints, we finalized our methodology to utilize AFL as the baseline measurement and AFL++ as the structured-aware fuzzer.
 
 We have composed a corpus of CVEs discovered from previous work.
 At the time of writing, we found over 100 CVEs cataloged on MITRE\cite{MITRE} for each of target languages mentioned above.
 We selected a reproducible subset of these CVEs to use as our coverage test.
-Unfortunately, do to the inability to extend Gramatron and Superion, we could not use test these extensions' ability to discover the selected CVEs.
+Unfortunately, due to the inability to extend Gramatron and Superion, we could not use test these extensions' ability to discover the selected CVEs.
 Instead we used the efficacy of AFL and AFL++ as a comparative metric.
 Quantitatively, we measured the execution time of ALF and ALF++ and compare their inputs generated per second.
 The motivation of this metric is to compare the computational efficiency of each tool, i.e. clock-cycles per attempt.
 Qualitatively, we compare how many of the selected CVEs were rediscovered by each tool, as a determination of their general efficacy.
+
+All the experimentations during our project are conducted on the consolidated WSL(Windows Subsystem for Linux) version 2 using ubuntu version 18.04.1.
+Separate environment setup trials were done in the AWS ec2 server of the t3a.large instance.
+After testing and trials on these two environments, we concluded that using WSL is a better option for us to get our expected results in a timely manner.
+Although we also had another option to try the DETER server, considering the time restraints, we moved on to the next phase without testing more on research environments.
+Major tasks involved in the fuzzing tests demand substantial computing power.
+For that, we want to emphasize the importance of such configuration evaluations and highly recommend allocating some time to the testing environment setup if there's enough time available.
 
 \section*{Findings}
 \label{results}
