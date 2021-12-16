@@ -228,6 +228,15 @@ After recursive substitution of depth $N$, all productions are in GNF form \emph
 In this form, the grammar stack-limited PDA has had the potential state-space of the stack expanded out explicitly into a FSA.
 This FSA is used as the mutator for Gramatron.
 
+\vspace{10mm}
+\hrule height 0.4mm
+\begingroup \fontsize{10pt}{10pt} \selectfont \begin{alltt}
+\input{JSONsource_automata.json}
+\end{alltt} \vspace{-6mm} \endgroup \hrule height 0.4mm
+\vspace{6mm}
+\centerline{\textbf{Figure 4.} FSA specification for JSON extension}
+\vspace{6mm}
+
 During our extension of Gramatron to support JSON, Markdown, and YAML, we encountered numerous problems arising from the theoretical limitations above.
 First, all three of JSON, Markdown, and YAML are context free grammars with recursive definitions, and hence they cannot be directly converted to a FSA.
 The conversion process from CFG to GNF for both grammars was fraught with infinite loops.
@@ -286,11 +295,11 @@ Second, since we need a lot of time to fuzz a program, so we prefer the old vers
 Third, we’ll need an executable or write a simple program that reads data from stdin or from a file to fuzz the target program.  This also reflects that we need to understand the usage of the target program. Although we can fuzz the target program brute-forcedly, once we can’t find any crashes, we may wonder if there are really no bugs, or we’re just simply not able to pass the input seeds to the target program. 
 Lastly, the target program has some functions to deal with the target language. For example, one of our target programs is YAML-CPP\cite{YAML-CPP} which is a YAML parser and emitter in C++. Finally, we choose YAML-CPP as the YAML target, MD4C\cite{MD4C} as the Markdown target, and cJSON\cite{cJSON} as the Jason target.  
 
-The table below is a corpus of CVEs from the chosen target programs.
-
+The table below is a corpus of CVEs from the chosen target programs. Selected CVEs and the defective applications are shown at the bottom of each cell of \textbf{Table 1}. The numbers next to the name indicate the latest version that the defect was fixed. For example, CVE-2019-6292 can be found in the YAML-CPP version prior to 0.6.2.
+\vspace{6mm}
 \begin{table}[h!]
 \centering
-\scalebox{0.8} {
+\scalebox{1} {
 \begin{tabular}{V{4}l|l|lV{4}} \hlineB{3}
 	\multicolumn{1}{V{4}c|}{YAML} & \multicolumn{1}{c|}{JSON} & \multicolumn{1}{cV{4}}{Markdown}  \\ \hline
 	\multicolumn{1}{V{4}c|}{\begin{tabular}[c]{@{}c@{}}
@@ -364,16 +373,12 @@ The table below is a corpus of CVEs from the chosen target programs.
 	\end{tabular}} &
 	\multicolumn{1}{cV{4}}{\begin{tabular}[c]{@{}c@{}}
 		\texttt{CVE-2018-11536\cite{CVE-2018-11536}} \vspace{-2mm} \\ \footnotesize MD4C < 0.2.5
-	\end{tabular}} \\ \hline
+	\end{tabular}} \\ \hlineB{3}
 	
 \end{tabular}
 }
 \vspace{6mm}\\ \textbf{Table 1.} Target CVEs for each languages
 \end{table}
-\vspace{6mm}
-
-Selected CVEs and the defective applications are shown at the bottom of each cell of \textbf{Table 1}. The numbers next to the name indicate the latest version that the defect was fixed. For example, CVE-2019-6292 can be found in the YAML-CPP version prior to 0.6.2.
-
 
 We have administered two major tasks prior to extending the functionality of each fuzzers.
 First, we have set up Gramatron and Superion to run in the test environment.
@@ -381,26 +386,24 @@ The input generators for each fuzzer successfully constructed seed files \cite{s
 Configuring grammar-specific protocols and rules for extending each fuzzer was followed by the environment setup.
 This was done through the course of literature review and presentation preparation, and we have built the JSON grammar definition\cite{json-source.json} for extending Gramatron.
 
-\vspace{22mm}
+\vspace{10mm}
 \hrule height 0.4mm
 \begingroup \fontsize{12pt}{12pt} \selectfont \begin{alltt}
 \input{input.js}
 \end{alltt} \vspace{-6mm} \endgroup \hrule height 0.4mm
 \vspace{6mm}
-\centerline{\textbf{Figure 4.} Input created from Grammar-aware input generators}
-\vspace{6mm}
-
-
+\centerline{\textbf{Figure 5.} Input created from Grammar-aware input generators}
 
 \subsection*{Results from AFL and AFL++}
 While using AFL and AFL++ on our target programs. We implemented older versions of these two targets so that we were more likely to find crashes. We decided to run each fuzzer on each target program for 3 hours, to make the results as consistent as possible.
-\vspace{22mm}
+
+\vspace{10mm}
 \hrule height 0.4mm
 \begingroup \fontsize{12pt}{12pt} \selectfont \begin{alltt}
 \input{target_setup.js}
 \end{alltt} \vspace{-6mm} \endgroup \hrule height 0.4mm
 \vspace{6mm}
-\centerline{\textbf{Figure 3.} The example of the target program setup}
+\centerline{\textbf{Figure 6.} The example of the target program setup}
 \vspace{6mm}
 
 Mostly, the repository of the target program has provided some test cases, so we can take these as input seeds for the fuzzers.
@@ -413,18 +416,22 @@ So, we also found the same crash result when we pipe our crash files to the targ
 After that, we have piped different crash files into the target program, we still get same crash messages.
 Since the AFL mutator will keep mutating the input file as we mentioned before, so it’s reasonable that, even these crash files are unique, but the pattern might not be too much different. That’s why we’ll keep getting same crash message.
 
-\begin{figure}
-	\centering
-	\includegraphics[scale=0.5, trim={0 3cm 0 0}, clip]{yaml_cpp_crashes.jpg}
-	\caption{Crashes testing for YAML-CPP}
-\end{figure}
+\vspace{3mm}
+\begin{center}
+	\includegraphics[scale=0.45, trim={0 3cm 0 0}, clip]{yaml_cpp_crashes.jpg}\\
+	\textbf{Figure 7.} Crashes testing for YAML-CPP
+\end{center}
+\vspace{3mm}
 
 For analyzing the results of MD4C, The message we can only get is the segmentation fault for testing different the crash files. So, if we want to know what’s different between them, we’ll need another tool to sanitize them.
-\begin{figure}
-	\centering
+
+\vspace{6mm}
+\begin{center}
 	\includegraphics[scale=0.5, trim={0 3cm 0 0}, clip]{md4c_crashes.jpg}
-	\caption{Crashes testing for MD4C}
-\end{figure}
+	\textbf{Figure 8.} Crashes testing for MD4C
+\end{center}
+\vspace{3mm}
+
 So far, these crashes are just existing flaws for the old version of the target program. We've also fuzzed the latest version of the target program, but no crashes have been found.
 For the crashes files we've found, we assume that if the fuzzing time gets longer, after the fuzzer searching the target program deeply, the generated crash files might be in different pattern. Moreover, in order to specify the unique differences among them, we’ll need another tool or method to know the detail reasons for how these files crash the program.
 
