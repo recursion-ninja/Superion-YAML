@@ -296,14 +296,14 @@ instance HasRuleByValue Inline where
    ruleOfValue g x =
       let idiom  =  word `SepBy` space 
           word   =  minBound  :: LoremIpsum
-          parts  = idiom --]    :: NonEmpty (SepBy LoremIpsum Terminal)
+--          parts  = idiom --]    :: NonEmpty (SepBy LoremIpsum Terminal)
           uri    =  minBound  :: URI
           space  = " " :: Terminal
           spaces = space :| []
           quote  = "\'"
           ref    = (g, Production (nonTerminal x, mempty))
           partsSurroundedBy :: [Symbol] -> (Rule, Dependencies)
-          partsSurroundedBy y = ruleWithDeps ref (fromList $ y <> [ note parts ] <> y) [ parts ]
+          partsSurroundedBy y = ruleWithDeps ref (fromList $ y <> [ note idiom ] <> y) [ idiom ]
       in  case x of
             Plain          {} -> ruleWithDeps ref [ " ", note idiom, " " ] [ idiom ]
             LineBreak         -> ruleWithDeps ref [ tok space, note spaces, "\\n" ] [ spaces ]
@@ -315,20 +315,20 @@ instance HasRuleByValue Inline where
             Subscript      {} -> partsSurroundedBy [ "~" ]
             Superscript    {} -> partsSurroundedBy [ "^" ]
             CodeSpan       {} -> ruleWithDeps ref [ "`", note idiom, "`" ] [ idiom ]
-            Link  _ _ Nothing -> ruleWithDep2 ref [ "[", note parts , "]"
+            Link  _ _ Nothing -> ruleWithDep2 ref [ "[", note idiom, "]"
                                                   , "(", note uri, ")"
-                                                  ] (parts, uri)
-            Link  _ _ _       -> ruleWithDep3 ref [ "[", note parts , "]"
+                                                  ] (idiom, uri)
+            Link  _ _ _       -> ruleWithDep2 ref [ "[", note idiom , "]"
                                                 , "(", note uri   , ")"
 --                                                , note spaces
                                                 , quote, note idiom, quote
-                                                ] (parts, uri, idiom)
-            Image _ _ Nothing -> ruleWithDep2 ref [ "!", "[", note parts, "]"
+                                                ] (uri, idiom)
+            Image _ _ Nothing -> ruleWithDeps ref [ "!", "[", note idiom, "]"
                                                 ,        "(", note uri  , ")"
-                                                ] (parts, uri)
-            Image _ _ _       -> ruleWithDep3 ref [ "!", "[", note parts, "]"
+                                                ] [uri]
+            Image _ _ _       -> ruleWithDep2 ref [ "!", "[", note idiom, "]"
                                                 ,        "(", note uri  , ")"
-                                                ] (parts, uri, idiom)
+                                                ] (uri, idiom)
 
 
 instance HasSuffixSymbol Inline where
@@ -382,7 +382,7 @@ instance HasRuleByValue Block where
     ruleOfValue _ x | trace ("ruleOfValue $ " <> show x) False = undefined
     ruleOfValue g x =
       let idiom  = minBound `SepBy` space :: SepBy LoremIpsum Terminal
-          parts  = Padded $ minBound `SepBy` space :: Padded (SepBy Inline Terminal)
+          parts  = idiom --Padded $ minBound `SepBy` space :: Padded (SepBy Inline Terminal)
           eol    = "\\n" :: Symbol
           space  = " "  :: Terminal
           spaces = space :| []
