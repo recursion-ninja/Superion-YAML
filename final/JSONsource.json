@@ -1,0 +1,24 @@
+{
+    "JSON": [ "ELEMENT" ],
+    "VALUE": [ "'true'", "'false'", "'null'", "OBJECT", "ARRAY", "STRING", "NUMBER" ],
+    "OBJECT": [ "'{' WSS '}'", "'{' MEMBERS '}'" ],
+    "MEMBERS": [ "MEMBER", "MEMBER ',' MEMBERS" ],
+    "MEMBER": [ "WSS STRING WSS ':' ELEMENT" ],
+    "ARRAY": [ "'[' ']'", "'[' WSS ']'", "'[' ELEMENTS ']'" ],
+    "ELEMENTS": [ "ELEMENT", "ELEMENT ',' ELEMENTS" ],
+    "ELEMENT": [ "VALUE", "WSS VALUE WSS" ],
+    "STRING": [ "'\"' CHARACTERS '\"'" ],
+    "CHARACTERS": [
+        "'q'", "'Y'", "'eWN'", "'NqQHK'", "'mVkHH'", "'oClLxQ'", "'MaeGILv'", 
+        "'UG'", "'VZpC'", "'ALDzEwF'", "'txlEbL'", "'lG'", "'gn'", "'X'", "'OI'", 
+        "'v\u0052IETGz'", "'ue'", "'nYp'", "'y920323'", "'UwO98S&^'",
+        "'owiOW:EF'", "'/SR.mB'", "'MZZ%$!g'", "'evZqyL\u0045VJs'", "'OB'"
+    ],
+    "NUMBER": [
+        "'5370'","'4'", "'96'", "'234'", "'7243'", "'7'", "'1/2'", "'1E2'",
+        "'1E02'", "'1E+02'", "'-1'", "'-1.00'", "'-1/2'", "'-1E2'", "'-1E02'",
+        "'-9223372036854775808/-1'", "'-0'", "'-0.0'", "'+0'"
+    ],
+    "WS": [ "'\u0020'", "'\u000D'", "'\u0009'" ],
+    "WSS": [ "WS", "WS WSS" ]
+}

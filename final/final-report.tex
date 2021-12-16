@@ -43,7 +43,7 @@
 
 \maketitle % Print the title section
 
-\vspace{2cm}
+\vspace{1cm}
 \section*{Abstract}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -63,8 +63,6 @@ Grimoire is a fuzzer that, without structured inputs, can perform grammar awaren
 Over the course of this project, we have attempted to extend the functionality of these two fuzzers with the intention of scrutinizing their fuzzing capabilities compared to other fuzzers like Grimoire against a corpus of CVEs of our three target file formats.
 Extension and comparison of these tools proved too difficult within the time of our study.
 We will discuss the difficulties presented by each tool, our attempt adapt our methodology to address these difficulties, along with the CVE replication which was achievable.
-
-\clearpage
 
 \section*{Introduction}
 
@@ -126,7 +124,7 @@ It does this by reducing the number of mutation steps from the input seed to tri
 
 \vspace{-1cm}
 \begin{center}
-	\includegraphics[scale=0.4, trim={0 3cm 0 0}, clip]{gramatronfig.png}
+	\includegraphics[scale=0.4, trim={0 3cm 0 0}, clip]{gramatronfig.png}\\
 	\textbf{Figure 2.} Preprocessing phase of Gramatron
 \end{center}
 \vspace{6mm}
@@ -207,6 +205,15 @@ For any grammar which is more complex than a regular language, Gramatron can onl
 This lack of expressiveness can leave large gaps in Gramatron's coverage.
 For example, some recursive, or even context-free, production rules of a grammar will need to be modified or omitted for them to be convertible to a mutation FSA.
 Since Gramatron's advertised usage is on context-sensitive and Turing-complete languages, careful inspection must be taken to understand what linguistic sacrifices were made and what subset of the language Gramatron produces coverage for.
+
+\vspace{10mm}
+\hrule height 0.4mm
+\begingroup \fontsize{10pt}{10pt} \selectfont \begin{alltt}
+\input{JSONsource.json}
+\end{alltt} \vspace{-6mm} \endgroup \hrule height 0.4mm
+\vspace{6mm}
+\centerline{\textbf{Figure 3.} GNF grammar specification for JSON extension}
+\vspace{6mm}
 
 The mechanism by which Gramatron takes a grammar specification and converts it into a FSA is through a pipeline of multiple grammar conversion.
 First a grammar of production rules in either JSON or G4\cite{parr2013definitive} format is converted to a new set of production rules Greibach Normal Form.
@@ -380,7 +387,7 @@ This was done through the course of literature review and presentation preparati
 \input{input.js}
 \end{alltt} \vspace{-6mm} \endgroup \hrule height 0.4mm
 \vspace{6mm}
-\centerline{\textbf{Figure 3.} Input created from Grammar-aware input generators}
+\centerline{\textbf{Figure 4.} Input created from Grammar-aware input generators}
 \vspace{6mm}
 
 \subsection*{Results from AFL and AFL++}
