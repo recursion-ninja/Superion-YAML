@@ -421,7 +421,7 @@ The table below is a corpus of CVEs from the chosen target programs. Selected CV
 	
 \end{tabular}
 }
-\vspace{6mm}\\ \textbf{Table 1.} Target CVEs for each languages
+\vspace{4mm}\\ \textbf{Table 1.} Target CVEs for each languages
 \end{table}
 
 
@@ -431,9 +431,9 @@ The input generators for each fuzzer successfully constructed seed files \cite{s
 Configuring grammar-specific protocols and rules for extending each fuzzer was followed by the environment setup.
 This was done through the course of literature review and presentation preparation, and we have built the JSON grammar definition\cite{json-source.json} for extending Gramatron.
 
-\vspace{10mm}
+\vspace{4mm}
 \hrule height 0.4mm
-\begingroup \fontsize{12pt}{12pt} \selectfont \begin{alltt}
+\begingroup \fontsize{11pt}{11pt} \selectfont \begin{alltt}
 \input{input.js}
 \end{alltt} \vspace{-6mm} \endgroup \hrule height 0.4mm
 \vspace{6mm}
@@ -588,7 +588,7 @@ Our assessment with these measurements is again, that AFL++ is at least as effec
 AFL++ completed more total paths than AFL did when fuzzing both \texttt{yaml-cpp} and \texttt{md4c}.
 This indicates that AFL++ explored more paths, and generated more input to reach these paths.
 
-
+\clearpage
 \section*{Division of Labor}
 
 Alex Washburn devised the main concept of the project.
@@ -610,23 +610,24 @@ The project timeline is partially defined by the course syllabus where deadlines
 The following is a rough accounting of the project development:
 
 \begin{enumerate}[label={}]
-	\item \texttt{2021-08-29:} Form team and brainstorm project ideas
-	\item \texttt{2021-09-05:} \textbf{Project Proposal due}
-	\item \texttt{2021-09-12:} Revise and resubmit proposal
-	\item \texttt{2021-09-19:} Background research \& revise \/ resubmit proposal
-	\item \texttt{2021-09-26:} Background research \& revise \/ resubmit proposal
-	\item \texttt{2021-10-03:} Finalize proposal, Collect and finalize CVEs corpus
-	\item \texttt{2021-10-10:} \textbf{Midterm project presentations due}
-	\item \texttt{2021-10-17:} \textbf{Midterm project reports due}
-	\item \texttt{2021-10-24:} Initial Superion \& Gramatron extension; Grimoire setup
-	\item \texttt{2021-10-31:} 
-	\item \texttt{2021-11-07:} Tune 3 fuzzers instrumentation with programs under test
-	\item \texttt{2021-11-14:} Replicate CVEs and document performance
-	\item \texttt{2021-11-21:} Parallelize fuzzing \hfill (WSL2)
-	\item \texttt{2021-11-28:} Finish replication of CVEs and document
-	\item \texttt{2021-12-05:} \textbf{Final project presentations due}
-	\item \texttt{2021-12-12:} \textbf{Final project reports due 5:35 pm}
+    \item \texttt{2021-08-29:} Form team and brainstorm project ideas
+    \item \texttt{2021-09-05:} \textbf{Project Proposal due}
+    \item \texttt{2021-09-12:} Revise and resubmit proposal
+    \item \texttt{2021-09-19:} Background research \& revise \/ resubmit proposal
+    \item \texttt{2021-09-26:} Background research \& revise \/ resubmit proposal
+    \item \texttt{2021-10-03:} Finalize proposal, Collect and finalize CVEs corpus
+    \item \texttt{2021-10-10:} \textbf{Midterm project presentations due}
+    \item \texttt{2021-10-17:} \textbf{Midterm project reports due}
+    \item \texttt{2021-10-24:} Superion \& Gramatron extension; Grimoire setup
+    \item \texttt{2021-10-31:} Superion \& Gramatron toils; more Grimoire setup
+    \item \texttt{2021-11-07:} Superion \& Gramatron toils; more Grimoire setup
+    \item \texttt{2021-11-14:} Superion \& Gramatron toils; Abandon Grimoire use AFL \& AFL++
+    \item \texttt{2021-11-21:} Superion \& Gramatron toils; Setup AFL \& AFL++ 
+    \item \texttt{2021-11-28:} Failed Superion \& Gramatron extension; use AFL++
+    \item \texttt{2021-12-05:} \textbf{Final project presentations due} 
+    \item \texttt{2021-12-12:} \textbf{Final project reports due 5:35 pm}
 \end{enumerate}
+
 
 
 \bibliographystyle{ieeetr}
