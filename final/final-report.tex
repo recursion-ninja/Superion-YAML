@@ -179,7 +179,7 @@ However, the extension attempts did provide insightful results regarding each to
 The usage of Grimoire as a baseline for measuring the results of Gramatron and Superion against was also unsuccessful.
 There were no binaries of Grimoire available for usage and building Grimoire from source repeatedly failed due to multiple chain of dependency issues and platform specific requirements.
 With the Grimoire inaccessible as a baseline metric, we substituted ALF and AFL++ to be used as our baseline metrics in anticipation of later success extending Gramatron and Superion.
-When extension of Gramatron and Superion became exceedingly improbable within our time constraints, we finalized our methodology to utilize AFL as the baseline measurement and AFL++ as the structured-aware fuzzer.
+When extension of Gramatron and Superion became exceedingly improbable within our time constraints, we finalized our methodology to utilize AFL as the baseline measurement and AFL++ as the structured-aware fuzzer. These fuzzers were utilized on fuzzgoat, a vulnerable C program used for testing, before running the fuzzers on YAML, JSON, and Markdown.
 
 We have composed a corpus of CVEs discovered from previous work.
 At the time of writing, we found over 100 CVEs cataloged on MITRE\cite{MITRE} for each of target languages mentioned above.
@@ -254,7 +254,7 @@ Discovering the existence and circumvention of these special character took near
 
 Once Gramatron had successfully accepted our carefully tailored new grammar definitions and converted then to FSAs, we experienced a final and fatal complication.
 Instead of producing structured output of either JSON, Markdown, or YAML, instead Gramatron produced binary output of an indiscernible structure.
-Each of the aforementioned complications depleted our available man-hours for this project and not enough time remained to begin again th arduous process of debugging Gramatron's source code.
+Each of the aforementioned complications depleted our available man-hours for this project and not enough time remained to begin again the arduous process of debugging Gramatron's source code.
 
 The results of our attempted extension of Gramatron is the assessment that Gramatron manifests a powerful and novel technique in mutation-based, structure-aware fuzzing by utilizing tenets of formal language theory to convert a CFG structure to a FSA.
 However, this assessment carries with it strong disclaimers.
@@ -435,7 +435,16 @@ While using AFL and AFL++ on our target programs. We implemented older versions 
 \vspace{6mm}
 
 Mostly, the repository of the target program has provided some test cases, so we can take these as input seeds for the fuzzers.
-After fuzzing the target program in a period of time, it has generated over 100 uniq crashes in both YAMLL-CPP and MD4C. 
+After fuzzing the target program in a period of time, it has generated over 100 uniq crashes in both YAMLL-CPP and MD4C but no crashes found in cJSON. 
+\vspace{1mm}
+\begin{center}
+	\includegraphics[scale=0.55, trim={0 0 7mm 0}, clip]{afl_yaml_cpp_3hrs.jpg}\\
+	\textbf{Figure 8.} Fuzzing yaml-cpp with AFL\\
+\vspace{1mm}
+	\includegraphics[scale=0.55, trim={0 0 5mm 0}, clip]{afl_m2d4_3hrs.jpg}\\
+	\textbf{Figure 9.} Fuzzing MD4C with AFL\\
+\end{center}
+\vspace{6mm}
 
 
 In order to analysis these crashes files, we've tried to reproduce the known CVEs by understanding how the specific CVE is found from those discover.
@@ -465,18 +474,21 @@ For the crashes files we've found, we assume that if the fuzzing time gets longe
 
 Figures in the appendix show example crashes induced by AFL++.
  
-\vspace{3mm}
+ \vspace{3mm}
 \begin{table}[h!]
 \centering
 \scalebox{1} {
 \begin{tabular}{V{4}l|l|lV{4}} \hlineB{3}
-	\multicolumn{1}{V{4}c|}{} & \multicolumn{1}{c|}{AFL} & \multicolumn{1}{cV{4}}{AFL++}  \\ \hline
-	\multicolumn{1}{V{4}c|}{\texttt{yaml-cpp}} & 
+	\multicolumn{1}{V{4}c|}{} & \multicolumn{1}{c|}{\ \ \ \ \ \ \ \ \ \ \ AFL\ \ \ \ \ \ \ \ \ \ \ } & \multicolumn{1}{cV{4}}{\ \ \ \ \ \ \ \ AFL++\ \ \ \ \ \ \ \ \ }  \\ \hline
+	\multicolumn{1}{V{4}c|}{yaml-cpp} & 
 	\multicolumn{1}{c|}{116} &
 	\multicolumn{1}{cV{4}}{166} \\ \hline
 	\multicolumn{1}{V{4}c|}{md4c} & 
 	\multicolumn{1}{c|}{175} &
-	\multicolumn{1}{cV{4}}{535} \\ \hlineB{3}
+	\multicolumn{1}{cV{4}}{535} \\ \hline
+	\multicolumn{1}{V{4}c|}{fuzzgoat} & 
+	\multicolumn{1}{c|}{38} &
+	\multicolumn{1}{cV{4}}{20} \\ \hlineB{3}
 \end{tabular}
 }
 \vspace{6mm}\\ \textbf{Table 2. }Number of Crashes Found 
@@ -491,7 +503,10 @@ Figures in the appendix show example crashes induced by AFL++.
 	\multicolumn{1}{cV{4}}{2191/sec 1cycle} \\ \hline
 	\multicolumn{1}{V{4}c|}{md4c} & 
 	\multicolumn{1}{c|}{2855/sec 0cycle} &
-	\multicolumn{1}{cV{4}}{2198/sec 2cycle} \\ \hlineB{3}
+	\multicolumn{1}{cV{4}}{2198/sec 2cycle} \\ \hline
+	\multicolumn{1}{V{4}c|}{fuzzgoat} & 
+	\multicolumn{1}{c|}{2169/sec 7cycle} &
+	\multicolumn{1}{cV{4}}{347.8/sec 3cycle} \\ \hlineB{3}
 \end{tabular}
 }
 \vspace{6mm}\\ \textbf{Table 3. }Execution Speed 
@@ -500,13 +515,21 @@ Figures in the appendix show example crashes induced by AFL++.
 \centering
 \scalebox{1} {
 \begin{tabular}{V{4}l|l|lV{4}} \hlineB{3}
+<<<<<<< HEAD
 	\multicolumn{1}{V{4}c|}{} & \multicolumn{1}{c|}{AFL} & \multicolumn{1}{cV{4}}{AFL++}  \\ \hline
 	\multicolumn{1}{V{4}c|}{\texttt{yaml-cpp}} & 
+=======
+	\multicolumn{1}{V{4}c|}{} & \multicolumn{1}{c|}{\ \ \ \ \ \ \ \ \ \ \ AFL\ \ \ \ \ \ \ \ \ \ \ } & \multicolumn{1}{cV{4}}{\ \ \ \ \ \ \ \ AFL++\ \ \ \ \ \ \ \ \ }  \\ \hline
+	\multicolumn{1}{V{4}c|}{yaml-cpp} & 
+>>>>>>> 0a8724d07f75fa5eb7e1de51178c8a518f839756
 	\multicolumn{1}{c|}{1928} &
 	\multicolumn{1}{cV{4}}{2382} \\ \hline
 	\multicolumn{1}{V{4}c|}{md4c} & 
 	\multicolumn{1}{c|}{3230} &
-	\multicolumn{1}{cV{4}}{5404} \\ \hlineB{3}
+	\multicolumn{1}{cV{4}}{5404} \\ \hline
+	\multicolumn{1}{V{4}c|}{fuzzgoat} & 
+	\multicolumn{1}{c|}{651} &
+	\multicolumn{1}{cV{4}}{564} \\ \hlineB{3}
 \end{tabular}
 }
 \vspace{6mm}\\ \textbf{Table 4. }Total Paths 
