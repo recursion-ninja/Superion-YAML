@@ -292,17 +292,33 @@ Ultimately Superion promises high fidelity linguistic coverage in it's structure
 
 Grimoire is build upon Redqueen, an alternative to taint checking that exploits input-to-state correspondence and overcomes fuzzing setbacks. 
 Redqueen must be implemented to set up Grimoire. However, several issues arose when doing so. Redqueen had many dependency packages that did not run on our machine. 
-Despite multiple attempts of installation and manually setting up our machine again so that it would be compatible with Redqueen, we failed to successfully implement the fuzzer. Debugging these errors did not suffice, and due to lack of documentation regarding these bugs, we decided to move on to AFL++ to fuzz the target programs. 
+Despite multiple attempts of installation and manually setting up our machine again so that it would be compatible with Redqueen, we failed to successfully implement the fuzzer.
+Debugging these errors did not suffice, and due to lack of documentation regarding these bugs and the time limits, we decided to move on to AFL++ to fuzz the target programs. 
 AFL++ did not have many dependencies like Grimoire did, and was much easier to implement and use. 
 
 \subsection*{Selected target programs}
 
 
-For each target language, we've selected the target programs which have already contained multiple CVEs. There are certain criteria that we decide what target programs would be useful and efficient to get started with on fuzzing.  
-First, we're looking for the open source code implemented by C or C++ as the target programs.  AFL works best on C or C++ applications. When source code is available, instrumentation can be injected by a companion tool that works as a drop-in replacement for gcc or clang in any standard build process for third-party code. For example, for C++ programs, we could set CXX=/path/to/afl/afl-g++ before we compile the code. Although AFL does support instrumenting black-box binaries on the fly with QEMU, but this tends to have poor performance. 
-Second, since we need a lot of time to fuzz a program, so we prefer the old version which has contained multiple CVEs. 
-Third, we'll need an executable or write a simple program that reads data from stdin or from a file to fuzz the target program.  This also reflects that we need to understand the usage of the target program. Although we can fuzz the target program brute-forcedly, once we can't find any crashes, we may wonder if there are really no bugs, or we're just simply not able to pass the input seeds to the target program. 
-Lastly, the target program has some functions to deal with the target language. For example, one of our target programs is YAML-CPP\cite{YAML-CPP} which is a YAML parser and emitter in C++. Finally, we choose YAML-CPP as the YAML target, MD4C\cite{MD4C} as the Markdown target, and cJSON\cite{cJSON} as the Jason target.  
+For each target language, we've selected the target programs for fuzzing which have multiple known CVEs.
+We have set up specific conditions in deciding our target programs so that each test can be useful and efficient enough to get started with fuzzing.
+
+First, we've looked for the open-source applications implemented in C or C++ as the target programs.
+AFL works best with C or C++ applications. 
+When source code is available, instrumentation can be injected by a companion tool that works as a drop-in replacement for gcc or clang in any standard build process for third-party code. 
+For example, for C++ programs, we could set \texttt{CXX=/path/to/afl/afl-g++} before we compile the code.
+Although AFL does support instrumenting black-box binaries on the fly with QEMU mode, this tends to have poor performance. 
+
+Second, to achieve the most perceptible assessment in a confined timeslot, we prioritized the older version of each target program with which we can expect multiple CVEs in fewer test runs.
+
+Third, our target program should have an executable when compiled.
+In case that applications do not yield such binaries, we had to write a simple harness program that reads data from stdin or from a file to fuzz the target program.
+This also reflects that we need to understand the usage of the target program.
+Although we can fuzz the target program in a brute-force way, it can introduce a much time-consuming situation debugging it.
+There is no guarantee that the black-box, brute-force type of such fuzzing was successful so that it can tell the program under test has any vulnerability or not.
+
+Lastly, the target program should have some functions to handle the target language of our choice.
+For example, one of our target programs is YAML-CPP\cite{YAML-CPP} which is both a YAML parser and emitter for C++ environment.
+Finally, we choose YAML-CPP as the YAML target, MD4C\cite{MD4C} as the Markdown target, and cJSON\cite{cJSON} as the Jason target.  
 
 The table below is a corpus of CVEs from the chosen target programs. Selected CVEs and the defective applications are shown at the bottom of each cell of \textbf{Table 1}. The numbers next to the name indicate the latest version that the defect was fixed. For example, CVE-2019-6292 can be found in the YAML-CPP version prior to 0.6.2.
 \vspace{6mm}
