@@ -373,19 +373,43 @@ This was done through the course of literature review and presentation preparati
 \centerline{\textbf{Figure 3.} Input created from Grammar-aware input generators}
 \vspace{6mm}
 
+
+
 \subsection*{Results from AFL and AFL++}
 While using AFL and AFL++ on our target programs. We implemented older versions of these two targets so that we were more likely to find crashes. We decided to run each fuzzer on each target program for 3 hours, to make the results as consistent as possible.
+\vspace{22mm}
+\hrule height 0.4mm
+\begingroup \fontsize{12pt}{12pt} \selectfont \begin{alltt}
+\input{target_setup.js}
+\end{alltt} \vspace{-6mm} \endgroup \hrule height 0.4mm
+\vspace{6mm}
+\centerline{\textbf{Figure 3.} The example of the target program setup}
+\vspace{6mm}
+
 Mostly, the repository of the target program has provided some test cases, so we can take these as input seeds for the fuzzers.
 After fuzzing the target program in a period of time, it has generated over 100 uniq crashes in both YAMLL-CPP and MD4C. 
 
+
 In order to analysis these crashes files, we’ve tried to reproduce the known CVEs by understanding how the specific CVE is found from those discover.
-For example, CVE-2017-11692, the description of this CVE shows string”!2” can crash the program.
+For example, CVE-2017-11692\cite{CVE-2017-11692}, the description of this CVE shows string”!2” can crash the program.
 So, we also found the same crash result when we pipe our crash files to the target program.
 After that, we have piped different crash files into the target program, we still get same crash messages.
 Since the AFL mutator will keep mutating the input file as we mentioned before, so it’s reasonable that, even these crash files are unique, but the pattern might not be too much different. That’s why we’ll keep getting same crash message.
 
+\begin{figure}
+	\centering
+	\includegraphics[scale=0.5, trim={0 3cm 0 0}, clip]{yaml_cpp_crashes.jpg}
+	\caption{Crashes testing for YAML-CPP}
+\end{figure}
+
 For analyzing the results of MD4C, The message we can only get is the segmentation fault for testing different the crash files. So, if we want to know what’s different between them, we’ll need another tool to sanitize them.
-In short, we assume that if the fuzzing time gets longer, after the fuzzer searching the target program deeply, the generated crash files might be in different pattern. Moreover, we’ll need another tool or method to know the detail reasons while the program crashed.
+\begin{figure}
+	\centering
+	\includegraphics[scale=0.5, trim={0 3cm 0 0}, clip]{md4c_crashes.jpg}
+	\caption{Crashes testing for MD4C}
+\end{figure}
+So far, these crashes are just existing flaws for the old version of the target program. We've also fuzzed the latest version of the target program, but no crashes have been found.
+For the crashes files we've found, we assume that if the fuzzing time gets longer, after the fuzzer searching the target program deeply, the generated crash files might be in different pattern. Moreover, in order to specify the unique differences among them, we’ll need another tool or method to know the detail reasons for how these files crash the program.
 
 Figures in the appendix show example crashes induced by AFL++.
  
