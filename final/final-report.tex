@@ -446,6 +446,22 @@ After fuzzing the target program in a period of time, it has generated over 100 
 \end{center}
 \vspace{6mm}
 
+\vspace{-6mm}
+\begin{center}
+	\includegraphics[scale=1.0, trim={0 0 7mm 0}, clip]{yamlfuzzer.png}\\
+	\textbf{Figure 10.} Fuzzing \texttt{yaml-cpp} with AFL++\\
+\end{center}
+
+
+
+\vspace{6mm}
+	\includegraphics[scale=0.7, trim={0 0 1.5cm 0}, clip]{markdownfuzzer.png}\\
+	\textbf{Figure 11.} Fuzzing markdown with AFL++\\
+\end{center}
+\vspace{6mm}
+
+
+
 
 In order to analysis these crashes files, we've tried to reproduce the known CVEs by understanding how the specific CVE is found from those discover.
 For example, CVE-2017-11692\cite{CVE-2017-11692}, the description of this CVE shows string”!2” can crash the program.
@@ -456,18 +472,28 @@ Since the AFL mutator will keep mutating the input file as we mentioned before, 
 \vspace{3mm}
 \begin{center}
 	\includegraphics[scale=0.35, trim={0 0 0 0}, clip]{yaml_cpp_crashes.png}\\
-	\textbf{Figure 8.} Crashes testing for YAML-CPP
+	\textbf{Figure 12.} Crashes testing for YAML-CPP with AFL
 \end{center}
 \vspace{3mm}
+
+\vspace{6mm}
+	\includegraphics[scale=0.45, trim={0 3cm 0 0}, clip]{yaml_cpp_crashes.jpg}\\
+	\textbf{Figure 13.} Crashes testing for YAML-CPP with AFL++
+\end{center}
 
 For analyzing the results of MD4C, The message we can only get is the segmentation fault for testing different the crash files. So, if we want to know what's different between them, we'll need another tool to sanitize them.
 
 \vspace{6mm}
 \begin{center}
 	\includegraphics[scale=0.35, trim={0 0 1cm 0}, clip]{md4c_crashes.png}
-	\textbf{Figure 9.} Crashes testing for MD4C
+	\textbf{Figure 14.} Crashes testing for MD4C with AFL
 \end{center}
 \vspace{3mm}
+
+\begin{center}
+	\includegraphics[scale=1.0]{markdowncrashes.png}\\
+	\textbf{Figure 15.} Crashes testing for MD4C with AFL++
+\end{center}
 
 So far, these crashes are just existing flaws for the old version of the target program. We've also fuzzed the latest version of the target program, but no crashes have been found.
 For the crashes files we've found, we assume that if the fuzzing time gets longer, after the fuzzer searching the target program deeply, the generated crash files might be in different pattern. Moreover, in order to specify the unique differences among them, we'll need another tool or method to know the detail reasons for how these files crash the program.
