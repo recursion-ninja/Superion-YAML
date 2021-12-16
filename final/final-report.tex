@@ -450,6 +450,23 @@ After fuzzing the target program in a period of time, it has generated over 100 
 \end{center}
 \vspace{6mm}
 
+\vspace{-6mm}
+\begin{center}
+	\includegraphics[scale=1.0, trim={0 0 7mm 0}, clip]{yamlfuzzer.png}\\
+	\textbf{Figure 10.} Fuzzing \texttt{yaml-cpp} with AFL++\\
+\end{center}
+
+
+
+\vspace{6mm}
+\begin{center}
+	\includegraphics[scale=0.7, trim={0 0 1.5cm 0}, clip]{markdownfuzzer.png}\\
+	\textbf{Figure 11.} Fuzzing markdown with AFL++\\
+\end{center}
+\vspace{6mm}
+
+
+
 
 In order to analysis these crashes files, we've tried to reproduce the known CVEs by understanding how the specific CVE is found from those discover.
 For example, CVE-2017-11692\cite{CVE-2017-11692}, the description of this CVE shows string”!2” can crash the program.
@@ -460,18 +477,29 @@ Since the AFL mutator will keep mutating the input file as we mentioned before, 
 \vspace{3mm}
 \begin{center}
 	\includegraphics[scale=0.35, trim={0 0 0 0}, clip]{yaml_cpp_crashes.png}\\
-	\textbf{Figure 8.} Crashes testing for YAML-CPP
+	\textbf{Figure 12.} Crashes testing for YAML-CPP with AFL
 \end{center}
 \vspace{3mm}
+
+\vspace{6mm}
+\begin{center}
+	\includegraphics[scale=0.45, trim={0 3cm 0 0}, clip]{yaml_cpp_crashes.png}\\
+	\textbf{Figure 13.} Crashes testing for YAML-CPP with AFL++
+\end{center}
 
 For analyzing the results of MD4C, The message we can only get is the segmentation fault for testing different the crash files. So, if we want to know what's different between them, we'll need another tool to sanitize them.
 
 \vspace{6mm}
 \begin{center}
 	\includegraphics[scale=0.35, trim={0 0 1cm 0}, clip]{md4c_crashes.png}
-	\textbf{Figure 9.} Crashes testing for MD4C
+	\textbf{Figure 14.} Crashes testing for MD4C with AFL
 \end{center}
 \vspace{3mm}
+
+\begin{center}
+	\includegraphics[scale=1.0]{markdowncrashes.png}\\
+	\textbf{Figure 15.} Crashes testing for MD4C with AFL++
+\end{center}
 
 So far, these crashes are just existing flaws for the old version of the target program. We've also fuzzed the latest version of the target program, but no crashes have been found.
 For the crashes files we've found, we assume that if the fuzzing time gets longer, after the fuzzer searching the target program deeply, the generated crash files might be in different pattern. Moreover, in order to specify the unique differences among them, we'll need another tool or method to know the detail reasons for how these files crash the program.
@@ -502,7 +530,7 @@ Figures in the appendix show example crashes induced by AFL++.
 \scalebox{1} {
 \begin{tabular}{V{4}l|l|lV{4}} \hlineB{3}
 	\multicolumn{1}{V{4}c|}{} & \multicolumn{1}{c|}{AFL} & \multicolumn{1}{cV{4}}{AFL++}  \\ \hline
-	\multicolumn{1}{V{4}c|}{yaml-cpp} & 
+	\multicolumn{1}{V{4}c|}{\texttt{yaml-cpp}} & 
 	\multicolumn{1}{c|}{1298/sec 1cycle} &
 	\multicolumn{1}{cV{4}}{2191/sec 1cycle} \\ \hline
 	\multicolumn{1}{V{4}c|}{md4c} & 
@@ -538,11 +566,22 @@ Figures in the appendix show example crashes induced by AFL++.
 
 Based on the fuzzing tests conducted on the selected CVEs, we found that AFL++ was much more efficient than AFL. 
 
-When fuzzing yaml-cpp with AFL, there were a total of 116 crashes found. With AFL++, 166 crashes were found. When fuzzing markdown, AFL found a total of 175 crashes, while AFL++ found 535 crashes. For both target programs, AFL++ found more crashes than AFL. The higher number of crashes found with AFL++ indicate that the fuzzer provided more randomized inputs and found more test cases to cause a crash.
+When fuzzing \texttt{yaml-cpp} with AFL, there were a total of 116 crashes found. With AFL++, 166 crashes were found.
+When fuzzing \texttt{md4c}, AFL found a total of 175 crashes, while AFL++ found 535 crashes.
+For both target programs, AFL++ found more crashes than AFL.
+However, when fuzzing \texttt{fuzzgoat}, AFL uncovered slightly more crashes AFL++, with 651 and 564 respectively.
+Given the intentionally vulnerable construction of \texttt{fuzzgoat}, the slight difference between fuzzers might be an outlier representing unrealistic conditions.
+The higher number of crashes, in general, found with AFL++ indicate that the fuzzer provided more randomized inputs and found more test cases to cause a crash.
+Our assessment is that, in realistic conditions, AFL++ is at least as effective, and potentially performs with three times the crash inducing efficacy.
 
-When analyzing execution speed, AFL was slower than AFL++ when fuzzing yaml-cpp, although both managed to complete one cycle, the time the fuzzer takes to pass through all the test cases in the queue. When fuzzing markdown, although AFL had a higher execution speed, AFL++ managed to complete one full cycle, while AFL did not complete any.
 
-AFL++ completed more total paths than AFL did when fuzzing both yaml-cpp and markdown. This indicates that AFL++ explored more paths, and generated more input to reach these paths.
+When analyzing execution speed, AFL was slower than AFL++ when fuzzing \texttt{yaml-cpp}, although both managed to complete one cycle, the time the fuzzer takes to pass through all the test cases in the queue.
+When fuzzing \texttt{md4c}, although AFL had a higher execution speed, AFL++ managed to complete one full cycle, while AFL did not complete any.
+Similarly targeting \texttt{fuzzgoat}, AFL executed much faster, but AFL++ completed three full cycles while ALF failed to complete one.
+Our assessment with these measurements is again, that AFL++ is at least as effective as AFL.
+
+AFL++ completed more total paths than AFL did when fuzzing both \texttt{yaml-cpp} and \texttt{md4c}.
+This indicates that AFL++ explored more paths, and generated more input to reach these paths.
 
 
 \section*{Future Experimentation}
@@ -594,13 +633,13 @@ The following is a rough accounting of the project development:
 \vspace{-6mm}
 \begin{center}
 	\includegraphics[scale=1.0, trim={0 0 7mm 0}, clip]{yamlfuzzer.png}\\
-	\textbf{Figure 10.} Fuzzing yaml-cpp with AFL++\\
+	\textbf{Figure 10.} Fuzzing \texttt{yaml-cpp} with AFL++\\
 \vspace{6mm}
-	\includegraphics[scale=0.45, trim={0 3cm 0 0}, clip]{yaml_cpp_crashes.jpg}\\
-	\textbf{Figure 11.} yaml-cpp crashes\\
+	\includegraphics[scale=0.45, trim={0 3cm 0 0}, clip]{yaml_cpp_crashes.png}\\
+	\textbf{Figure 11.} \texttt{yaml-cpp} crashes\\
 \vspace{6mm}
 	\includegraphics[scale=1.0]{yamlsamplecrashcat.png}\\
-	\textbf{Figure 12.} Content of a Sample yaml-cpp crash\\
+	\textbf{Figure 12.} Content of a Sample \texttt{yaml-cpp} crash\\
 \vspace{6mm}
 	\includegraphics[scale=0.7, trim={0 0 1.5cm 0}, clip]{markdownfuzzer.png}\\
 	\textbf{Figure 13.} Fuzzing markdown with AFL++ for 3 hours.\\

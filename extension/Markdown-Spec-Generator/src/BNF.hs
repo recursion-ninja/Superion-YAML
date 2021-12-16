@@ -682,7 +682,7 @@ appendSymbolsToSet xs = Set.map (appendSymbols xs)
 
 instance IsString NonTerminal where
 
-    fromString = NonTerminal . escapeTerm
+    fromString = NonTerminal . fromString -- . escapeTerm
 
 
 instance IsString Terminal where

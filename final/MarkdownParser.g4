@@ -1,5 +1,5 @@
 BLANK_LINE: (SPACE | TAB)* NEWLINE;
-NEWLINE: '\r'? '\n' | '\r';
+NEWLINE: '\\r'? '\\n' | '\\r';
 ...
 document: block+ BLANK_LINE* EOF?;
 block: BLANK_LINE*

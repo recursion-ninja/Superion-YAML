@@ -257,11 +257,11 @@ instance HasProductions URL where
           route = seg `SepBy` dash
           (hostRules, hostDeps) = getRulesAndDeps g host
           rules = mconcat $
-                    [ appendSymbolsToSet [ note route] hostRules
+                    [ appendSymbolsToSet [ "/", note route] hostRules
 --                    , [[ "/", note route            ]]
 --                    , [[ "/", note route, note frag ]]
                     ]
-      in  (hostDeps <>) <$> fromRulesWithDeps2 g (nonTerminal x) rules (route, frag)
+      in  (hostDeps <>) <$> fromRulesWithDeps g (nonTerminal x) rules [route]
 
 
 
