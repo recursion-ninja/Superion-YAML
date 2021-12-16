@@ -2,6 +2,7 @@
 
 \usepackage{bashful}
 \usepackage{hyperref}
+\usepackage{verbatim}
 
 %----------------------------------------------------------------------------------------
 %	Comment this out if you do not have `texcount` installed on your $PATH
@@ -211,7 +212,8 @@ Since Gramatron's advertised usage is on context-sensitive and Turing-complete l
 
 \vspace{10mm}
 \hrule height 0.4mm
-\begingroup \fontsize{10pt}{10pt} \selectfont \begin{alltt}
+\begingroup \fontsize{10pt}{10pt} \selectfont 
+\begin{alltt}
 \input{JSONsource.json}
 \end{alltt} \vspace{-6mm} \endgroup \hrule height 0.4mm
 \vspace{6mm}
@@ -233,9 +235,9 @@ This FSA is used as the mutator for Gramatron.
 
 \vspace{10mm}
 \hrule height 0.4mm
-\begingroup \fontsize{10pt}{10pt} \selectfont \begin{alltt}
-\input{JSONsource_automata.json}
-\end{alltt} \vspace{-6mm} \endgroup \hrule height 0.4mm
+\begingroup \fontsize{10pt}{10pt} \selectfont 
+\verbatiminput{JSONsource_automata.json}
+\vspace{-6mm} \endgroup \hrule
 \vspace{6mm}
 \centerline{\textbf{Figure 4.} FSA specification for JSON extension}
 \vspace{6mm}
@@ -279,8 +281,9 @@ We conducted a debugging effort of Superion's source code to diagnose the proble
 
 \vspace{10mm}
 \hrule height 0.4mm
-\begingroup \fontsize{10pt}{10pt} \selectfont \begin{alltt}
-\input{MarkdownParser.g4}
+\begingroup \fontsize{10pt}{10pt} \selectfont 
+\begin{alltt}
+\verbatiminput{MarkdownParser.g4}
 \end{alltt} \vspace{-6mm} \endgroup \hrule height 0.4mm
 \vspace{6mm}
 \centerline{\textbf{Figure 5.} Excerpts of Markdown grammar in \texttt{.g4} format}
