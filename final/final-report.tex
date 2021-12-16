@@ -179,7 +179,7 @@ However, the extension attempts did provide insightful results regarding each to
 The usage of Grimoire as a baseline for measuring the results of Gramatron and Superion against was also unsuccessful.
 There were no binaries of Grimoire available for usage and building Grimoire from source repeatedly failed due to multiple chain of dependency issues and platform specific requirements.
 With the Grimoire inaccessible as a baseline metric, we substituted ALF and AFL++ to be used as our baseline metrics in anticipation of later success extending Gramatron and Superion.
-When extension of Gramatron and Superion became exceedingly improbable within our time constraints, we finalized our methodology to utilize AFL as the baseline measurement and AFL++ as the structured-aware fuzzer.
+When extension of Gramatron and Superion became exceedingly improbable within our time constraints, we finalized our methodology to utilize AFL as the baseline measurement and AFL++ as the structured-aware fuzzer. These fuzzers were utilized on fuzzgoat, a vulnerable C program used for testing, before running the fuzzers on YAML, JSON, and Markdown.
 
 We have composed a corpus of CVEs discovered from previous work.
 At the time of writing, we found over 100 CVEs cataloged on MITRE\cite{MITRE} for each of target languages mentioned above.
