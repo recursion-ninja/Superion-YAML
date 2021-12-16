@@ -58,7 +58,7 @@ Of all the ubiquitous file formats, these three are currently the most popular l
 A chosen fuzzer's ability to replicate more of selected CVEs or replicate them faster, with respect to the three file formats, will serve as a positive indication of relatively superior efficacy.
 
 There are some state-of-the-art fuzzers that accentuate their effectiveness with structured input such as Gramatron, Superion, and Mayhem.
-However, these fuzzers to not support the file formats which we are sampling.
+However, these fuzzers do not support the file formats which we are sampling.
 To compensate for this deficient grammar support, we endeavor extending the fuzzer's grammar support to include JSON, Markdown, and YAML.
 Excluding Mayhem, a commercial project for which we don't have access to its source code, we take two open-sourced projects; Gramatron and Superion as our extension target.
 On top of that, our assessment incorporates the comparison of these two fuzzers against the other type of fuzzer.
@@ -66,12 +66,12 @@ Grimoire is a fuzzer that, without structured inputs, can perform grammar awaren
 
 Over the course of this project, we have attempted to extend the functionality of these two fuzzers with the intention of scrutinizing their fuzzing capabilities compared to other fuzzers like Grimoire against a corpus of CVEs of our three target file formats.
 Extension and comparison of these tools proved too difficult within the time of our study.
-We will discuss the difficulties presented by each tool, our attempt adapt our methodology to address these difficulties, along with the CVE replication which was achievable.
+We will discuss the difficulties presented by each tool, our attempt in adapting our methodology to address these difficulties, along with the CVE replication, which was achievable.
 
 \section*{Introduction}
 
 Fuzzing is a venerable application security testing technique developed in the late '80s\cite{Barton1988} and published in 1990\cite{Miller1990}.
-Fuzzing tools generate input which is directed towards the program under test and detect if the input was accepted or caused unexpected behavior.
+Fuzzing tools generate input, which is directed towards the program under test and detects whether the input was accepted or caused unexpected behavior.
 Such unexpected behavior can take many forms, to name a few, infinite loops, stack smashing, buffer overflows, arithmetic overflows or errors, and illegal program states.
 There is a variety of Fuzzing tools\cite{ModelBasedFuzzing}\cite{GrammarBasedFuzzing}\cite{ProtocolBasedFuzzing}, each of them with input generator that mutates the input in many ways.
 Different fuzzing tools tend to specialize in a few related forms of input\cite{InputDiversity} manipulation.
@@ -81,7 +81,7 @@ In a black-box scenario, the fuzzer has no knowledge of the program's internal s
 In a grey-box scenario, the fuzzer gleans information from its previous input to guide future inputs.
 Lastly, in a white-box scenario, the fuzzer can utilize program analysis to inform its input generators.
 
-There are also two broad classes of inputs generations; naive and structured\cite{fuzzingsurvey} inputs.
+There are also two broad classes of input generations; naive and structured\cite{fuzzingsurvey} inputs.
 Naive inputs do not provide any guarantees regarding its form.
 Structured inputs, on the other hand, can be defined to always preserve desired structures within their respective grammars.
 
@@ -179,7 +179,7 @@ However, the extension attempts did provide insightful results regarding each to
 
 The usage of Grimoire as a baseline for measuring the results of Gramatron and Superion against was also unsuccessful.
 There were no binaries of Grimoire available for usage and building Grimoire from source repeatedly failed due to multiple chain of dependency issues and platform specific requirements.
-With the Grimoire inaccessible as a baseline metric, we substituted ALF and AFL++ to be used as our baseline metrics in anticipation of later success extending Gramatron and Superion.
+With the Grimoire inaccessible as a baseline metric, we substituted AFL and AFL++ to be used as our baseline metrics in anticipation of later success extending Gramatron and Superion.
 When extension of Gramatron and Superion became exceedingly improbable within our time constraints, we finalized our methodology to utilize AFL as the baseline measurement and AFL++ as the structured-aware fuzzer. These fuzzers were utilized on fuzzgoat, a vulnerable C program used for testing, before running the fuzzers on YAML, JSON, and Markdown.
 
 We have composed a corpus of CVEs discovered from previous work.
@@ -187,7 +187,7 @@ At the time of writing, we found over 100 CVEs cataloged on MITRE\cite{MITRE} fo
 We selected a reproducible subset of these CVEs to use as our coverage test.
 Unfortunately, due to the inability to extend Gramatron and Superion, we could not use test these extensions' ability to discover the selected CVEs.
 Instead we used the efficacy of AFL and AFL++ as a comparative metric.
-Quantitatively, we measured the execution time of ALF and ALF++ and compare their inputs generated per second.
+Quantitatively, we measured the execution time of AFL and AFL++ and compare their inputs generated per second.
 The motivation of this metric is to compare the computational efficiency of each tool, i.e. clock-cycles per attempt.
 Qualitatively, we compare how many of the selected CVEs were rediscovered by each tool, as a determination of their general efficacy.
 
@@ -458,7 +458,6 @@ After fuzzing the target program in a period of time, it has generated over 100 
 
 
 \vspace{6mm}
-\begin{center}
 	\includegraphics[scale=0.7, trim={0 0 1.5cm 0}, clip]{markdownfuzzer.png}\\
 	\textbf{Figure 11.} Fuzzing markdown with AFL++\\
 \end{center}
@@ -481,8 +480,7 @@ Since the AFL mutator will keep mutating the input file as we mentioned before, 
 \vspace{3mm}
 
 \vspace{6mm}
-\begin{center}
-	\includegraphics[scale=0.45, trim={0 3cm 0 0}, clip]{yaml_cpp_crashes.png}\\
+	\includegraphics[scale=0.45, trim={0 3cm 0 0}, clip]{yaml_cpp_crashes.jpg}\\
 	\textbf{Figure 13.} Crashes testing for YAML-CPP with AFL++
 \end{center}
 
@@ -546,8 +544,13 @@ Figures in the appendix show example crashes induced by AFL++.
 \centering
 \scalebox{1} {
 \begin{tabular}{V{4}l|l|lV{4}} \hlineB{3}
+<<<<<<< HEAD
+	\multicolumn{1}{V{4}c|}{} & \multicolumn{1}{c|}{AFL} & \multicolumn{1}{cV{4}}{AFL++}  \\ \hline
+	\multicolumn{1}{V{4}c|}{\texttt{yaml-cpp}} & 
+=======
 	\multicolumn{1}{V{4}c|}{} & \multicolumn{1}{c|}{\ \ \ \ \ \ \ \ \ \ \ AFL\ \ \ \ \ \ \ \ \ \ \ } & \multicolumn{1}{cV{4}}{\ \ \ \ \ \ \ \ AFL++\ \ \ \ \ \ \ \ \ }  \\ \hline
 	\multicolumn{1}{V{4}c|}{yaml-cpp} & 
+>>>>>>> 0a8724d07f75fa5eb7e1de51178c8a518f839756
 	\multicolumn{1}{c|}{1928} &
 	\multicolumn{1}{cV{4}}{2382} \\ \hline
 	\multicolumn{1}{V{4}c|}{md4c} & 
@@ -634,7 +637,7 @@ The following is a rough accounting of the project development:
 	\includegraphics[scale=1.0, trim={0 0 7mm 0}, clip]{yamlfuzzer.png}\\
 	\textbf{Figure 10.} Fuzzing \texttt{yaml-cpp} with AFL++\\
 \vspace{6mm}
-	\includegraphics[scale=0.45, trim={0 3cm 0 0}, clip]{yaml_cpp_crashes.png}\\
+	\includegraphics[scale=0.45, trim={0 3cm 0 0}, clip]{yaml_cpp_crashes.jpg}\\
 	\textbf{Figure 11.} \texttt{yaml-cpp} crashes\\
 \vspace{6mm}
 	\includegraphics[scale=1.0]{yamlsamplecrashcat.png}\\
