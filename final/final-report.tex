@@ -280,7 +280,7 @@ We conducted a debugging effort of Superion's source code to diagnose the proble
 \input{MarkdownParser.g4}
 \end{alltt} \vspace{-6mm} \endgroup \hrule height 0.4mm
 \vspace{6mm}
-\centerline{\textbf{Figure 4.} Markdown parser Grammar in G4}
+\centerline{\textbf{Figure 5.} Markdown parser Grammar in G4}
 \vspace{6mm}
 
 Our assessment of Superion is limited, as we were not able to successfully extend it's support for any of the attempted grammars.
@@ -401,7 +401,7 @@ This was done through the course of literature review and presentation preparati
 \input{input.js}
 \end{alltt} \vspace{-6mm} \endgroup \hrule height 0.4mm
 \vspace{6mm}
-\centerline{\textbf{Figure 5.} Input created from Grammar-aware input generators}
+\centerline{\textbf{Figure 6.} Input created from Grammar-aware input generators}
 
 \subsection*{Results from AFL and AFL++}
 While using AFL and AFL++ on our target programs. We implemented older versions of these two targets so that we were more likely to find crashes. We decided to run each fuzzer on each target program for 3 hours, to make the results as consistent as possible.
@@ -412,7 +412,7 @@ While using AFL and AFL++ on our target programs. We implemented older versions 
 \input{target_setup.js}
 \end{alltt} \vspace{-6mm} \endgroup \hrule height 0.4mm
 \vspace{6mm}
-\centerline{\textbf{Figure 6.} The example of the target program setup}
+\centerline{\textbf{Figure 7.} The example of the target program setup}
 \vspace{6mm}
 
 Mostly, the repository of the target program has provided some test cases, so we can take these as input seeds for the fuzzers.
@@ -428,7 +428,7 @@ Since the AFL mutator will keep mutating the input file as we mentioned before, 
 \vspace{3mm}
 \begin{center}
 	\includegraphics[scale=0.35, trim={0 0 0 0}, clip]{yaml_cpp_crashes.png}\\
-	\textbf{Figure 7.} Crashes testing for YAML-CPP
+	\textbf{Figure 8.} Crashes testing for YAML-CPP
 \end{center}
 \vspace{3mm}
 
@@ -437,7 +437,7 @@ For analyzing the results of MD4C, The message we can only get is the segmentati
 \vspace{6mm}
 \begin{center}
 	\includegraphics[scale=0.35, trim={0 0 1cm 0}, clip]{md4c_crashes.png}
-	\textbf{Figure 8.} Crashes testing for MD4C
+	\textbf{Figure 9.} Crashes testing for MD4C
 \end{center}
 \vspace{3mm}
 
@@ -553,26 +553,26 @@ The following is a rough accounting of the project development:
 \vspace{-6mm}
 \begin{center}
 	\includegraphics[scale=1.0, trim={0 0 7mm 0}, clip]{yamlfuzzer.png}\\
-	\textbf{Figure 9.} Fuzzing yaml-cpp with AFL++\\
+	\textbf{Figure 10.} Fuzzing yaml-cpp with AFL++\\
 \vspace{6mm}
 	\includegraphics[scale=0.45, trim={0 3cm 0 0}, clip]{yaml_cpp_crashes.jpg}\\
-	\textbf{Figure 10.} yaml-cpp crashes\\
+	\textbf{Figure 11.} yaml-cpp crashes\\
 \vspace{6mm}
 	\includegraphics[scale=1.0]{yamlsamplecrashcat.png}\\
-	\textbf{Figure 11.} Content of a Sample yaml-cpp crash\\
+	\textbf{Figure 12.} Content of a Sample yaml-cpp crash\\
 \vspace{6mm}
 	\includegraphics[scale=0.7, trim={0 0 1.5cm 0}, clip]{markdownfuzzer.png}\\
-	\textbf{Figure 12.} Fuzzing markdown with AFL++ for 3 hours.\\
+	\textbf{Figure 13.} Fuzzing markdown with AFL++ for 3 hours.\\
 \end{center}
 \vspace{6mm}
 
 
 \begin{center}
 	\includegraphics[scale=1.0]{markdowncrashes.png}\\
-	\textbf{Figure 13.} Markdown Crashes\\
+	\textbf{Figure 14.} Markdown Crashes\\
 \vspace{6mm}	
 	\includegraphics[scale=1.0]{markdownsamplecatcrash.png}\\
-	\textbf{Figure 14.} Content of a Sample markdown crash\\
+	\textbf{Figure 15.} Content of a Sample markdown crash\\
 \end{center}
 
 \clearpage
