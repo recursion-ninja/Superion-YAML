@@ -14,7 +14,7 @@ module LoremIpsum
 import Data.Coerce
 import Data.Data          (Data)
 import Data.Foldable      hiding (toList)
-import Data.Set           (Set)
+import Data.List          (nub)
 import Data.Text          (Text, unpack)
 import Data.Typeable      (Typeable)
 import Data.Vector        (Vector, (!))
@@ -123,11 +123,11 @@ loremIpsum = (corpus !) . coerce
 
 
 corpus :: Vector Text
-corpus = fromList $ toList uniqueSet
+corpus = fromList $ take 20 uniqueSet
 
 
-uniqueSet :: Set Text
-uniqueSet =
+uniqueSet :: [Text]
+uniqueSet = nub
     [ "Lorem"
     , "ipsum"
     , "dolor"

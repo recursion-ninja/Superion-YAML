@@ -609,7 +609,7 @@ instance HasSuffixSymbol Terminal where
     suffix (Terminal e) =
       let suff = case e of
                    Left  c   -> fromString $ "CHAR" <> escapeChar c
-                   Right txt -> "TERM" <> txt
+                   Right txt -> "TERM" <> escapeTerm (unpack txt)
       in  NonTerminal suff
 
 
@@ -687,8 +687,8 @@ instance IsString NonTerminal where
 
 instance IsString Terminal where
 
-    fromString  [] = Terminal $ Right ""
-    fromString  xs = Terminal . Right $ escapeTerm xs
+    fromString [] = Terminal $ Right ""
+    fromString xs = Terminal . Right $ fromString xs
 
 
 instance IsString Symbol where

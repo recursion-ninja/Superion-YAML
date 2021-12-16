@@ -71,17 +71,17 @@ data Inline
   | -- | Emphasis
     Emphasis Bool (NonEmpty Inline)
   | -- | Strong emphasis
-    Strong Bool (NonEmpty Inline)
+    Strong Bool   (NonEmpty Inline)
   | -- | Strikeout
-    Strikeout (NonEmpty Inline)
+    Strikeout     (NonEmpty Inline)
   | -- | Subscript
-    Subscript (NonEmpty Inline)
+    Subscript     (NonEmpty Inline)
   | -- | Superscript
-    Superscript (NonEmpty Inline)
+    Superscript   (NonEmpty Inline)
   | -- | Code span
     CodeSpan Text
   | -- | Link with text, destination, and optionally title
-    Link (NonEmpty Inline) URI (Maybe Text)
+    Link  (NonEmpty Inline) URI (Maybe Text)
   | -- | Image with description, URL, and optionally title
     Image (NonEmpty Inline) URI (Maybe Text)
   deriving stock (Show, Eq, Ord, Data, Typeable, Generic)
@@ -110,18 +110,18 @@ data Block
     Heading5 (NonEmpty Inline)
   | -- | Heading (level 6), leaf block
     Heading6 (NonEmpty Inline)
-  | -- | Code block, leaf block with info string (NonEmpty Inline)nd contents
+  | -- | Code block, leaf block with info string  contents
     CodeBlock Text
   | -- | Naked content, without an enclosing tag
     Naked (NonEmpty Inline)
   | -- | Paragraph, leaf block
     Paragraph (NonEmpty Inline)
   | -- | Blockquote container block
-    Blockquote [Block]
-  | -- | Ordered list ('Word' is the start index), container block
-    OrderedList   Word (NonEmpty [Block])
+    Blockquote (NonEmpty Inline)
+  |
+    OrderedList   Word (NonEmpty Inline)
   | -- | Unordered list, container block
-    UnorderedList Bool (NonEmpty [Block])
+    UnorderedList Bool (NonEmpty Inline)
 {-
   | -- | Table, first (NonEmpty Inline)rgument is the (NonEmpty Inline)lignment options, then we have (NonEmpty Inline)
     -- 'NonEmpty' list of rows, where every row is (NonEmpty Inline) 'NonEmpty' list of
@@ -139,7 +139,7 @@ data Block
 instance Bounded Block where
 
 --    maxBound = Table minBound (pure minBound) $ pure minBound
-    maxBound = UnorderedList True $ [minBound]:|[]
+    maxBound = UnorderedList True $ minBound:|[]
 
     minBound = ThematicBreak False
 
@@ -222,9 +222,9 @@ instance Enum Block where
             9  -> Naked      nei
             10 -> Paragraph  nei
             11 -> Blockquote neb
-            12 -> OrderedList   0     $ pure neb
-            13 -> UnorderedList False $ pure neb
-            _  -> UnorderedList True  $ pure neb
+            12 -> OrderedList   0     neb
+            13 -> UnorderedList False neb
+            _  -> UnorderedList True  neb
 --            14 -> UnorderedList True  $ pure neb
 --            _  -> maxBound
 
@@ -294,9 +294,9 @@ instance HasRuleByValue Inline where
 
    ruleOfValue _ x | trace ("ruleOfValue $ " <> show x) False = undefined
    ruleOfValue g x =
-      let idiom  =  word `SepBy` space
+      let idiom  =  word `SepBy` space 
           word   =  minBound  :: LoremIpsum
-          parts  = [minBound] :: NonEmpty Inline
+          parts  = idiom --]    :: NonEmpty (SepBy LoremIpsum Terminal)
           uri    =  minBound  :: URI
           space  = " " :: Terminal
           spaces = space :| []
@@ -316,20 +316,18 @@ instance HasRuleByValue Inline where
             Superscript    {} -> partsSurroundedBy [ "^" ]
             CodeSpan       {} -> ruleWithDeps ref [ "`", note idiom, "`" ] [ idiom ]
             Link  _ _ Nothing -> ruleWithDep2 ref [ "[", note parts , "]"
-                                                , "(", note uri, ")"
-                                                ] (parts, uri)
+                                                  , "(", note uri, ")"
+                                                  ] (parts, uri)
             Link  _ _ _       -> ruleWithDep3 ref [ "[", note parts , "]"
                                                 , "(", note uri   , ")"
-                                                , note spaces
+--                                                , note spaces
                                                 , quote, note idiom, quote
                                                 ] (parts, uri, idiom)
             Image _ _ Nothing -> ruleWithDep2 ref [ "!", "[", note parts, "]"
-                                                ,      "(", note uri  , ")"
+                                                ,        "(", note uri  , ")"
                                                 ] (parts, uri)
             Image _ _ _       -> ruleWithDep3 ref [ "!", "[", note parts, "]"
-                                                ,      "(", note uri  , ")"
-                                                , note spaces
-                                                , quote, note idiom, quote
+                                                ,        "(", note uri  , ")"
                                                 ] (parts, uri, idiom)
 
 
@@ -447,14 +445,16 @@ instance HasNonTerminal Program where
 instance HasProductions Program where
 
     productionRule g x =
-      let space  = [" " :||: "\\n"] :: NonEmpty (Terminal :||: Terminal)
+      let --space  = [" " :||: "\\n"] :: NonEmpty (Terminal :||: Terminal)
+          eol    = "\\n" :: Terminal
           block  = minBound :: Block
-          blocks = (block :||: (block :<>: space)) :|[]
+--          blocks = (block :||: (block :<>: space)) :|[]
+          blocks = (block :<>: eol) :|[]
           rules  =
-            [ [ " "  , note space, note blocks ]
-            , [ "\\n", note space, note blocks ]
+            [ [ " "  , note blocks ]
+            , [ "\\n", note blocks ]
             ]   
-      in  fromRulesWithDeps2 g (nonTerminal x) rules (space, block)
+      in  fromRulesWithDeps g (nonTerminal x) rules [blocks]
 
 
 instance HasSuffixSymbol Program where
