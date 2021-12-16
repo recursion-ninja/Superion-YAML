@@ -274,6 +274,15 @@ Once we had sufficient G4 files, we added the output from ANTLR onto Superion's 
 However, we could not get the newly built Superion emit the new grammar fuzzing inputs.
 We conducted a debugging effort of Superion's source code to diagnose the problem, but our effects were unsuccessful within the time limits of the semester.
 
+\vspace{10mm}
+\hrule height 0.4mm
+\begingroup \fontsize{10pt}{10pt} \selectfont \begin{alltt}
+\input{MarkdownParser.g4}
+\end{alltt} \vspace{-6mm} \endgroup \hrule height 0.4mm
+\vspace{6mm}
+\centerline{\textbf{Figure 4.} Markdown parser Grammar in G4}
+\vspace{6mm}
+
 Our assessment of Superion is limited, as we were not able to successfully extend it's support for any of the attempted grammars.
 The process of extension relies on the external tool ANTLR which added complexity to the extension process that could have been mitigated by a robust makefile.
 Furthermore, the lack of new grammar output and feedback on correcting the behavior leaves much to be desired in terms of usability.
