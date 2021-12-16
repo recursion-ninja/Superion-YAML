@@ -51,11 +51,14 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 In this project, we explored the efficiency of grey-box fuzzing programs with structured inputs in comparison with the ones that use generically mutated random-like inputs.
+The premise is to conduct a quantitative and qualitative comparison between different fuzzing tools by their ability to replicate CVEs.
 The assessment addresses testing three major file formats: JSON, Markdown, and YAML.
 Of all the ubiquitous file formats, these three are currently the most popular languages that are consumed as input by a wide array of programs and have enough CVEs that we can gauge the efficacy of our fuzzing experiment.
+A chosen fuzzer's ability to replicate more of selected CVEs or replicate them faster, with respect to the three file formats, will serve as a positive indication of relatively superior efficacy.
 
 There are some state-of-the-art fuzzers that accentuate their effectiveness with structured input such as Gramatron, Superion, and Mayhem.
-We have set up the goal of evaluating the efficiency of these fuzzers on our target languages by extending their grammar support.
+However, these fuzzers to not support the file formats which we are sampling.
+To compensate for this deficient grammar support, we endeavor extending the fuzzer's grammar support to include JSON, Markdown, and YAML.
 Excluding Mayhem, a commercial project for which we don't have access to its source code, we take two open-sourced projects; Gramatron and Superion as our extension target.
 On top of that, our assessment incorporates the comparison of these two fuzzers against the other type of fuzzer.
 Grimoire is a fuzzer that, without structured inputs, can perform grammar awareness fuzzing by itself.
@@ -187,7 +190,7 @@ Quantitatively, we measured the execution time of ALF and ALF++ and compare thei
 The motivation of this metric is to compare the computational efficiency of each tool, i.e. clock-cycles per attempt.
 Qualitatively, we compare how many of the selected CVEs were rediscovered by each tool, as a determination of their general efficacy.
 
-All the experimentations during our project are conducted on the consolidated WSL(Windows Subsystem for Linux) version 2 using ubuntu version 18.04.1.
+All the experimentations during our project are conducted on the consolidated WSL (Windows Subsystem for Linux) version 2 using ubuntu version 18.04.1.
 Separate environment setup trials were done in the AWS ec2 server of the t3a.large instance.
 After testing and trials on these two environments, we concluded that using WSL is a better option for us to get our expected results in a timely manner.
 Although we also had another option to try the DETER server, considering the time restraints, we moved on to the next phase without testing more on research environments.
@@ -280,7 +283,7 @@ We conducted a debugging effort of Superion's source code to diagnose the proble
 \input{MarkdownParser.g4}
 \end{alltt} \vspace{-6mm} \endgroup \hrule height 0.4mm
 \vspace{6mm}
-\centerline{\textbf{Figure 5.} Markdown parser Grammar in G4}
+\centerline{\textbf{Figure 5.} Excerpts of Markdown grammar in \texttt{.g4} format}
 \vspace{6mm}
 
 Our assessment of Superion is limited, as we were not able to successfully extend it's support for any of the attempted grammars.
