@@ -473,18 +473,19 @@ So, we also found the same crash result when we pipe our crash files to the targ
 After that, we have piped different crash files into the target program, we still get same crash messages.
 Since the AFL mutator will keep mutating the input file as we mentioned before, so it's reasonable that, even these crash files are unique, but the pattern might not be too much different. That's why we'll keep getting same crash message.
 
-\vspace{3mm}
-\begin{center}
-	\includegraphics[scale=0.45, trim={0 0 0 0}, clip]{yaml-sample-crashes.png}\\
-	\textbf{Figure 12.} Crashes testing for YAML-CPP with AFL++
-\end{center}
-\vspace{3mm}
-
 \vspace{6mm}
 \begin{center}
 	\includegraphics[scale=0.45, trim={0 3cm 0 0}, clip]{yaml_cpp_crashes.png}\\
-	\textbf{Figure 13.} Crashes testing for YAML-CPP with AFL
+	\textbf{Figure 12.} Crashes testing for YAML-CPP with AFL
 \end{center}
+
+\vspace{3mm}
+\begin{center}
+	\includegraphics[scale=0.45, trim={0 0 0 0}, clip]{yaml-sample-crashes.png}\\
+	\textbf{Figure 13.} Crashes testing for YAML-CPP with AFL++
+\end{center}
+\vspace{3mm}
+
 
 For analyzing the results of MD4C, The message we can only get is the segmentation fault for testing different the crash files. So, if we want to know what's different between them, we'll need another tool to sanitize them.
 
