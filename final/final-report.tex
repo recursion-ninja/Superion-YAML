@@ -119,9 +119,6 @@ Superion currently generates valid JavaScript and XML inputs by taking a context
 
 Based on the context-free grammar, Superion parses each test input into an abstract syntax tree, an AST. Using ASTs, Superion introduces a grammar-aware trimming strategy that can effectively trim test inputs while keeping the input structure valid, then randomly chooses another input from AFL's queue and also parses it into AST. A sub-tree of the target input can be replaced by another sub-tree, either from the target input itself or from a randomly chosen supplementary sample. Therefore, hundreds of new samples are generated and executed to find a new path in tested programs. The results of Superion show a great increase in fuzzing efficacy when targeting programs which expect structured input.
 
-
-\clearpage
-
 Gramatron\cite{srivastava2021gramatron} is a second, and even more recent, open-source fuzzing tool designed to produce structured inputs that we decided to extend.
 Released in 2021, Gramatron was designed with new mutation algorithms to increase the speed at which defects are discovered.
 It does this by reducing the number of mutation steps from the input seed to trigger input mutations, rather than simply optimizing the speed at which new inputs can be generated. There are two steps in which Gramatron modifies AFL++. First, in the preprocessing phase, the context-free grammar, CFG, is converted into Greibach normal form (GNF) \cite{greibach1965new}, which is then turned into a finite state automata (FSA). This can be seen in the figure below.
@@ -568,7 +565,7 @@ Based on the fuzzing tests conducted on the selected CVEs, we found that AFL++ w
 When fuzzing \texttt{yaml-cpp} with AFL, there were a total of 116 crashes found. With AFL++, 166 crashes were found.
 When fuzzing \texttt{md4c}, AFL found a total of 175 crashes, while AFL++ found 535 crashes.
 For both target programs, AFL++ found more crashes than AFL.
-However, when fuzzing \texttt{fuzzgoat}, AFL uncovered slightly more crashes AFL++, with 651 and 564 respectively.
+However, when fuzzing \texttt{fuzzgoat}, AFL uncovered slightly more crashes AFL++, with 38 and 20 respectively.
 Given the intentionally vulnerable construction of \texttt{fuzzgoat}, the slight difference between fuzzers might be an outlier representing unrealistic conditions.
 The higher number of crashes, in general, found with AFL++ indicate that the fuzzer provided more randomized inputs and found more test cases to cause a crash.
 Our assessment is that, in realistic conditions, AFL++ is at least as effective, and potentially performs with three times the crash inducing efficacy.
