@@ -50,12 +50,14 @@
 %   NO citations in the abstract!   %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-For our project, we explored the efficiency of grey-box fuzzing programs with structured inputs compared to generically mutated random-like inputs.
+In this project, we explored the efficiency of grey-box fuzzing programs with structured inputs in comparison with the ones that use generically mutated random-like inputs.
 The assessment addresses testing three major file formats: JSON, Markdown, and YAML.
-Of all the ubiquitous file formats, these three are currently the most popular languages that are consumed as input by a wide array of programs and have enough CVEs that we can gauge the efficacy.
+Of all the ubiquitous file formats, these three are currently the most popular languages that are consumed as input by a wide array of programs and have enough CVEs that we can gauge the efficacy of our fuzzing experiment.
 
 There are some state-of-the-art fuzzers that accentuate their effectiveness with structured input such as Gramatron, Superion, and Mayhem.
+We have set up the goal of evaluating the efficiency of these fuzzers on our target languages by extending their grammar support.
 Excluding Mayhem, a commercial project for which we don't have access to its source code, we take two open-sourced projects; Gramatron and Superion as our extension target.
+On top of that, our assessment incorporates the comparison of these two fuzzers against the other type of fuzzer.
 Grimoire is a fuzzer that, without structured inputs, can perform grammar awareness fuzzing by itself.
 
 Over the course of this project, we have attempted to extend the functionality of these two fuzzers with the intention of scrutinizing their fuzzing capabilities compared to other fuzzers like Grimoire against a corpus of CVEs of our three target file formats.
@@ -68,23 +70,25 @@ We will discuss the difficulties presented by each tool, our attempt adapt our m
 
 Fuzzing is a venerable application security testing technique developed in the late '80s\cite{Barton1988} and published in 1990\cite{Miller1990}.
 Fuzzing tools generate input which is directed towards the program under test and detect if the input was accepted or caused unexpected behavior.
-Unexpected behavior can take many forms, such as infinite loops, stack smashing, buffer overflows, arithmetic overflows or errors, and illegal program states.
-Fuzzing tools themselves can take many forms\cite{ModelBasedFuzzing}\cite{GrammarBasedFuzzing}\cite{ProtocolBasedFuzzing} and modify program input in many ways.
+Such unexpected behavior can take many forms, to name a few, infinite loops, stack smashing, buffer overflows, arithmetic overflows or errors, and illegal program states.
+There is a variety of Fuzzing tools\cite{ModelBasedFuzzing}\cite{GrammarBasedFuzzing}\cite{ProtocolBasedFuzzing}, each of them with input generator that mutates the input in many ways.
 Different fuzzing tools tend to specialize in a few related forms of input\cite{InputDiversity} manipulation.
-There are three main classes of interaction between the fuzzer and the program under test, black-box\cite{takanen2018fuzzing}, grey-box, and white-box\cite{fuzzingsurvey}.
+
+These fuzzing tools can be categorized into three main classes by their interaction between the fuzzer and the program under test, black-box\cite{takanen2018fuzzing}, grey-box, and white-box\cite{fuzzingsurvey}.
 In a black-box scenario, the fuzzer has no knowledge of the program's internal structure and cannot use any program-specific information to direct its fuzzing efforts.
 In a grey-box scenario, the fuzzer gleans information from its previous input to guide future inputs.
-Lastly, in a white-box scenario, the fuzzer can utilize program analysis to inform its fuzzing inputs.
+Lastly, in a white-box scenario, the fuzzer can utilize program analysis to inform its input generators.
 
-There are also two broad classes of inputs fuzzers generate; naive and structured\cite{fuzzingsurvey}.
+There are also two broad classes of inputs generations; naive and structured\cite{fuzzingsurvey} inputs.
 Naive inputs do not provide any guarantees regarding its form.
-Structured inputs, on the other hand, can be defined to always preserve desired structures within the inputs.
+Structured inputs, on the other hand, can be defined to always preserve desired structures within their respective grammars.
 
-AFL\cite{AFL_page} is one of the best-known fuzzing tools. AFL relies on genetic algorithm techniques\cite{InputMutationAlgorithm} to mutate acceptable input into an input that triggers unexpected behavior.
+AFL\cite{AFL_page}, is one of the best-known fuzzing tools. AFL relies on genetic algorithm techniques\cite{InputMutationAlgorithm} to mutate acceptable input into an input that triggers unexpected behavior.
 Using the generic AFL approach, inputs would be mutated randomly, and an initially valid structured input would quickly become invalid.
-The invalid input in this scenario, is not the one that introduces the vulnerability of the target system.
-Random inputs just fail to run the major part of the target system, suspended by the type checkers or the input validators.
+But, the invalid input in this scenario, is not the one that introduces the vulnerability of the target system.
+Invalid random inputs just fail to run the major part of the target system, suspended by the type checkers or the input validators.
 This is a longstanding problem in the art of fuzzing and is the subject of emerging research.
+
 Generating consistently well-structured inputs\cite{structuredInput} via "grammar-aware" mutations is one such technique for addressing the problem of randomly mutated inputs.
 AFL is a poster child for efficient, naive input fuzzing.
 
@@ -99,11 +103,10 @@ We will be making use of this second role in our project.
 \section*{Motivation}
 \label{Motivation}
 
-We are aware of the topic "Going Beyond Coverage-Guided Fuzzing with Structured Fuzzing" by Jonathan Metzman in the Black Hat USA 2019\cite{blackhat2019}.
-In the talk, the speaker presented structured fuzzing and how to improve the fuzzer by adding structure awareness to it. 
-Therefore, we started our project with learning “What is Structured Fuzzing?”, and the concept of writing the well-structured inputs via "grammar-aware" mutations to improve the fuzzers we chose.
+"What is Structured Fuzzing?" In the Black Hat USA 2019\cite{blackhat2019}, the session "Going Beyond Coverage-Guided Fuzzing with Structured Fuzzing", Jonathan Metzman presented structured fuzzing and how to improve the fuzzer by adding structure awareness to it. 
+Intrigued by the power of such an approach, we started our project with the goal of testing the efficiency of the well-structured inputs via "grammar-aware" mutations by improving the fuzzers we chose.
 
-Superion\cite{superion} is an fairly recent open source fuzzing tool created by modifying and extending AFL to produce structured inputs released in 2018.
+Superion\cite{superion}, 2018, is an fairly recent open source fuzzing tool created by modifying and extending AFL to produce structured inputs.
 Superion currently generates valid JavaScript and XML inputs by taking a context free grammar and an input seed, then performing a series of "grammar-aware" mutations to create a sequence of validly structured inputs. The process is illustrated in the figure below.
 
 \begin{center}
@@ -112,14 +115,14 @@ Superion currently generates valid JavaScript and XML inputs by taking a context
 \end{center}
 \vspace{3mm}
 
-Based on the grammar, Superion parses each test input into an abstract syntax tree, an AST. Using ASTs, Superion introduces a grammar-aware trimming strategy that can effectively trim test inputs while keeping the input structure valid, then randomly chooses another input from AFL’s queue and also parses it into AST. A sub-tree of the target input can be replaced by another sub-tree, either from the target input itself or from a randomly chosen supplementary sample. Therefore, hundreds of new samples are generated and executed to find a new path in tested programs. The results of Superion show a great increase in fuzzing efficacy when targeting programs which expect structured input.
+Based on the context-free grammar, Superion parses each test input into an abstract syntax tree, an AST. Using ASTs, Superion introduces a grammar-aware trimming strategy that can effectively trim test inputs while keeping the input structure valid, then randomly chooses another input from AFL’s queue and also parses it into AST. A sub-tree of the target input can be replaced by another sub-tree, either from the target input itself or from a randomly chosen supplementary sample. Therefore, hundreds of new samples are generated and executed to find a new path in tested programs. The results of Superion show a great increase in fuzzing efficacy when targeting programs which expect structured input.
 
 
 \clearpage
 
-Gramatron\cite{srivastava2021gramatron} is a second, and even more recent, open source fuzzing tool designed to produce structured inputs.
+Gramatron\cite{srivastava2021gramatron} is a second, and even more recent, open-source fuzzing tool designed to produce structured inputs that we decided to extend.
 Released in 2021, Gramatron was designed with new mutation algorithms to increase the speed at which defects are discovered.
-It does this by reducing the number of mutation steps from the input seed to the trigger input, rather than simply optimizing the speed at which new inputs can be generated. There are two steps in which Gramatron modifies AFL++. First, in the preprocessing phase, the context-free grammar, CFG, is converted into Greibach normal form (GNF) \cite{greibach1965new}, which is then turned into a finite state automata (FSA). This can be seen in the figure below.
+It does this by reducing the number of mutation steps from the input seed to trigger input mutations, rather than simply optimizing the speed at which new inputs can be generated. There are two steps in which Gramatron modifies AFL++. First, in the preprocessing phase, the context-free grammar, CFG, is converted into Greibach normal form (GNF) \cite{greibach1965new}, which is then turned into a finite state automata (FSA). This can be seen in the figure below.
 
 \vspace{-1cm}
 \begin{center}
@@ -134,30 +137,30 @@ This approach of iterative, sound mutations through a transition space is how Gr
 Gramatron currently generates structured PHP and JavaScript as inputs.
 
 
-Grimoire\cite{GRIMOIRE} is a structured input fuzzer which does not require an explicit structural definition to effectively generate fuzzing inputs.
-Instead, Grimoire deduces the required input structure via feedback from the program.
-Initial research suggests that this form of structure-inferring fuzz technique may be more effective than explicitly defined structured input fuzzing as Grimoire can probe corner cases which are excluded from formal grammars.
+Grimoire\cite{GRIMOIRE} is a structured input fuzzer which does not require an explicit structural definition to generate fuzzing inputs.
+Instead, Grimoire deduces the required input structure via feedback from the target program.
+Initial research suggests that this form of structure-inferring fuzz technique may be more effective than explicitly defined structured input fuzzing as Grimoire can probe corner cases much more thoroughly which are in general, excluded from formal grammars.
 
 For a decade, AFL has been upheld as the de-facto basis of comparison for all other fuzzing techniques.
 However, AFL++\cite{fioraldi2020afl++} was released as a foundational reconstruction of AFL.
 AFL++ boasts integrating multiple modern fuzzing techniques, including low-frequency path prioritization previously introduced by AFLFast\cite{bohme2017coverage}, improved mutation scheduling described by MOpt\cite{lyu2019mopt}, hard byte comparison mitigation improved by LAF-Intel \cite{intel2016circumventing} and KAFL \cite{schumilo2017kafl}, as well as structured-input mutation techniques exemplified by AFLSmart \cite{pham2019smart}.
 These technical improvement come with the addition of improved tool usability and robustness.
-However, most notably, AFL++ has been designed with extensiblity as a primary goal which is exposed vias it's \emph{Custom Mutator API}.
+However, most notably, AFL++ has been designed with extensibility as a primary goal which is exposed via its \emph{Custom Mutator API}.
 While AFL++ was not initially included in our project, it's remarkable combination extensiblity, usability, and reliability proved a truly valuable, mid-project substitution.
-
-Aside from the fact that there is room for these formats on extending our target fuzzers, we have numerous reasons for selecting YAML, JSON, and Markdown as our extension language.
-First, it has a well-defined formal grammar, allowing it to be quickly and reliably integrated into the two fuzzers.
-Second, these file formats are ubiquitous input formats.
-This ubiquity makes our target languages a well-motivated language to extend these fuzzers to support.
-Lastly, to a proper assessment of its performances, languages that have a sufficient corpus of CVEs are required. 
-These languages have a decent amount CVEs that we can work with.
-There are 108 (YAML), 664 (JSON), and 103 (Markdown) CVEs on MITRE\cite{MITRE}.
 
 The goal of this project is to extend the capabilities of both Gramatron and 
 Superion, then compare their performance along with Grimoire towards replicated selected CVEs.
 We attempt extending the capabilities of Gramatron and Superion to support generating the three structured inputs: YAML\cite{YAMLdraft}, JSON and Markdown.
 We plan to compare the efficacy of our extended versions of Gramatron and Superion to both Grimoire and previous work targeted at fuzzing these three file formats.
 By utilizing the three fuzzers- Gramatron, Superion, and Grimoire- we hope to draw a rich comparison of modern fuzzing techniques.
+
+Aside from the fact that there is room for these formats on extending our target fuzzers, we have numerous reasons for selecting YAML, JSON, and Markdown as our extension language.
+First, it has a well-defined formal grammar that allows it to be quickly and reliably integrated into the two fuzzers.
+Second, these file formats are ubiquitous input formats.
+This ubiquity makes our target languages a well-motivated language to extend these fuzzers to support.
+Lastly, to a proper assessment of its performances, languages that have a sufficient corpus of CVEs are required. 
+These languages have a decent amount CVEs that we can work with.
+There are 108 (YAML), 664 (JSON), and 103 (Markdown) CVEs on MITRE\cite{MITRE}.
 
 Although we have confined our extension targets to two cutting-edge fuzzers for various reasons, there are other modern fuzzers which could have been a suitable choice, such as; CodeAlchemist\cite{CodeAlchemist1}\cite{CodeAlchemist2}, Hawkeye\cite{Hawkeye}, Angora\cite{Angora1}\cite{Angora2}, CollAFL\cite{CollAFL}, IoTFuzzer\cite{IoTFuzzer}, RedQueen\,\cite{redqueen}, Nautilus\,\cite{Nautilus1}\cite{Nautilus2}, Periscope\cite{PeriScope1}\cite{PeriScope2}, T-Fuzz\,\cite{TFuzz1}\cite{TFuzz2}, Chopper\cite{Chopper}, QSYM\cite{QSYM1}\cite{QSYM2}, DigFuzz\cite{DigFuzz}, and FairFuzz\cite{FairFuzz1}\cite{FairFuzz2}.
 All these tools are distinguished in their specialized scoped, but we have decided to work with Gramatron and Superion as these are open-sourced projects, and appear the most adaptable in generating new structured inputs.
